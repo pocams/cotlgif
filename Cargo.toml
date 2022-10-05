@@ -1,0 +1,15 @@
+[package]
+name = "cotlgif"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+spine = { git = "https://github.com/pocams/spine-rs" }
+# We need to stay in sync with spine-rs on the image crate version
+image = "0.23.14"
+
+triangle = "0.1.353"
+fnv = "1.0.7"
+itertools = "0.10.5"
