@@ -7,7 +7,9 @@ edition = "2021"
 
 [dependencies]
 #spine = { git = "https://github.com/pocams/spine-rs" }
-spine = { path = "../spine-rs/spine" }
+#spine = { path = "../spine-rs/spine" }
+
+rusty_spine = { path = "../rusty_spine" }
 
 triangle = "0.1.353"
 fnv = "1.0.7"
