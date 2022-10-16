@@ -1,198 +1,278 @@
-use std::collections::HashSet;
-use sfml::graphics::{Color, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Texture, Transform, Vertex, VertexBuffer, VertexBufferUsage};
-use sfml::window::{ContextSettings, Event, Style};
+use std::borrow::Cow;
+use std::collections::HashMap;
+use std::error::Error;
+use std::ffi::OsStr;
+use std::num::{ParseFloatError, ParseIntError};
+use std::path::PathBuf;
+use std::str::FromStr;
 use std::sync::Arc;
-use std::task::Context;
-use rusty_spine::{AnimationStateData, Atlas, Bone, SkeletonBinary, SkeletonController, SkeletonJson, SkeletonRenderable, Skin};
-use sfml::SfBox;
-use sfml::system::{Vector2, Vector2f};
-use sfml::graphics::BlendMode as SfmlBlendMode;
-use sfml::graphics::blend_mode::{Factor as BlendFactor, Equation as BlendEquation};
-use rusty_spine::BlendMode as SpineBlendMode;
+use axum::extract::{Path, Query};
+use axum::response::{IntoResponse, Response};
+use axum::{Extension, Json, Router};
+use axum::body::Body;
+use axum::http::StatusCode;
+use axum::routing::get;
+use color_eyre::eyre::eyre;
+use rusty_spine::Color;
+use tracing_subscriber::EnvFilter;
+use tower_http::trace::TraceLayer;
+use serde_json::json;
+use serde::Deserialize;
+use css_color_parser2::Color as CssColor;
+use tracing::{debug, info};
 
-struct SavedTexture {
-    tex: SfBox<Texture>
+use crate::actors::{Actor, RenderParameters};
+
+mod actors;
+
+/*
+URLs:
+
+  /v1/(player, follower)/(baseskin)/(animation).(gif, png)
+    ?add_skin=a,b,c
+    ?antialiasing=<int>
+    ?start_time=<float>
+    ?end_time=<float> (only for gif)
+    ?color1=RRGGBB (only for follower?)
+    ?color2=RRGGBB (only for follower?)
+
+  /v1/
+  [
+    {
+      "url": "/v1/player/",
+      "description": "Player"
+    }
+  ]
+
+  /v1/player/
+    {
+      "description": "Player",
+      "animations": [
+        {
+          "name": "idle",
+          "duration": 0.7
+        }
+      ],
+      "skins": [
+        {
+          "name": "Lamb"
+        {
+      ]
+    }
+*/
+
+#[derive(Debug)]
+enum OutputType {
+    Gif,
+    Png
 }
 
-const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
-    color_src_factor: BlendFactor::SrcAlpha,
-    color_dst_factor: BlendFactor::OneMinusSrcAlpha,
-    color_equation: BlendEquation::Add,
-    alpha_src_factor: BlendFactor::SrcAlpha,
-    alpha_dst_factor: BlendFactor::OneMinusSrcAlpha,
-    alpha_equation: BlendEquation::Add
-};
+impl FromStr for OutputType {
+    type Err = JsonError;
 
-const BLEND_ADDITIVE: SfmlBlendMode = SfmlBlendMode {
-    color_src_factor: BlendFactor::SrcAlpha,
-    color_dst_factor: BlendFactor::One,
-    color_equation: BlendEquation::Add,
-    alpha_src_factor: BlendFactor::SrcAlpha,
-    alpha_dst_factor: BlendFactor::One,
-    alpha_equation: BlendEquation::Add
-};
-
-const BLEND_MULTIPLY: SfmlBlendMode = SfmlBlendMode {
-    color_src_factor: BlendFactor::DstColor,
-    color_dst_factor: BlendFactor::OneMinusSrcAlpha,
-    color_equation: BlendEquation::Add,
-    alpha_src_factor: BlendFactor::DstColor,
-    alpha_dst_factor: BlendFactor::OneMinusSrcAlpha,
-    alpha_equation: BlendEquation::Add
-};
-
-const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
-    color_src_factor: BlendFactor::One,
-    color_dst_factor: BlendFactor::OneMinusSrcColor,
-    color_equation: BlendEquation::Add,
-    alpha_src_factor: BlendFactor::One,
-    alpha_dst_factor: BlendFactor::OneMinusSrcColor,
-    alpha_equation: BlendEquation::Add
-};
-
-fn main() {
-    let mut settings: ContextSettings = Default::default();
-    settings.antialiasing_level = 16;
-
-    let mut window = RenderWindow::new(
-        (2000, 1600),
-        "Render test",
-        Style::CLOSE,
-        &settings,
-    );
-    println!("used settings: {:?}", window.settings());
-
-    // window.set_framerate_limit(60);
-
-    rusty_spine::extension::set_create_texture_cb(|atlas_page, path| {
-        println!("create texture {:?} {:?}", atlas_page, path);
-        let mut tex = Texture::new().unwrap();
-        tex.load_from_file(path, IntRect::new(0, 0, 0, 0)).unwrap();
-        tex.set_smooth(true);
-        println!("new texture is {:?}", tex.size());
-        atlas_page.renderer_object().set(tex);
-    });
-
-    rusty_spine::extension::set_dispose_texture_cb(|atlas_page| unsafe {
-        println!("dispose texture {:?}", atlas_page);
-        atlas_page.renderer_object().dispose::<Texture>();
-    });
-
-    let atlas_path = "cotl/Follower.atlas";
-    let skel_path = "cotl/Follower.skel";
-    let atlas = Arc::new(Atlas::new_from_file(atlas_path).unwrap());
-    let skeleton_binary = SkeletonBinary::new(atlas);
-    let skeleton_data = Arc::new(skeleton_binary.read_skeleton_data_file(skel_path).unwrap());
-
-    for anim in skeleton_data.animations() {
-        println!("anim {:?}", anim.name());
-    }
-
-    for skin in skeleton_data.skins() {
-        println!("skin {:?}", skin.name());
-    }
-
-
-    // let animation_state_data = {
-    //     let mut asd =AnimationStateData::new(skeleton_data.clone());
-    //     asd.set_mix_by_name("walk", "jump", 0.2);
-    //     asd.set_mix_by_name("jump", "run", 0.2);
-    //     Arc::new(asd)
-    // };
-    let animation_state_data = Arc::new(AnimationStateData::new(skeleton_data.clone()));
-    let mut skeleton_controller =
-        SkeletonController::new(skeleton_data.clone(), animation_state_data);
-
-    let mut skin = Skin::new("mixed");
-    skin.add_skin(skeleton_data.skins().find(|s| s.name() == "Fennec Fox").unwrap().as_ref());
-    skin.add_skin(skeleton_data.skins().find(|s| s.name() == "Clothes/Holiday").unwrap().as_ref());
-
-    skeleton_controller.animation_state.set_animation_by_name(0, "action", true).unwrap();
-    skeleton_controller.skeleton.set_skin(&skin);
-    skeleton_controller.skeleton.set_to_setup_pose();
-    skeleton_controller.skeleton.set_scale([4.0, 4.0]);
-    skeleton_controller.skeleton.set_y(1500.0);
-    skeleton_controller.skeleton.set_x(900.0);
-    Bone::set_y_down(true);
-
-    let color_slots: HashSet<String> = vec![
-        "ARM_LEFT_SKIN",
-        "ARM_RIGHT_SKIN",
-        "LEG_LEFT_SKIN",
-        "LEG_RIGHT_SKIN",
-        "HEAD_SKIN_BTM",
-    ].into_iter().map(|s| s.to_owned()).collect();
-
-    for mut slot in skeleton_controller.skeleton.slots_mut() {
-        let n = slot.data().name().to_owned();
-        println!("slot: {:?}", n);
-        let c = slot.color_mut();
-        if color_slots.contains(&n) {
-            c.set_r(0.8);
-            c.set_b(0.3);
-            c.set_g(0.6);
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_ascii_lowercase().as_ref() {
+            "gif" | ".gif" => Ok(OutputType::Gif),
+            "png" | ".png" => Ok(OutputType::Png),
+            _ => Err(json_400("Invalid format, expected gif or png"))
         }
     }
+}
 
-    let mut clock = sfml::system::Clock::start();
+#[derive(Debug, Default)]
+struct SkinParameters {
+    output_type: Option<OutputType>,
+    animation: Option<String>,
+    add_skin: Vec<String>,
+    scale: Option<f32>,
+    antialiasing: Option<u32>,
+    start_time: Option<f32>,
+    end_time: Option<f32>,
+    color1: Option<Color>,
+    color2: Option<Color>,
+    background_color: Option<Color>,
+    fps: Option<u32>
+}
 
-    while window.is_open() {
+impl TryFrom<Vec<(String, String)>> for SkinParameters {
+    type Error = JsonError;
 
-        while let Some(ev) = window.poll_event() {
-            match ev {
-                Event::Closed => window.close(),
-                _ => {}
+    fn try_from(params: Vec<(String, String)>) -> Result<SkinParameters, Self::Error> {
+        let mut sp = SkinParameters::default();
+        for (key, value) in params.into_iter() {
+            match key.to_ascii_lowercase().as_str() {
+                "format" => sp.output_type = Some(value.parse()?),
+                "add_skin" => sp.add_skin.push(value),
+                "animation" => sp.animation = Some(value),
+                "scale" => sp.scale = Some(value.parse().map_err(|e| json_400(format!("scale: {e:?}")))?),
+                "antialiasing" => sp.antialiasing = Some(value.parse().map_err(|e| json_400(format!("antialiasing: {e:?}")))?),
+                "start_time" => sp.start_time = Some(value.parse().map_err(|e| json_400(format!("start_time: {e:?}")))?),
+                "end_time" => sp.end_time = Some(value.parse().map_err(|e| json_400(format!("end_time: {e:?}")))?),
+                "color" => {
+                    let c = color_from_string(value.as_str()).map_err(|e| json_400(format!("color: {}", e)))?;
+                    sp.color1 = Some(c);
+                    sp.color2 = Some(c);
+                },
+                "color1" => sp.color1 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color1: {}", e)))?),
+                "color2" => sp.color2 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color2: {}", e)))?),
+                "background_color" => sp.background_color = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("background_color: {}", e)))?),
+                "fps" => sp.fps = Some(value.parse().map_err(|e| json_400(format!("fps: {e:?}")))?),
+                _ => return Err(json_400(Cow::from(format!("Invalid parameter {:?}", key))))
             }
         }
-
-        let t = clock.elapsed_time();
-        clock.restart();
-
-        // println!("{:?}", t.as_seconds());
-        skeleton_controller.update(t.as_seconds());
-        window.clear(Color::rgba(80, 80, 80, 255));
-
-        let mut render_states = RenderStates::new(
-            BLEND_NORMAL,
-            Transform::IDENTITY,
-            None,
-            None
-        );
-
-        let renderables = skeleton_controller.renderables();
-        for renderable in renderables.iter() {
-            let color = Color::rgba(
-                (renderable.color.r * 255.0).round() as u8,
-                (renderable.color.g * 255.0).round() as u8,
-                (renderable.color.b * 255.0).round() as u8,
-                (renderable.color.a * 255.0).round() as u8,
-            );
-
-            let texture = unsafe { &*(renderable.attachment_renderer_object.unwrap() as *const SfBox<Texture>) };
-            let texture_size = texture.size();
-            render_states.set_texture(Some(texture));
-
-            render_states.blend_mode = match renderable.blend_mode {
-                SpineBlendMode::Normal => BLEND_NORMAL,
-                SpineBlendMode::Additive => BLEND_ADDITIVE,
-                SpineBlendMode::Multiply => BLEND_MULTIPLY,
-                SpineBlendMode::Screen => BLEND_SCREEN,
-            };
-
-            let mut vertexes = Vec::new();
-            for i in &renderable.indices {
-                let v = renderable.vertices[*i as usize];
-                let t = renderable.uvs[*i as usize];
-                let t = [t[0] * texture_size.x as f32, t[1] * texture_size.y as f32];
-                vertexes.push(Vertex::new(
-                    Vector2f::new(v[0], v[1]), color, Vector2f::new(t[0], t[1])
-                ));
-            }
-
-            window.draw_primitives(vertexes.as_slice(), PrimitiveType::TRIANGLES, &render_states);
-        }
-
-        window.display();
-
+        Ok(sp)
     }
+}
+
+impl SkinParameters {
+    fn into_render_parameters(self) -> Result<RenderParameters, JsonError> {
+        let fps = (self.fps.unwrap_or(50) as f32).max(1.0);
+
+        Ok(RenderParameters {
+            skins: self.add_skin,
+            animation: self.animation.ok_or(json_400("animation= is required"))?,
+            scale: self.scale.unwrap_or(1.0),
+            antialiasing: self.antialiasing.unwrap_or(1),
+            start_time: self.start_time.unwrap_or(0.0),
+            end_time: self.end_time.unwrap_or(1.0),
+            frame_delay: 1.0 / fps,
+            background_color: self.background_color.unwrap_or_default(),
+            color1: self.color1,
+            color2: self.color2
+        })
+    }
+}
+
+fn color_from_string(s: &str) -> color_eyre::Result<Color> {
+    let css_color = s.parse::<CssColor>()?;
+    debug!("css color: {:?}", css_color);
+    Ok(Color::new_rgba(css_color.r as f32 / 255.0, css_color.g as f32 / 255.0, css_color.b as f32 / 255.0, css_color.a))
+}
+
+struct JsonError {
+    message: String,
+    status: StatusCode
+}
+
+fn json_400(s: impl Into<String>) -> JsonError {
+    JsonError { message: s.into(), status: StatusCode::BAD_REQUEST }
+}
+
+fn json_404(s: impl Into<String>) -> JsonError {
+    JsonError { message: s.into(), status: StatusCode::NOT_FOUND }
+}
+
+impl IntoResponse for JsonError {
+    fn into_response(self) -> Response {
+        (self.status, Json(json!({"error": self.message}))).into_response()
+    }
+}
+
+async fn load_actors() -> color_eyre::Result<Vec<Actor>> {
+    Ok(vec![
+        Actor::new("player".to_owned(), "Player".to_owned(), "cotl/player-main.skel", "cotl/player-main.atlas").await?,
+        Actor::new("follower".to_owned(), "Follower".to_owned(), "cotl/Follower.skel", "cotl/Follower.atlas").await?,
+    ])
+}
+
+#[tokio::main]
+async fn main() -> color_eyre::Result<()> {
+    color_eyre::install()?;
+
+    if std::env::var("RUST_LOG").is_err() {
+        std::env::set_var("RUST_LOG", "debug")
+    }
+
+    tracing_subscriber::fmt::fmt()
+        .with_env_filter(EnvFilter::from_default_env())
+        .init();
+
+    let actors = Arc::new(load_actors().await?);
+
+    let app = Router::new()
+        .route("/", get(get_index))
+        .route("/v1", get(get_v1))
+        .route("/v1/:actor", get(get_v1_actor))
+        .route("/v1/:actor/:skin", get(get_v1_skin))
+        .layer(Extension(actors))
+        .layer(TraceLayer::new_for_http());
+
+    info!("Starting server");
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+
+    Ok(())
+}
+
+async fn get_index() -> &'static str {
+    "hello index"
+}
+
+async fn get_v1(Extension(actors): Extension<Arc<Vec<Actor>>>) -> impl IntoResponse {
+    let actor_json: Vec<_> = actors.iter().map(|actor| {
+        let mut m = HashMap::new();
+        m.insert("description", actor.description.to_owned());
+        m.insert("url", format!("/v1/{}", actor.name));
+        m
+    }).collect();
+
+    Json(json!({
+        "actors": actor_json
+    }))
+}
+
+async fn get_v1_actor(
+    Extension(actors): Extension<Arc<Vec<Actor>>>,
+    Path(actor_name): Path<String>
+) -> impl IntoResponse {
+    if let Some(actor) = actors.iter().find(|a| a.name == actor_name) {
+        (StatusCode::OK, Json(serde_json::to_value(actor).unwrap()))
+    } else {
+        (StatusCode::NOT_FOUND, Json(json!({"error": "no such actor"})))
+    }
+}
+
+async fn get_v1_skin(
+    Extension(actors): Extension<Arc<Vec<Actor>>>,
+    Path((actor_name, skin_name)): Path<(String, String)>,
+    Query(params): Query<Vec<(String, String)>>
+) -> Result<impl IntoResponse, JsonError> {
+    let mut params = SkinParameters::try_from(params)?;
+    debug!("params: {:?}", params);
+
+    let actor = actors.iter().find(|a| a.name == actor_name).ok_or(json_404("No such actor"))?;
+
+    let animation_name = params.animation.as_deref().ok_or(json_400("animation= parameter is required"))?;
+    let animation = actor.animations.iter().find(|anim| anim.name == animation_name).ok_or(json_404("No such animation for actor"))?;
+
+    if params.end_time.is_none() {
+        params.end_time = Some(animation.duration);
+    }
+
+    params.add_skin.insert(0, skin_name);
+    for add_skin in &params.add_skin {
+        if actor.skins.iter().find(|s| &s.name == add_skin).is_none() {
+            return Err(json_400(format!("No such skin for actor: {add_skin:?}")))
+        }
+    }
+
+    let render_params = params.into_render_parameters()?;
+
+    let gif = actor.render_gif(render_params).await;
+
+    Ok(Response::builder()
+        .header("Content-Type", "image/gif")
+        .body(Body::from(gif))
+        .unwrap())
+
+    //     ?add_skin=a,b,c
+    //     ?animation=<str>
+    //     ?antialiasing=<int>
+    //     ?start_time=<float>
+    //     ?end_time=<float> (only for gif)
+    //     ?color1=RRGGBB (only for follower?)
+    //     ?color2=RRGGBB (only for follower?)
+
 }
