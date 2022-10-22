@@ -1,10 +1,13 @@
 use std::collections::HashMap;
-use std::io::BufWriter;
+use std::io::{BufRead, BufReader, BufWriter, Write};
 use std::path::Path;
-use std::process::abort;
+use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
-use std::{mem, thread};
+use std::{io, mem, thread};
 use std::num::NonZeroU32;
+use std::sync::atomic::{AtomicI64, Ordering};
+use color_eyre::eyre::{ErrReport, eyre};
+use color_eyre::Report;
 use fast_image_resize::PixelType;
 use gifski::progress::NoProgress;
 use gifski::Settings;
@@ -12,8 +15,10 @@ use imgref::{Img, ImgRef, ImgVec};
 use rusty_spine::{Atlas, SkeletonBinary, SkeletonJson, Color, AnimationStateData, SkeletonController, Skeleton, SkeletonData, Bone};
 use sfml::graphics::{IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex, Color as SfmlColor};
 use tokio::sync::{mpsc, Mutex};
-use tracing::{debug, info};
+use tracing::{debug, info, warn};
 use once_cell::sync::OnceCell;
+use png::{AnimationControl, BitDepth, ColorType};
+use png::chunk::ChunkType;
 use rgb::FromSlice;
 use serde::Serialize;
 use sfml::SfBox;
@@ -58,6 +63,7 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
     alpha_equation: BlendEquation::Add
 };
 
+static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
 
 fn spine_init() {
     static SPINE_STATE: OnceCell<()> = OnceCell::new();
@@ -91,6 +97,41 @@ fn spine_init() {
     });
 }
 
+// We want to own the image because we're going to mutate it before we resize it
+fn resize(from: (usize, usize), to: (usize, usize), image: Vec<u8>) -> Vec<u8> {
+    debug!("AA: resizing to {}x{}", to.0, to.1);
+    // RenderTexture lives on the GPU, so this could be done quicker with some GPU-based
+    // algorithm, but SFML doesn't have fancy resize algorithms on the GPU right now.
+
+    let mut resize_img = fast_image_resize::Image::from_vec_u8(
+        NonZeroU32::new(from.0 as u32).unwrap(),
+        NonZeroU32::new(from.1 as u32).unwrap(),
+        image.to_vec(),
+        PixelType::U8x4
+    ).unwrap();
+
+    // According to the docs this is required
+    let alpha_mul_div = fast_image_resize::MulDiv::default();
+    alpha_mul_div
+        .multiply_alpha_inplace(&mut resize_img.view_mut())
+        .unwrap();
+
+    let mut destination_image = fast_image_resize::Image::new(
+        NonZeroU32::new(to.0 as u32).unwrap(),
+        NonZeroU32::new(to.1 as u32).unwrap(),
+        PixelType::U8x4
+    );
+
+    let mut resizer = fast_image_resize::Resizer::new(
+        fast_image_resize::ResizeAlg::Convolution(fast_image_resize::FilterType::Lanczos3),
+    );
+    resizer.resize(&resize_img.view(), &mut destination_image.view_mut()).unwrap();
+
+    alpha_mul_div.divide_alpha_inplace(&mut destination_image.view_mut()).unwrap();
+    debug!("AA: resize finished");
+    destination_image.into_vec()
+}
+
 #[derive(Serialize)]
 pub struct Skin {
     pub name: String,
@@ -114,6 +155,8 @@ pub struct Actor {
     skeleton_data: Arc<SkeletonData>,
     #[serde(skip)]
     animation_state_data: Arc<AnimationStateData>,
+    #[serde(skip)]
+    actor_mutex: std::sync::Mutex<()>
 }
 
 #[derive(Debug)]
@@ -128,6 +171,56 @@ pub struct RenderParameters {
     pub background_color: Color,
     pub color1: Option<Color>,
     pub color2: Option<Color>,
+    pub color3: Option<Color>,
+}
+
+impl RenderParameters {
+    fn render_scale(&self) -> f32 {
+        let aa_factor = if self.antialiasing == 0 { 1 } else { self.antialiasing };
+        self.scale * aa_factor as f32
+    }
+}
+
+#[derive(Debug)]
+struct PreparedRenderParameters {
+    parameters: RenderParameters,
+    frame_count: u32,
+    render_width: usize,
+    render_height: usize,
+    final_width: usize,
+    final_height: usize,
+    x_offset: f32,
+    y_offset: f32,
+}
+
+struct Frame<'a> {
+    frame_number: u32,
+    pixel_data: &'a [u8],
+    width: usize,
+    height: usize,
+    timestamp: f64
+}
+
+struct ChannelWriter {
+    sender: Option<futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>>
+}
+
+impl ChannelWriter {
+    fn new(sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> ChannelWriter {
+        ChannelWriter { sender: Some(sender) }
+    }
+}
+
+impl io::Write for ChannelWriter {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.sender.as_ref().unwrap().unbounded_send(Ok(buf.to_vec())).map_err(|_| io::Error::new(io::ErrorKind::BrokenPipe, "Receiver closed"))?;
+        Ok(buf.len())
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        drop(self.sender.take());
+        Ok(())
+    }
 }
 
 impl Actor {
@@ -171,13 +264,15 @@ impl Actor {
             animations,
             atlas,
             skeleton_data,
-            animation_state_data
+            animation_state_data,
+            actor_mutex: std::sync::Mutex::new(())
         })
     }
 
-    fn apply_color(&self, controller: &mut SkeletonController, color1: &Option<Color>, color2: &Option<Color>) {
+    fn apply_color(&self, controller: &mut SkeletonController, color1: &Option<Color>, color2: &Option<Color>, color3: &Option<Color>) {
         let color1 = color1.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
         let color2 = color2.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
+        let color3 = color3.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
         if self.name == "follower" {
             for mut slot in controller.skeleton.slots_mut() {
                 match slot.data().name() {
@@ -199,41 +294,40 @@ impl Actor {
                         c.set_b(color2.b);
                         c.set_a(color2.a);
                     },
+                    "MARKINGS" => {
+                        let c = slot.color_mut();
+                        c.set_r(color3.r);
+                        c.set_g(color3.g);
+                        c.set_b(color3.b);
+                        c.set_a(color3.a);
+                    }
                     _ => {}
                 }
             }
         }
     }
 
-    pub async fn render_gif(&self, params: RenderParameters) -> Vec<u8> {
-        let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
+    fn prepare_render(&self, params: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
+        let _guard = self.actor_mutex.lock().unwrap();
 
+        let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
+        let render_scale = params.render_scale();
         let aa_factor = if params.antialiasing == 0 { 1 } else { params.antialiasing };
-        let render_scale = params.scale * aa_factor as f32;
+
         debug!("Scale x{}, AA x{}, total render scale {}", params.scale, aa_factor, render_scale);
 
         debug!("{}-{} will be {} frames ({} fps)", params.start_time, params.end_time, (params.end_time - params.start_time) / params.frame_delay, 1.0 / params.frame_delay);
 
-        let background_color = SfmlColor::rgba(
-            (params.background_color.r * 255.0).round() as u8,
-            (params.background_color.g * 255.0).round() as u8,
-            (params.background_color.b * 255.0).round() as u8,
-            (params.background_color.a * 255.0).round() as u8,
-        );
-
-        let mut skin = rusty_spine::Skin::new("render_gif");
+        // can we avoid having to make the skin twice?
+        let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
+        let mut skin = rusty_spine::Skin::new(&skin_name);
         for skin_name in &params.skins {
             skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
         }
-
-        debug!("Created skin from {} requested", params.skins.len());
-
         controller.skeleton.set_skin(&skin);
+
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
-
-        debug!("Applying colors: {:?}, {:?}", params.color1, params.color2);
-        self.apply_color(&mut controller, &params.color1, &params.color2);
 
         debug!("Finding bounding box...");
         // Run through the animation once and grab all the min/max X and Y. This is actually pretty
@@ -246,6 +340,7 @@ impl Actor {
         controller.animation_state.set_animation_by_name(0, &params.animation, true).unwrap();
         controller.update(params.start_time);
         let mut time = params.start_time;
+        let mut frame_count = 0;
         while time <= params.end_time {
             for r in controller.renderables() {
                 if r.color.a < 0.001 { continue };
@@ -258,19 +353,65 @@ impl Actor {
             }
             controller.update(params.frame_delay);
             time += params.frame_delay;
+            frame_count += 1;
         }
         debug!("Bounding box: ({min_x}, {min_y}) - ({max_x}, {max_y})");
 
-        let render_width = (max_x - min_x).ceil() as u32;
-        let render_height = (max_y - min_y).ceil() as u32;
-        let final_width = render_width / aa_factor;
-        let final_height = render_height / aa_factor;
+        let render_width = (max_x - min_x).ceil() as usize;
+        let render_height = (max_y - min_y).ceil() as usize;
+        let final_width = render_width / aa_factor as usize;
+        let final_height = render_height / aa_factor as usize;
+        if render_width == 0 || render_height == 0 || final_width == 0 || final_height == 0 {
+            return Err(eyre!("Render failed, zero-size image"));
+        }
         debug!("Final scale is {}x{}, render will be {}x{}", final_width, final_height, render_width, render_height);
 
-        controller.skeleton.set_x(-min_x);
-        controller.skeleton.set_y(-min_y);
+        Ok(PreparedRenderParameters {
+            parameters: params,
+            frame_count,
+            render_width,
+            render_height,
+            final_width,
+            final_height,
+            x_offset: -min_x,
+            y_offset: -min_y,
+        })
+    }
 
-        let mut target = RenderTexture::new(render_width, render_height).unwrap();
+    fn render(&self, prepared_params: PreparedRenderParameters, mut frame_callback: impl FnMut(&Frame) -> Result<(), ErrReport>) {
+        let _guard = self.actor_mutex.lock().unwrap();
+
+        let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
+
+        let params = prepared_params.parameters;
+        let render_scale = params.render_scale();
+
+        let background_color = SfmlColor::rgba(
+            (params.background_color.r * 255.0).round() as u8,
+            (params.background_color.g * 255.0).round() as u8,
+            (params.background_color.b * 255.0).round() as u8,
+            (params.background_color.a * 255.0).round() as u8,
+        );
+
+        let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
+        let mut skin = rusty_spine::Skin::new(&skin_name);
+        for skin_name in &params.skins {
+            skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
+        }
+
+        debug!("Created skin from {} requested", params.skins.len());
+
+        controller.skeleton.set_skin(&skin);
+        controller.skeleton.set_scale([render_scale, render_scale]);
+        controller.skeleton.set_to_setup_pose();
+
+        debug!("Applying colors: {:?}, {:?}, {:?}", params.color1, params.color2, params.color3);
+        self.apply_color(&mut controller, &params.color1, &params.color2, &params.color3);
+
+        controller.skeleton.set_x(prepared_params.x_offset);
+        controller.skeleton.set_y(prepared_params.y_offset);
+
+        let mut target = RenderTexture::new(prepared_params.render_width as u32, prepared_params.render_height as u32).unwrap();
 
         let mut render_states = RenderStates::new(
             BLEND_NORMAL,
@@ -279,14 +420,6 @@ impl Actor {
             None
         );
 
-        debug!("Initializing gifski..");
-        let (gs_collector, gs_writer) = gifski::new(Settings::default()).unwrap();
-        let writer_thread = thread::spawn(move || {
-            let mut buf = Vec::new();
-            gs_writer.write(&mut buf, &mut NoProgress {}).unwrap();
-            buf
-        });
-
         controller.animation_state.clear_tracks();
         controller.animation_state.set_animation_by_name(0, &params.animation, true).unwrap();
         controller.update(params.start_time);
@@ -294,12 +427,10 @@ impl Actor {
         let mut elapsed_time = 0.0;
         let mut frame = 0;
         while time <= params.end_time {
-            debug!("Processing frame {}", frame);
+            // debug!("Processing frame {}", frame);
             target.clear(background_color);
 
             let renderables = controller.renderables();
-            let mut min_x = f32::MAX;
-            let mut max_x = f32::MIN;
             for renderable in renderables.iter() {
                 if renderable.color.a < 0.001 { continue };
                 let color = SfmlColor::rgba(
@@ -328,58 +459,35 @@ impl Actor {
                     vertexes.push(Vertex::new(
                         Vector2f::new(v[0], v[1]), color, Vector2f::new(t[0], t[1])
                     ));
-
-                    min_x = min_x.min(renderable.vertices[*i as usize][0]);
-                    max_x = max_x.max(renderable.vertices[*i as usize][0]);
                 }
 
                 target.draw_primitives(vertexes.as_slice(), PrimitiveType::TRIANGLES, &render_states);
             }
-            debug!("min x {min_x} max x {max_x}");
-            debug!("Rendered {} objects", renderables.len());
+            // debug!("Rendered {} objects", renderables.len());
 
             // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to
             // give us ownership of the pixel data.
             let mut image = target.texture().copy_to_image().unwrap().pixel_data().to_vec();
 
-            if aa_factor == 1 {
-                debug!("Skipping antialiasing");
+            let raw_image = if params.antialiasing <= 1 {
+                // debug!("Skipping antialiasing");
                 // No antialiasing, so just use the image as-is
-                let img = ImgVec::new(Vec::from(image.as_rgba()), render_width as usize, render_height as usize);
-                gs_collector.add_frame_rgba(frame, img, elapsed_time).unwrap();
+                image
             } else {
-                debug!("AA: resizing to {}x{}", final_width, final_height);
-                // RenderTexture lives on the GPU, so this could be done quicker with some GPU-based
-                // algorithm, but SFML doesn't have fancy resize algorithms on the GPU right now.
-                let mut resize_img = fast_image_resize::Image::from_vec_u8(
-                    NonZeroU32::new(render_width).unwrap(),
-                    NonZeroU32::new(render_height).unwrap(),
-                    image,
-                    PixelType::U8x4
-                ).unwrap();
+                resize((prepared_params.render_width, prepared_params.render_height), (prepared_params.final_width, prepared_params.final_height), image)
+            };
 
-                // According to the docs this is required
-                let alpha_mul_div = fast_image_resize::MulDiv::default();
-                alpha_mul_div
-                    .multiply_alpha_inplace(&mut resize_img.view_mut())
-                    .unwrap();
+            let f = Frame {
+                frame_number: frame,
+                pixel_data: &raw_image,
+                width: prepared_params.final_width,
+                height: prepared_params.final_height,
+                timestamp: elapsed_time
+            };
 
-                let mut destination_image = fast_image_resize::Image::new(
-                    NonZeroU32::new(final_width).unwrap(),
-                    NonZeroU32::new(final_height).unwrap(),
-                    PixelType::U8x4
-                );
-
-                let mut resizer = fast_image_resize::Resizer::new(
-                    fast_image_resize::ResizeAlg::Convolution(fast_image_resize::FilterType::Lanczos3),
-                );
-                resizer.resize(&resize_img.view(), &mut destination_image.view_mut()).unwrap();
-
-                alpha_mul_div.divide_alpha_inplace(&mut destination_image.view_mut()).unwrap();
-                debug!("AA: resize finished");
-
-                let img = ImgVec::new(Vec::from(destination_image.into_vec().as_rgba()), final_width as usize, final_height as usize);
-                gs_collector.add_frame_rgba(frame, img, elapsed_time).unwrap();
+            if let Err(e) = frame_callback(&f) {
+                warn!("frame callback failed {:?}, aborting render", e);
+                break;
             }
 
             frame += 1;
@@ -387,10 +495,136 @@ impl Actor {
             elapsed_time += params.frame_delay as f64;
             controller.update(params.frame_delay);
         }
-        drop(gs_collector);
-        debug!("Rendering finished, waiting for gif...");
-        let buf = writer_thread.join().unwrap();
-        debug!("Returning {}-byte GIF", buf.len());
-        buf
+        info!("Finished rendering");
+    }
+
+    pub fn render_gif(&self, params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
+        let mut settings = Settings::default();
+        settings.quality = 75;
+        let (gs_collector, gs_writer) = gifski::new(settings).unwrap();
+        let writer = ChannelWriter::new(response_sender);
+        thread::spawn(move || {
+            if let Err(e) = gs_writer.write(writer, &mut NoProgress {}) {
+                warn!("Failed writing output: {:?}", e);
+            };
+        });
+
+        debug!("render params: {:?}", params);
+        let prepared_params = self.prepare_render(params)?;
+        debug!("prepared params: {:?}", prepared_params);
+
+        thread::scope(|scope| {
+            scope.spawn(|| self.render(prepared_params, |frame| {
+                let img = ImgVec::new(Vec::from(frame.pixel_data.as_rgba()), frame.width, frame.height);
+                gs_collector.add_frame_rgba(frame.frame_number as usize, img, frame.timestamp)?;
+                Ok(())
+            }));
+        });
+        info!("Finished handling request");
+        Ok(())
+    }
+
+    pub fn render_apng(&self, params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
+        let frame_delay = params.frame_delay;
+        let prepared_params = self.prepare_render(params)?;
+        debug!("prepared params: {:?}", prepared_params);
+
+        let writer = ChannelWriter::new(response_sender);
+        let mut encoder = png::Encoder::new(writer, prepared_params.final_width as u32, prepared_params.final_height as u32);
+        encoder.set_color(ColorType::Rgba);
+        encoder.set_depth(BitDepth::Eight);
+        encoder.set_animated(prepared_params.frame_count, 0)?;
+        let mut png_writer = encoder.write_header()?;
+
+        thread::scope(|scope| {
+            scope.spawn(|| self.render(prepared_params, |frame| {
+                png_writer.set_frame_delay((frame_delay * 1000.0) as u16, 1000)?;
+                png_writer.write_image_data(frame.pixel_data)?;
+                Ok(())
+            }));
+        });
+
+        // // Delay data for the final frame
+        // png_writer.set_frame_delay((frame_delay * 1000.0) as u16, 1000)?;
+        png_writer.finish()?;
+        info!("Finished handling request");
+        Ok(())
+    }
+
+    pub fn render_png(&self, mut params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
+        params.end_time = params.start_time;
+        let prepared_params = self.prepare_render(params)?;
+        debug!("prepared params: {:?}", prepared_params);
+
+        let writer = ChannelWriter::new(response_sender);
+        let mut encoder = png::Encoder::new(writer, prepared_params.final_width as u32, prepared_params.final_height as u32);
+        encoder.set_color(ColorType::Rgba);
+        encoder.set_depth(BitDepth::Eight);
+        let mut png_writer = encoder.write_header()?;
+
+        self.render(prepared_params, |frame| {
+            png_writer.write_image_data(frame.pixel_data)?;
+            Ok(())
+        });
+
+        png_writer.finish()?;
+        info!("Finished handling request");
+        Ok(())
+    }
+
+    pub fn render_ffmpeg(&self, mut params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
+        let fps = (1.0 / params.frame_delay).round() as u32;
+        let prepared_params = self.prepare_render(params)?;
+        debug!("prepared params: {:?}", prepared_params);
+
+        let mut ffmpeg = Command::new("ffmpeg")
+            .args([
+                "-f", "rawvideo",
+                "-pixel_format", "rgba",
+                "-video_size", &format!("{}x{}", prepared_params.final_width, prepared_params.final_height),
+                "-framerate", &format!("{}", fps),
+                "-i", "pipe:",
+                "-vcodec", "vp8",
+                "-deadline", "realtime",
+                // Output fragmented video - otherwise we can't write mp4 to a non-seekable medium
+                //"-movflags", "frag_keyframe+empty_moov",
+                "-an",  // Audio - none
+                "-f", "webm",
+                "-auto-alt-ref", "0",
+                "pipe:",
+            ])
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?;
+
+        thread::scope(move |scope| {
+            let mut writer = ChannelWriter::new(response_sender);
+            let mut stdin = ffmpeg.stdin.take().unwrap();
+            let mut stdout = ffmpeg.stdout.take().unwrap();
+            let mut stderr = ffmpeg.stderr.take().unwrap();
+
+            // Log ffmpeg's stderr
+            scope.spawn(move || {
+                for line in BufReader::new(stderr).lines() {
+                    match line {
+                        Ok(l) => debug!("ffmpeg: {}", l),
+                        Err(e) => debug!("ffmpeg error: {:?}", e),
+                    }
+                }
+            });
+
+            // Feed rendered frames into ffmpeg's stdin
+            scope.spawn(move || self.render(prepared_params, |frame| {
+                stdin.write(frame.pixel_data)?;
+                Ok(())
+            }));
+
+            // Send ffmpeg's stdout straight to the client
+            scope.spawn(move || io::copy(&mut stdout, &mut writer));
+        });
+
+        info!("Finished handling request");
+        Ok(())
     }
 }

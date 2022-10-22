@@ -3,23 +3,29 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::ffi::OsStr;
 use std::num::{ParseFloatError, ParseIntError};
+use std::ops::Deref;
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use axum::extract::{Path, Query};
+use axum::extract::{BodyStream, Path, Query};
 use axum::response::{IntoResponse, Response};
 use axum::{Extension, Json, Router};
-use axum::body::Body;
+use axum::body::{Body, StreamBody};
 use axum::http::StatusCode;
-use axum::routing::get;
+use axum::routing::{get, get_service};
 use color_eyre::eyre::eyre;
+use color_eyre::Report;
 use rusty_spine::Color;
 use tracing_subscriber::EnvFilter;
 use tower_http::trace::TraceLayer;
 use serde_json::json;
 use serde::Deserialize;
 use css_color_parser2::Color as CssColor;
-use tracing::{debug, info};
+use tokio::spawn;
+use tokio::sync::mpsc::unbounded_channel;
+use tokio::task::spawn_blocking;
+use tracing::{debug, info, warn};
+use tower_http::services::{ServeDir, ServeFile};
 
 use crate::actors::{Actor, RenderParameters};
 
@@ -61,10 +67,28 @@ URLs:
     }
 */
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 enum OutputType {
     Gif,
-    Png
+    Apng,
+    Png,
+    Mp4,
+}
+
+impl OutputType {
+    fn mime_type(&self) -> &'static str {
+        match self {
+            OutputType::Gif => "image/gif",
+            OutputType::Apng | OutputType::Png => "image/png",
+            OutputType::Mp4 => "video/mp4",
+        }
+    }
+}
+
+impl Default for OutputType {
+    fn default() -> Self {
+        OutputType::Apng
+    }
 }
 
 impl FromStr for OutputType {
@@ -74,7 +98,9 @@ impl FromStr for OutputType {
         match s.to_ascii_lowercase().as_ref() {
             "gif" | ".gif" => Ok(OutputType::Gif),
             "png" | ".png" => Ok(OutputType::Png),
-            _ => Err(json_400("Invalid format, expected gif or png"))
+            "apng" | ".apng" => Ok(OutputType::Apng),
+            "mp4" | ".mp4" => Ok(OutputType::Mp4),
+            _ => Err(json_400("Invalid format, expected gif, png, apng, mp4"))
         }
     }
 }
@@ -90,6 +116,7 @@ struct SkinParameters {
     end_time: Option<f32>,
     color1: Option<Color>,
     color2: Option<Color>,
+    color3: Option<Color>,
     background_color: Option<Color>,
     fps: Option<u32>
 }
@@ -112,9 +139,11 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                     let c = color_from_string(value.as_str()).map_err(|e| json_400(format!("color: {}", e)))?;
                     sp.color1 = Some(c);
                     sp.color2 = Some(c);
+                    sp.color3 = Some(c);
                 },
                 "color1" => sp.color1 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color1: {}", e)))?),
                 "color2" => sp.color2 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color2: {}", e)))?),
+                "color3" => sp.color3 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color3: {}", e)))?),
                 "background_color" => sp.background_color = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("background_color: {}", e)))?),
                 "fps" => sp.fps = Some(value.parse().map_err(|e| json_400(format!("fps: {e:?}")))?),
                 _ => return Err(json_400(Cow::from(format!("Invalid parameter {:?}", key))))
@@ -138,7 +167,8 @@ impl SkinParameters {
             frame_delay: 1.0 / fps,
             background_color: self.background_color.unwrap_or_default(),
             color1: self.color1,
-            color2: self.color2
+            color2: self.color2,
+            color3: self.color3,
         })
     }
 }
@@ -168,10 +198,10 @@ impl IntoResponse for JsonError {
     }
 }
 
-async fn load_actors() -> color_eyre::Result<Vec<Actor>> {
+async fn load_actors() -> color_eyre::Result<Vec<Arc<Actor>>> {
     Ok(vec![
-        Actor::new("player".to_owned(), "Player".to_owned(), "cotl/player-main.skel", "cotl/player-main.atlas").await?,
-        Actor::new("follower".to_owned(), "Follower".to_owned(), "cotl/Follower.skel", "cotl/Follower.atlas").await?,
+        Arc::new(Actor::new("player".to_owned(), "Player".to_owned(), "cotl/player-main.skel", "cotl/player-main.atlas").await?),
+        Arc::new(Actor::new("follower".to_owned(), "Follower".to_owned(), "cotl/Follower.skel", "cotl/Follower.atlas").await?),
     ])
 }
 
@@ -180,7 +210,7 @@ async fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
 
     if std::env::var("RUST_LOG").is_err() {
-        std::env::set_var("RUST_LOG", "debug")
+        std::env::set_var("RUST_LOG", "info,cotlgif=debug")
     }
 
     tracing_subscriber::fmt::fmt()
@@ -189,11 +219,20 @@ async fn main() -> color_eyre::Result<()> {
 
     let actors = Arc::new(load_actors().await?);
 
+    let serve_dir_service = get_service(ServeDir::new("static"))
+        .handle_error(|err| async move {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Unhandled internal error: {}", err),
+            )
+        });
+
     let app = Router::new()
-        .route("/", get(get_index))
         .route("/v1", get(get_v1))
         .route("/v1/:actor", get(get_v1_actor))
         .route("/v1/:actor/:skin", get(get_v1_skin))
+        // If we don't match any routes, try serving static files from /static
+        .fallback(serve_dir_service)
         .layer(Extension(actors))
         .layer(TraceLayer::new_for_http());
 
@@ -206,11 +245,7 @@ async fn main() -> color_eyre::Result<()> {
     Ok(())
 }
 
-async fn get_index() -> &'static str {
-    "hello index"
-}
-
-async fn get_v1(Extension(actors): Extension<Arc<Vec<Actor>>>) -> impl IntoResponse {
+async fn get_v1(Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>) -> impl IntoResponse {
     let actor_json: Vec<_> = actors.iter().map(|actor| {
         let mut m = HashMap::new();
         m.insert("description", actor.description.to_owned());
@@ -224,25 +259,25 @@ async fn get_v1(Extension(actors): Extension<Arc<Vec<Actor>>>) -> impl IntoRespo
 }
 
 async fn get_v1_actor(
-    Extension(actors): Extension<Arc<Vec<Actor>>>,
+    Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>,
     Path(actor_name): Path<String>
 ) -> impl IntoResponse {
     if let Some(actor) = actors.iter().find(|a| a.name == actor_name) {
-        (StatusCode::OK, Json(serde_json::to_value(actor).unwrap()))
+        (StatusCode::OK, Json(serde_json::to_value(actor.deref()).unwrap()))
     } else {
         (StatusCode::NOT_FOUND, Json(json!({"error": "no such actor"})))
     }
 }
 
 async fn get_v1_skin(
-    Extension(actors): Extension<Arc<Vec<Actor>>>,
+    Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>,
     Path((actor_name, skin_name)): Path<(String, String)>,
     Query(params): Query<Vec<(String, String)>>
 ) -> Result<impl IntoResponse, JsonError> {
     let mut params = SkinParameters::try_from(params)?;
     debug!("params: {:?}", params);
 
-    let actor = actors.iter().find(|a| a.name == actor_name).ok_or(json_404("No such actor"))?;
+    let actor = actors.iter().find(|a| a.name == actor_name).ok_or(json_404("No such actor"))?.clone();
 
     let animation_name = params.animation.as_deref().ok_or(json_400("animation= parameter is required"))?;
     let animation = actor.animations.iter().find(|anim| anim.name == animation_name).ok_or(json_404("No such animation for actor"))?;
@@ -258,21 +293,27 @@ async fn get_v1_skin(
         }
     }
 
+    let output_type = params.output_type.unwrap_or_default();
+
     let render_params = params.into_render_parameters()?;
 
-    let gif = actor.render_gif(render_params).await;
+    let (tx, rx) = futures_channel::mpsc::unbounded::<Result<Vec<u8>, Report>>();
+
+
+    spawn_blocking(move || {
+        let render = match output_type {
+            OutputType::Gif => actor.render_gif(render_params, tx),
+            OutputType::Apng => actor.render_apng(render_params, tx),
+            OutputType::Png => actor.render_png(render_params, tx),
+            OutputType::Mp4 => actor.render_ffmpeg(render_params, tx),
+        };
+        if let Err(e) = render {
+            warn!("Failed to render: {:?}", e);
+        }
+    });
 
     Ok(Response::builder()
-        .header("Content-Type", "image/gif")
-        .body(Body::from(gif))
+        .header("Content-Type", output_type.mime_type())
+        .body(StreamBody::from(rx))
         .unwrap())
-
-    //     ?add_skin=a,b,c
-    //     ?animation=<str>
-    //     ?antialiasing=<int>
-    //     ?start_time=<float>
-    //     ?end_time=<float> (only for gif)
-    //     ?color1=RRGGBB (only for follower?)
-    //     ?color2=RRGGBB (only for follower?)
-
 }
