@@ -4,6 +4,7 @@ use std::path::Path;
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
 use std::{io, mem, thread};
+use std::iter::Once;
 use std::num::NonZeroU32;
 use std::sync::atomic::{AtomicI64, Ordering};
 use color_eyre::eyre::{ErrReport, eyre};
@@ -19,13 +20,16 @@ use tracing::{debug, info, warn};
 use once_cell::sync::OnceCell;
 use png::{AnimationControl, BitDepth, ColorType};
 use png::chunk::ChunkType;
+use regex::Regex;
 use rgb::FromSlice;
-use serde::Serialize;
+use serde::{Serialize, Serializer};
 use sfml::SfBox;
 use sfml::system::Vector2f;
 use sfml::graphics::BlendMode as SfmlBlendMode;
 use sfml::graphics::blend_mode::{Factor as BlendFactor, Equation as BlendEquation};
 use rusty_spine::BlendMode as SpineBlendMode;
+use serde::ser::SerializeMap;
+use serde_json::json;
 
 const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
     color_src_factor: BlendFactor::SrcAlpha,
@@ -137,10 +141,52 @@ pub struct Skin {
     pub name: String,
 }
 
+impl Skin {
+    fn is_spoiler(&self, actor: &str) -> bool {
+        static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
+        static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
+        let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
+            r"^(Archer|Badger\d?|BatDemon\d?|Crow\d?|DeerSkull\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|Other/Ghost.*|default)$"
+        ).unwrap());
+        let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
+            "^(Goat|Owl|Snake|default|effects-top)$"
+        ).unwrap());
+
+        if actor == "follower" {
+            hide_follower.is_match(&self.name)
+        } else if actor == "player" {
+            hide_player.is_match(&self.name)
+        } else {
+            panic!("Unexpected actor for is_spoiler: {}", actor)
+        }
+    }
+}
+
 #[derive(Serialize)]
 pub struct Animation {
     pub name: String,
     pub duration: f32
+}
+
+impl Animation {
+    fn is_spoiler(&self, actor: &str) -> bool {
+        static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
+        static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
+        let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
+            r"^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Fishing/.*|Food/food-fillbowl|Ghost/.*|Insane/.*|OldStuff/.*|Possessed/.*|Prison/(stocks-dead.*|stocks-die.*)|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*)$"
+        ).unwrap());
+        let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
+            r"^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple-.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$"
+        ).unwrap());
+
+        if actor == "follower" {
+            hide_follower.is_match(&self.name)
+        } else if actor == "player" {
+            hide_player.is_match(&self.name)
+        } else {
+            panic!("Unexpected actor for is_spoiler: {}", actor)
+        }
+    }
 }
 
 #[derive(Serialize)]
@@ -157,6 +203,19 @@ pub struct Actor {
     animation_state_data: Arc<AnimationStateData>,
     #[serde(skip)]
     actor_mutex: std::sync::Mutex<()>
+}
+
+impl Actor {
+    pub fn serialize_without_spoilers(&self) -> serde_json::Value {
+        let skins: Vec<serde_json::Value> = self.skins.iter().filter(|s| !s.is_spoiler(&self.name)).map(|s| json!({"name": s.name})).collect();
+        let animations: Vec<serde_json::Value> = self.animations.iter().filter(|a| !a.is_spoiler(&self.name)).map(|a| json!({"name": a.name, "duration": a.duration})).collect();
+        json!({
+            "name": self.name,
+            "description": self.description,
+            "skins": skins,
+            "animations": animations
+        })
+    }
 }
 
 #[derive(Debug)]

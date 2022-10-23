@@ -7,7 +7,7 @@ use std::ops::Deref;
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use axum::extract::{BodyStream, Path, Query};
+use axum::extract::{BodyStream, Host, Path, Query};
 use axum::response::{IntoResponse, Response};
 use axum::{Extension, Json, Router};
 use axum::body::{Body, StreamBody};
@@ -260,10 +260,20 @@ async fn get_v1(Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>) -> impl Into
 
 async fn get_v1_actor(
     Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>,
-    Path(actor_name): Path<String>
+    Path(actor_name): Path<String>,
+    Host(host): Host
 ) -> impl IntoResponse {
+    // let show_spoilers = host == "cotl-spoilers.xl0.org" || host.starts_with("localhost");
+    let show_spoilers = host == "cotl-spoilers.xl0.org";
+    info!("Request host {}, spoilers {}", host, show_spoilers);
+
     if let Some(actor) = actors.iter().find(|a| a.name == actor_name) {
-        (StatusCode::OK, Json(serde_json::to_value(actor.deref()).unwrap()))
+        if show_spoilers {
+            (StatusCode::OK, Json(serde_json::to_value(actor.deref()).unwrap()))
+        } else {
+            (StatusCode::OK, Json(actor.serialize_without_spoilers()))
+
+        }
     } else {
         (StatusCode::NOT_FOUND, Json(json!({"error": "no such actor"})))
     }
