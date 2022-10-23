@@ -31,6 +31,8 @@ use crate::actors::{Actor, RenderParameters};
 
 mod actors;
 
+const SPOILERS_HOST: &str = "cotl-spoilers.xl0.org";
+
 /*
 URLs:
 
@@ -118,7 +120,8 @@ struct SkinParameters {
     color2: Option<Color>,
     color3: Option<Color>,
     background_color: Option<Color>,
-    fps: Option<u32>
+    fps: Option<u32>,
+    only_head: Option<bool>
 }
 
 impl TryFrom<Vec<(String, String)>> for SkinParameters {
@@ -146,6 +149,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                 "color3" => sp.color3 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color3: {}", e)))?),
                 "background_color" => sp.background_color = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("background_color: {}", e)))?),
                 "fps" => sp.fps = Some(value.parse().map_err(|e| json_400(format!("fps: {e:?}")))?),
+                "only_head" => sp.only_head = Some(value.parse().map_err(|e| json_400(format!("only_head: {e:?}")))?),
                 _ => return Err(json_400(Cow::from(format!("Invalid parameter {:?}", key))))
             }
         }
@@ -169,6 +173,7 @@ impl SkinParameters {
             color1: self.color1,
             color2: self.color2,
             color3: self.color3,
+            only_head: self.only_head.unwrap_or(false)
         })
     }
 }
@@ -202,6 +207,7 @@ async fn load_actors() -> color_eyre::Result<Vec<Arc<Actor>>> {
     Ok(vec![
         Arc::new(Actor::new("player".to_owned(), "Player".to_owned(), "cotl/player-main.skel", "cotl/player-main.atlas").await?),
         Arc::new(Actor::new("follower".to_owned(), "Follower".to_owned(), "cotl/Follower.skel", "cotl/Follower.atlas").await?),
+        Arc::new(Actor::new("ratau".to_owned(), "Ratau".to_owned(), "cotl/RatNPC.skel", "cotl/RatNPC.atlas").await?),
     ])
 }
 
@@ -228,6 +234,7 @@ async fn main() -> color_eyre::Result<()> {
         });
 
     let app = Router::new()
+        .route("/", get(get_index))
         .route("/v1", get(get_v1))
         .route("/v1/:actor", get(get_v1_actor))
         .route("/v1/:actor/:skin", get(get_v1_skin))
@@ -243,6 +250,37 @@ async fn main() -> color_eyre::Result<()> {
         .unwrap();
 
     Ok(())
+}
+
+async fn get_index(Host(host): Host) -> impl IntoResponse {
+    let filename = if host.starts_with("localhost:") {
+        "html/index.dev.html"
+    } else if host == SPOILERS_HOST {
+        "html/index.spoilers.html"
+    } else {
+        "html/index.html"
+    };
+
+    match tokio::fs::read(filename).await {
+        Ok(f) => {
+            (
+                StatusCode::OK,
+                Response::builder()
+                    .header("Content-Type", "text/html")
+                    .body(String::from_utf8(f).unwrap())
+                    .unwrap()
+            )
+        }
+        Err(e) => {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Response::builder()
+                    .body(format!("{:?}", e))
+                    .unwrap()
+            )
+        }
+    }
+
 }
 
 async fn get_v1(Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>) -> impl IntoResponse {
@@ -264,7 +302,7 @@ async fn get_v1_actor(
     Host(host): Host
 ) -> impl IntoResponse {
     // let show_spoilers = host == "cotl-spoilers.xl0.org" || host.starts_with("localhost");
-    let show_spoilers = host == "cotl-spoilers.xl0.org";
+    let show_spoilers = host == SPOILERS_HOST;
     info!("Request host {}, spoilers {}", host, show_spoilers);
 
     if let Some(actor) = actors.iter().find(|a| a.name == actor_name) {

@@ -69,6 +69,15 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
 
 static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
 
+fn only_head_includes(slot_name: &str) -> bool {
+    static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
+    let only_head = ONLY_HEAD.get_or_init(|| Regex::new(
+        r"^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d|)$"
+    ).unwrap());
+
+    only_head.is_match(slot_name)
+}
+
 fn spine_init() {
     static SPINE_STATE: OnceCell<()> = OnceCell::new();
     SPINE_STATE.get_or_init(|| {
@@ -156,6 +165,8 @@ impl Skin {
             hide_follower.is_match(&self.name)
         } else if actor == "player" {
             hide_player.is_match(&self.name)
+        } else if actor == "ratau" {
+            false
         } else {
             panic!("Unexpected actor for is_spoiler: {}", actor)
         }
@@ -183,6 +194,8 @@ impl Animation {
             hide_follower.is_match(&self.name)
         } else if actor == "player" {
             hide_player.is_match(&self.name)
+        } else if actor == "ratau" {
+            false
         } else {
             panic!("Unexpected actor for is_spoiler: {}", actor)
         }
@@ -231,6 +244,7 @@ pub struct RenderParameters {
     pub color1: Option<Color>,
     pub color2: Option<Color>,
     pub color3: Option<Color>,
+    pub only_head: bool,
 }
 
 impl RenderParameters {
@@ -388,6 +402,10 @@ impl Actor {
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
+        for slot in controller.skeleton.slots() {
+            debug!("slot: {}", slot.data().name());
+        }
+
         debug!("Finding bounding box...");
         // Run through the animation once and grab all the min/max X and Y. This is actually pretty
         // fast (tens of ms) compared to all the other crazy shit we're doing
@@ -403,6 +421,12 @@ impl Actor {
         while time <= params.end_time {
             for r in controller.renderables() {
                 if r.color.a < 0.001 { continue };
+                if params.only_head {
+                    let slot = controller.skeleton.slot_at_index(r.slot_index).unwrap();
+                    if !only_head_includes(slot.data().name()) {
+                        continue
+                    }
+                }
                 for [x, y] in r.vertices {
                     min_x = min_x.min(x);
                     min_y = min_y.min(y);
@@ -492,6 +516,12 @@ impl Actor {
             let renderables = controller.renderables();
             for renderable in renderables.iter() {
                 if renderable.color.a < 0.001 { continue };
+                if params.only_head {
+                    let slot = controller.skeleton.slot_at_index(renderable.slot_index).unwrap();
+                    if !only_head_includes(slot.data().name()) {
+                        continue
+                    }
+                }
                 let color = SfmlColor::rgba(
                     (renderable.color.r * 255.0).round() as u8,
                     (renderable.color.g * 255.0).round() as u8,
