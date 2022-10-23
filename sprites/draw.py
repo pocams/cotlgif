@@ -9,6 +9,7 @@ from PIL import Image, UnidentifiedImageError
 SPRITE_SIZE = 48
 ATLAS_ROW_LENGTH = 16
 CSS = "#%s {\n  background-position: %dpx %dpx\n}\n\n"
+UNKNOWN_IMAGE_URL = "http://localhost:3000/v1/follower/Coloured%2FDeer?animation=shrug&format=png&start_time=.6"
 
 
 def slugify(s):
@@ -33,10 +34,14 @@ def make_spritesheet(items, url, filename, css_prefix=""):
         print(f"#{i}", item["name"], slug, f"({x}, {y})")
         resp = httpx.get(url % quote(item["name"], safe=''))
         resp.raise_for_status()
+
         try:
             im = Image.open(io.BytesIO(resp.content))
         except UnidentifiedImageError:
-            continue
+            resp = httpx.get(UNKNOWN_IMAGE_URL)
+            resp.raise_for_status()
+            im = Image.open(io.BytesIO(resp.content))
+
         im.thumbnail((SPRITE_SIZE, SPRITE_SIZE))
         assert x + SPRITE_SIZE < image_width
         assert y + SPRITE_SIZE < image_height
