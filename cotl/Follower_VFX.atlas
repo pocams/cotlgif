@@ -1,0 +1,153 @@
+
+Follower_VFX.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Other/BlackGoo1
+  rotate: false
+  xy: 516, 317
+  size: 34, 33
+  orig: 34, 33
+  offset: 0, 0
+  index: -1
+Other/BlackGoo2
+  rotate: false
+  xy: 573, 425
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+Other/BlackGoo3
+  rotate: false
+  xy: 572, 315
+  size: 23, 22
+  orig: 23, 22
+  offset: 0, 0
+  index: -1
+Other/BlackGoo4
+  rotate: false
+  xy: 597, 321
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Other/ConvertFollowerBG
+  rotate: true
+  xy: 620, 568
+  size: 247, 244
+  orig: 247, 244
+  offset: 0, 0
+  index: -1
+Other/ConvertFollowerRing
+  rotate: false
+  xy: 2, 303
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+Other/ConvertParticle1
+  rotate: true
+  xy: 516, 352
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+Other/ConvertParticle2
+  rotate: true
+  xy: 552, 331
+  size: 19, 18
+  orig: 19, 18
+  offset: 0, 0
+  index: -1
+Other/ConvertParticle3
+  rotate: true
+  xy: 573, 396
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+Other/ConvertParticle4
+  rotate: true
+  xy: 603, 522
+  size: 13, 11
+  orig: 13, 11
+  offset: 0, 0
+  index: -1
+Other/Convert_burst
+  rotate: false
+  xy: 516, 537
+  size: 102, 278
+  orig: 102, 278
+  offset: 0, 0
+  index: -1
+Other/Sacrifice Icon
+  rotate: false
+  xy: 303, 33
+  size: 325, 268
+  orig: 325, 268
+  offset: 0, 0
+  index: -1
+Other/Tear
+  rotate: false
+  xy: 552, 312
+  size: 17, 17
+  orig: 17, 17
+  offset: 0, 0
+  index: -1
+Other/Teleport_1
+  rotate: false
+  xy: 603, 453
+  size: 160, 55
+  orig: 160, 55
+  offset: 0, 0
+  index: -1
+Other/Teleport_2
+  rotate: false
+  xy: 681, 511
+  size: 160, 55
+  orig: 160, 55
+  offset: 0, 0
+  index: -1
+Other/Teleport_3
+  rotate: false
+  xy: 603, 396
+  size: 160, 55
+  orig: 160, 55
+  offset: 0, 0
+  index: -1
+Other/Teleport_4
+  rotate: false
+  xy: 573, 339
+  size: 160, 55
+  orig: 160, 55
+  offset: 0, 0
+  index: -1
+Other/WebParticle1
+  rotate: false
+  xy: 516, 455
+  size: 85, 80
+  orig: 85, 80
+  offset: 0, 0
+  index: -1
+Other/WebParticle2
+  rotate: false
+  xy: 516, 393
+  size: 55, 60
+  orig: 55, 60
+  offset: 0, 0
+  index: -1
+Other/WebParticle3
+  rotate: true
+  xy: 620, 510
+  size: 56, 59
+  orig: 56, 59
+  offset: 0, 0
+  index: -1
+Other/conversion_glow
+  rotate: false
+  xy: 2, 2
+  size: 299, 299
+  orig: 299, 299
+  offset: 0, 0
+  index: -1
