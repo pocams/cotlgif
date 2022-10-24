@@ -167,14 +167,18 @@ def animations_dumb(data, skin="Coloured/Fox", fps=6, duration=1):
             f.write(resp.content)
 
 
-if 1:
+if 0:
     sprite = "player"
     animation = "idle"
     skin = "Lamb"
-else:
+elif 0:
     sprite = "follower"
     animation = "idle"
     skin = "Fox"
+else:
+    sprite = "ratau"
+    animation = "idle"
+    skin = "normal"
 
 data = httpx.get(f"http://localhost:3000/v1/{sprite}").json()
 
