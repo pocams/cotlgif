@@ -5,6 +5,7 @@
   import Dropdown from './lib/Dropdown.svelte';
   import Scale from "./lib/Scale.svelte";
   import Color from "./lib/Color.svelte";
+  import WelcomeModal from "./lib/WelcomeModal.svelte";
 
   function slugify(s) {
     s = s.replace(/[^A-Za-z0-9]/g, "-")
@@ -17,6 +18,9 @@
     if (target === "player") {
       selectedAnimation = {name: "idle"}
       selectedSkins = [{name: "Lamb"}]
+    } else if (target === "ratau") {
+      selectedAnimation = {name: "idle"}
+      selectedSkins = [{name: "normal"}]
     } else {
       selectedAnimation = {name: "idle"}
       selectedSkins = [{name: "Fox"}]
@@ -46,8 +50,10 @@
   }
 
   let skeleton
-  let selectedAnimation;
-  let selectedSkins = [];
+  let selectedAnimation
+  let selectedSkins = []
+  let showWelcomeModal = true
+  let spoilersEnabled = window.spoilersEnabled
 
   let animation_filter = ""
   let skin_filter = ""
@@ -55,6 +61,7 @@
   let color1 = "#eeeeee"
   let color2 = "#cccccc"
   let color3 = "#aaaaaa"
+  let onlyHead = false
 
   let allAnimations = [];
   let allSkins = [];
@@ -90,6 +97,7 @@
       params.push(`color1=${encodeURIComponent(color1)}`)
       params.push(`color2=${encodeURIComponent(color2)}`)
       params.push(`color3=${encodeURIComponent(color3)}`)
+      params.push(`only_head=${encodeURIComponent(onlyHead)}`)
     }
     return baseUrl + "?" + params.join("&")
   }
@@ -107,6 +115,9 @@
       </a>
       <a class="navbar-item button mx-1 my-1" class:is-primary={skeleton === "follower"} on:click={() => setSkeleton("follower")}>
         Follower
+      </a>
+      <a class="navbar-item button mx-1 my-1" class:is-primary={skeleton === "ratau"} on:click={() => setSkeleton("ratau")}>
+        Ratau
       </a>
     </div>
   </div>
@@ -157,11 +168,21 @@
       <Scale bind:value={scale}></Scale>
 
     {#if skeleton === "follower"}
-      <p class="mt-4"></p>
-      <Color bind:value={color1}></Color>
-      <Color bind:value={color2}></Color>
-      <Color bind:value={color3}></Color>
+      <p class="mt-4">
+        <Color bind:value={color1}></Color>
+        <Color bind:value={color2}></Color>
+        <Color bind:value={color3}></Color>
+      </p>
+
+      <p class="mt-4">
+        <label class="checkbox">
+          <input type="checkbox" bind:checked={onlyHead}>
+          Only show head
+        </label>
+      </p>
     {/if}
     </div>
   </div>
 </section>
+
+<WelcomeModal bind:visible={showWelcomeModal} bind:spoilersEnabled={spoilersEnabled}></WelcomeModal>
