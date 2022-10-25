@@ -150,7 +150,7 @@
 </script>
 
 <nav class="navbar py-2 px-2">
-  <div id="navbar" class="navbar-menu">
+  <div id="navbar" class="navbar-menu is-active">
     <div class="navbar-start">
       <a class="navbar-item button mx-1" class:is-primary={skeleton === "player"} on:click={()=> setSkeleton("player")}>
         Lamb
