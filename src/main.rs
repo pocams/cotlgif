@@ -168,6 +168,7 @@ async fn load_actors() -> color_eyre::Result<Vec<Arc<Actor>>> {
         Arc::new(Actor::new("player".to_owned(), "Player".to_owned(), "cotl/player-main.skel", "cotl/player-main.atlas").await?),
         Arc::new(Actor::new("follower".to_owned(), "Follower".to_owned(), "cotl/Follower.skel", "cotl/Follower.atlas").await?),
         Arc::new(Actor::new("ratau".to_owned(), "Ratau".to_owned(), "cotl/RatNPC.skel", "cotl/RatNPC.atlas").await?),
+        Arc::new(Actor::new("fox".to_owned(), "Fox".to_owned(), "cotl/Fox.skel", "cotl/Fox.atlas").await?),
     ])
 }
 

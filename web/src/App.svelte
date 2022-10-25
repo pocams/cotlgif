@@ -22,6 +22,9 @@
     } else if (target === "ratau") {
       selectedAnimation = {name: "idle"}
       selectedSkins = [{name: "normal"}]
+    } else if (target === "fox") {
+      selectedAnimation = {name: "animation"}
+      selectedSkins = [{name: "default"}]
     } else {
       selectedAnimation = {name: "idle"}
       selectedSkins = [{name: "Fox"}]
@@ -157,6 +160,9 @@
       </a>
       <a class="navbar-item button mx-1" class:is-primary={skeleton === "ratau"} on:click={() => setSkeleton("ratau")}>
         Ratau
+      </a>
+      <a class="navbar-item button mx-1" class:is-primary={skeleton === "fox"} on:click={() => setSkeleton("fox")}>
+        Fox
       </a>
     </div>
 

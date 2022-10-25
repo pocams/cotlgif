@@ -175,10 +175,14 @@ elif 0:
     sprite = "follower"
     animation = "idle"
     skin = "Fox"
-else:
+elif 0:
     sprite = "ratau"
     animation = "idle"
     skin = "normal"
+else:
+    sprite = "fox"
+    animation = "animation"
+    skin = "default"
 
 data = httpx.get(f"http://localhost:3000/v1/{sprite}").json()
 

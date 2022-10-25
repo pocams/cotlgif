@@ -2642,6 +2642,50 @@
   background-position: -452px -752px
 }
 
+#fox-animations-animation {
+  background-position: -2px -2px
+}
+
+#fox-animations-ratau-sacrifice-end {
+  background-position: -52px -2px
+}
+
+#fox-animations-enter {
+  background-position: -102px -2px
+}
+
+#fox-animations-exit {
+  background-position: -152px -2px
+}
+
+#fox-animations-give-key {
+  background-position: -202px -2px
+}
+
+#fox-animations-hidden {
+  background-position: -252px -2px
+}
+
+#fox-animations-ratau-sacrifice-loop {
+  background-position: -302px -2px
+}
+
+#fox-animations-ratau-sacrifice-start {
+  background-position: -352px -2px
+}
+
+#fox-animations-talk {
+  background-position: -402px -2px
+}
+
+#fox-animations-talk-laugh {
+  background-position: -452px -2px
+}
+
+#fox-animations-talk2 {
+  background-position: -502px -2px
+}
+
 #player-animations-oldstuff-farming-dig {
   background-position: -2px -2px
 }
