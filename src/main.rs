@@ -28,42 +28,6 @@ mod colours;
 
 const SPOILERS_HOST: &str = "cotl-spoilers.xl0.org";
 
-/*
-URLs:
-
-  /v1/(player, follower)/(baseskin)/(animation).(gif, png)
-    ?add_skin=a,b,c
-    ?antialiasing=<int>
-    ?start_time=<float>
-    ?end_time=<float> (only for gif)
-    ?color1=RRGGBB (only for follower?)
-    ?color2=RRGGBB (only for follower?)
-
-  /v1/
-  [
-    {
-      "url": "/v1/player/",
-      "description": "Player"
-    }
-  ]
-
-  /v1/player/
-    {
-      "description": "Player",
-      "animations": [
-        {
-          "name": "idle",
-          "duration": 0.7
-        }
-      ],
-      "skins": [
-        {
-          "name": "Lamb"
-        {
-      ]
-    }
-*/
-
 #[derive(Debug, Copy, Clone)]
 enum OutputType {
     Gif,
@@ -232,6 +196,7 @@ async fn main() -> color_eyre::Result<()> {
 
     let app = Router::new()
         .route("/", get(get_index))
+        .route("/init.js", get(get_spoiler_js))
         .route("/v1", get(get_v1))
         .route("/v1/:actor", get(get_v1_actor))
         .route("/v1/:actor/colours", get(get_v1_colours))
@@ -254,8 +219,6 @@ async fn main() -> color_eyre::Result<()> {
 async fn get_index(Host(host): Host) -> impl IntoResponse {
     let filename = if host.starts_with("localhost:") {
         "html/index.dev.html"
-    } else if host == SPOILERS_HOST {
-        "html/index.spoilers.html"
     } else {
         "html/index.html"
     };
@@ -279,7 +242,19 @@ async fn get_index(Host(host): Host) -> impl IntoResponse {
             )
         }
     }
+}
 
+async fn get_spoiler_js(Host(host): Host) -> impl IntoResponse {
+    let body = if host == SPOILERS_HOST {
+        "window.spoilersEnabled = true;\n"
+    } else {
+        "\n"
+    };
+
+    Response::builder()
+        .header("Content-Type", "text/javascript")
+        .body(body)
+        .unwrap()
 }
 
 async fn get_v1(Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>) -> impl IntoResponse {
