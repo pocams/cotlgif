@@ -253,7 +253,7 @@ async fn get_spoiler_js(Host(host): Host) -> impl IntoResponse {
 
     Response::builder()
         .header("Content-Type", "text/javascript")
-        .body(body)
+        .body(body.to_owned())
         .unwrap()
 }
 
