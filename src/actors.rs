@@ -184,6 +184,8 @@ impl Skin {
             hide_player.is_match(&self.name)
         } else if actor == "ratau" {
             false
+        } else if actor == "fox" {
+            false
         } else {
             panic!("Unexpected actor for is_spoiler: {}", actor)
         }
@@ -218,6 +220,8 @@ impl Animation {
         } else if actor == "player" {
             hide_player.is_match(&self.name)
         } else if actor == "ratau" {
+            false
+        } else if actor == "fox" {
             false
         } else {
             panic!("Unexpected actor for is_spoiler: {}", actor)
