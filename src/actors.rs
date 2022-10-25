@@ -1,35 +1,32 @@
+use std::{io, thread};
 use std::collections::HashMap;
-use std::io::{BufRead, BufReader, BufWriter, Write};
+use std::io::{BufRead, BufReader, Write};
+use std::num::NonZeroU32;
 use std::path::Path;
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
-use std::{io, mem, thread};
-use std::iter::Once;
-use std::num::NonZeroU32;
 use std::sync::atomic::{AtomicI64, Ordering};
+
 use color_eyre::eyre::{ErrReport, eyre};
 use color_eyre::Report;
 use fast_image_resize::PixelType;
 use gifski::progress::NoProgress;
 use gifski::Settings;
-use imgref::{Img, ImgRef, ImgVec};
-use rusty_spine::{Atlas, SkeletonBinary, SkeletonJson, Color, AnimationStateData, SkeletonController, Skeleton, SkeletonData, Bone};
-use sfml::graphics::{IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex, Color as SfmlColor};
-use tokio::sync::{mpsc, Mutex};
-use tracing::{debug, info, warn};
+use imgref::ImgVec;
 use once_cell::sync::OnceCell;
-use png::{AnimationControl, BitDepth, ColorType};
-use png::chunk::ChunkType;
+use png::{BitDepth, ColorType};
 use regex::Regex;
 use rgb::FromSlice;
-use serde::{Serialize, Serializer};
+use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson};
+use rusty_spine::BlendMode as SpineBlendMode;
+use serde::Serialize;
+use serde_json::json;
+use sfml::graphics::{Color as SfmlColor, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
+use sfml::graphics::blend_mode::{Equation as BlendEquation, Factor as BlendFactor};
+use sfml::graphics::BlendMode as SfmlBlendMode;
 use sfml::SfBox;
 use sfml::system::Vector2f;
-use sfml::graphics::BlendMode as SfmlBlendMode;
-use sfml::graphics::blend_mode::{Factor as BlendFactor, Equation as BlendEquation};
-use rusty_spine::BlendMode as SpineBlendMode;
-use serde::ser::SerializeMap;
-use serde_json::json;
+use tracing::{debug, info, warn};
 
 const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
     color_src_factor: BlendFactor::SrcAlpha,
@@ -235,6 +232,7 @@ pub struct Actor {
     pub skins: Vec<Skin>,
     pub animations: Vec<Animation>,
     #[serde(skip)]
+    #[allow(dead_code)]
     atlas: Arc<Atlas>,
     #[serde(skip)]
     skeleton_data: Arc<SkeletonData>,
@@ -555,7 +553,7 @@ impl Actor {
 
             // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to
             // give us ownership of the pixel data.
-            let mut image = target.texture().copy_to_image().unwrap().pixel_data().to_vec();
+            let image = target.texture().copy_to_image().unwrap().pixel_data().to_vec();
 
             let raw_image = if params.antialiasing <= 1 {
                 // debug!("Skipping antialiasing");
@@ -660,7 +658,7 @@ impl Actor {
         Ok(())
     }
 
-    pub fn render_ffmpeg(&self, mut params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
+    pub fn render_ffmpeg(&self, params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
         let fps = (1.0 / params.frame_delay).round() as u32;
         let prepared_params = self.prepare_render(params)?;
         debug!("prepared params: {:?}", prepared_params);
@@ -690,7 +688,7 @@ impl Actor {
             let mut writer = ChannelWriter::new(response_sender);
             let mut stdin = ffmpeg.stdin.take().unwrap();
             let mut stdout = ffmpeg.stdout.take().unwrap();
-            let mut stderr = ffmpeg.stderr.take().unwrap();
+            let stderr = ffmpeg.stderr.take().unwrap();
 
             // Log ffmpeg's stderr
             scope.spawn(move || {

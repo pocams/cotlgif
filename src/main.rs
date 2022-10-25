@@ -1,32 +1,24 @@
 use std::borrow::Cow;
 use std::collections::HashMap;
-use std::error::Error;
-use std::ffi::OsStr;
-use std::fs::File;
-use std::num::{ParseFloatError, ParseIntError};
 use std::ops::Deref;
-use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use axum::extract::{BodyStream, Host, Path, Query};
-use axum::response::{IntoResponse, Response};
+
 use axum::{Extension, Json, Router};
-use axum::body::{Body, StreamBody};
+use axum::body::StreamBody;
+use axum::extract::{Host, Path, Query};
 use axum::http::StatusCode;
+use axum::response::{IntoResponse, Response};
 use axum::routing::{get, get_service};
-use color_eyre::eyre::eyre;
 use color_eyre::Report;
-use rusty_spine::Color;
-use tracing_subscriber::EnvFilter;
-use tower_http::trace::TraceLayer;
-use serde_json::json;
-use serde::Deserialize;
 use css_color_parser2::Color as CssColor;
-use tokio::spawn;
-use tokio::sync::mpsc::unbounded_channel;
+use rusty_spine::Color;
+use serde_json::json;
 use tokio::task::spawn_blocking;
+use tower_http::services::ServeDir;
+use tower_http::trace::TraceLayer;
 use tracing::{debug, info, warn};
-use tower_http::services::{ServeDir, ServeFile};
+use tracing_subscriber::EnvFilter;
 
 use crate::actors::{Actor, RenderParameters, Slug};
 use crate::colours::SkinColours;
@@ -326,7 +318,7 @@ async fn get_v1_actor(
 async fn get_v1_colours(
     Extension(skin_colours): Extension<Arc<SkinColours>>,
     Path(actor_name): Path<String>,
-    Host(host): Host
+    Host(_host): Host
 ) -> impl IntoResponse {
     if actor_name != "follower" {
         // Only followers have colour sets

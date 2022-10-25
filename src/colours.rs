@@ -1,6 +1,6 @@
 use std::collections::HashMap;
-use serde::{Serialize, Deserialize, Deserializer, Serializer};
-use crate::actors::Skin;
+use serde::{Serialize, Deserialize, Serializer};
+
 
 const COLOUR_DATA: &str = include_str!("../worshipper_data.json");
 
@@ -48,6 +48,7 @@ impl SkinColours {
         serde_json::from_str(COLOUR_DATA).unwrap()
     }
 
+    /*
     fn colours_for_skin(&self, skin_name: &str) -> Vec<HashMap<String, Colour>> {
         let mut colours = self.global.clone();
         for follower_skin_set in &self.skins {
@@ -57,4 +58,5 @@ impl SkinColours {
         }
         colours
     }
+    */
 }
