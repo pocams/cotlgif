@@ -394,6 +394,15 @@ impl Actor {
         //     debug!("slot: {}", slot.data().name());
         // }
 
+        if params.only_head {
+            for mut slot in controller.skeleton.slots_mut() {
+                if !only_head_includes(slot.data().name()) {
+                    // Make the slot transparent
+                    slot.color_mut().set_a(0.0);
+                }
+            }
+        }
+
         debug!("Finding bounding box...");
         // Run through the animation once and grab all the min/max X and Y. This is actually pretty
         // fast (tens of ms) compared to all the other crazy shit we're doing
@@ -409,13 +418,6 @@ impl Actor {
         while time <= params.end_time {
             for r in controller.renderables().iter() {
                 if r.color.a < 0.001 { continue };
-                if params.only_head {
-                    let slot = controller.skeleton.slot_at_index(r.slot_index).unwrap();
-                    if !only_head_includes(slot.data().name()) {
-                        debug!("skip (only head): {}", slot.data().name());
-                        continue
-                    }
-                }
                 for [x, y] in &r.vertices {
                     min_x = min_x.min(*x);
                     min_y = min_y.min(*y);
@@ -480,12 +482,17 @@ impl Actor {
         // Only follower has slot colours
         if self.name == "follower" {
             for mut slot in controller.skeleton.slots_mut() {
-                if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
-                    let c = slot.color_mut();
-                    c.set_r(colour.r);
-                    c.set_g(colour.g);
-                    c.set_b(colour.b);
-                    c.set_a(colour.a);
+                if params.only_head && !only_head_includes(slot.data().name()) {
+                    // Make the slot transparent
+                    slot.color_mut().set_a(0.0);
+                } else {
+                    if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
+                        let c = slot.color_mut();
+                        c.set_r(colour.r);
+                        c.set_g(colour.g);
+                        c.set_b(colour.b);
+                        c.set_a(colour.a);
+                    }
                 }
             }
         }
@@ -515,13 +522,6 @@ impl Actor {
             let renderables = controller.renderables();
             for renderable in renderables.iter() {
                 if renderable.color.a < 0.001 { continue };
-                if params.only_head {
-                    let slot = controller.skeleton.slot_at_index(renderable.slot_index).unwrap();
-                    if !only_head_includes(slot.data().name()) {
-                        debug!("skip (only head): {}", slot.data().name());
-                        continue
-                    }
-                }
 
                 let colour = SfmlColor::rgba(
                     (renderable.color.r * 255.0).round() as u8,
