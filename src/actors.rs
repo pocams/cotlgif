@@ -209,7 +209,7 @@ impl Animation {
         static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
         static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
         let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
-            r"^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Fishing/.*|Food/food-fillbowl|Ghost/.*|Insane/.*|OldStuff/.*|Possessed/.*|Prison/(stocks-dead.*|stocks-die.*)|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*)$"
+            r"^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Fishing/.*|Food/food-fillbowl|Insane/.*|OldStuff/.*|Possessed/.*|Prison/(stocks-dead.*|stocks-die.*)|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*)$"
         ).unwrap());
         let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
             r"^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple-.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$"
