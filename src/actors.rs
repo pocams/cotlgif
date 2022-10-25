@@ -386,9 +386,9 @@ impl Actor {
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
-        for slot in controller.skeleton.slots() {
-            debug!("slot: {}", slot.data().name());
-        }
+        // for slot in controller.skeleton.slots() {
+        //     debug!("slot: {}", slot.data().name());
+        // }
 
         debug!("Finding bounding box...");
         // Run through the animation once and grab all the min/max X and Y. This is actually pretty
