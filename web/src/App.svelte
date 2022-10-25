@@ -6,6 +6,7 @@
   import Scale from "./lib/Scale.svelte";
   import WelcomeModal from "./lib/WelcomeModal.svelte";
   import ColourPicker from "./lib/ColourPicker.svelte";
+  import SingleFrame from "./lib/SingleFrame.svelte";
 
   function slugify(s) {
     s = s.replace(/[^A-Za-z0-9]/g, "-")
@@ -60,6 +61,8 @@
   let scale = 1.0
   let colours = {}
   let onlyHead = false
+  let singleFrame = false
+  let singleFrameTimestamp = 0.0
 
   let allAnimations = [];
   let allSkins = [];
@@ -107,7 +110,6 @@
     }
     params.push(`scale=${scale}`)
     params.push(`animation=${selectedAnimation.name}`)
-    params.push("format=apng")
     if (skeleton === "follower") {
       for (const [key, value] of Object.entries(colours)){
         // "last" is an unknown colour entry, but it doesn't seem to have any effect - just suppress it for now.
@@ -117,6 +119,10 @@
         }
       }
       params.push(`only_head=${encodeURIComponent(onlyHead)}`)
+    }
+    if (singleFrame) {
+      params.push("format=png")
+      params.push(`start_time=${singleFrameTimestamp}`)
     }
     return baseUrl + "?" + params.join("&")
   }
@@ -155,11 +161,14 @@
     </div>
 
     <div class="navbar-end">
-      <a class="navbar-item button is-info mx-1" href={animationUrl() + "&format=gif&download=true"}>
+      <a class="navbar-item button is-info mx-1" class:is-hidden={singleFrame} href={animationUrl() + "&format=gif&download=true"}>
         Download GIF
       </a>
-      <a class="navbar-item button is-info mx-1" href={animationUrl() + "&format=apng&download=true"}>
+      <a class="navbar-item button is-info mx-1" class:is-hidden={singleFrame} href={animationUrl() + "&format=apng&download=true"}>
         Download APNG
+      </a>
+      <a class="navbar-item button is-info mx-1" class:is-hidden={!singleFrame} href={animationUrl() + "&format=png&download=true"}>
+        Download PNG
       </a>
     </div>
   </div>
@@ -168,7 +177,7 @@
 <section class="section">
   <div class="has-text-centered" style="min-height: 300px">
     <div class="box is-centered is-inline-block mb-5">
-      {#key animationUrl}
+      {#key singleFrame ? "" : animationUrl}
         <img src={animationUrl()}>
       {/key}
     </div>
@@ -221,6 +230,11 @@
         </label>
       </p>
     {/if}
+
+      <SingleFrame
+              bind:enabled={singleFrame}
+              bind:timestamp={singleFrameTimestamp}
+              duration={selectedAnimation ? selectedAnimation.duration : 0}></SingleFrame>
     </div>
   </div>
 </section>
