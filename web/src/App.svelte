@@ -4,8 +4,8 @@
 
   import Dropdown from './lib/Dropdown.svelte';
   import Scale from "./lib/Scale.svelte";
-  import Color from "./lib/Color.svelte";
   import WelcomeModal from "./lib/WelcomeModal.svelte";
+  import ColourPicker from "./lib/ColourPicker.svelte";
 
   function slugify(s) {
     s = s.replace(/[^A-Za-z0-9]/g, "-")
@@ -58,16 +58,31 @@
   let animation_filter = ""
   let skin_filter = ""
   let scale = 1.0
-  let color1 = "#eeeeee"
-  let color2 = "#cccccc"
-  let color3 = "#aaaaaa"
+  let colours = {}
   let onlyHead = false
 
   let allAnimations = [];
   let allSkins = [];
+  let allColours = {};
 
   $: filteredAnimations = allAnimations.filter(a => a.name.toLowerCase().includes(animation_filter.toLowerCase()))
   $: filteredSkins = allSkins.filter(a => a.name.toLowerCase().includes(skin_filter.toLowerCase()))
+  $: filteredColours = () => {
+    if (Object.keys(allColours).length > 0) {
+      let filtered = []
+      for (const skinSet of allColours["skins"]) {
+        for (const eachSkin of skinSet["skins"]) {
+          if (selectedSkins.filter(selectedSkin => selectedSkin.name === eachSkin).length > 0) {
+            filtered.push(...skinSet["sets"])
+          }
+        }
+      }
+      filtered.push(...allColours["global"])
+      return filtered
+    } else {
+      return []
+    }
+  }
 
   function addSkin(skin) {
     if (selectedSkins.filter(s => s.name === skin.name).length === 0) {
@@ -94,30 +109,57 @@
     params.push(`animation=${selectedAnimation.name}`)
     params.push("format=apng")
     if (skeleton === "follower") {
-      params.push(`color1=${encodeURIComponent(color1)}`)
-      params.push(`color2=${encodeURIComponent(color2)}`)
-      params.push(`color3=${encodeURIComponent(color3)}`)
+      for (const [key, value] of Object.entries(colours)){
+        // "last" is an unknown colour entry, but it doesn't seem to have any effect - just suppress it for now.
+        // I haven't removed it from the json just in case it does turn out to be something.
+        if (key !== "last") {
+          params.push(`${key}=${encodeURIComponent(value)}`)
+        }
+      }
       params.push(`only_head=${encodeURIComponent(onlyHead)}`)
     }
     return baseUrl + "?" + params.join("&")
   }
 
+  $: headUrl = () => {
+    if (selectedSkins.length === 0) { return "" }
+    let params = [];
+    let baseUrl = `/v1/${skeleton}/${encodeURIComponent(selectedSkins[0].name)}`
+    for (const additionalSkin of selectedSkins.slice(1)) {
+      params.push(`add_skin=${encodeURIComponent(additionalSkin.name)}`)
+    }
+    params.push(`scale=0.25`)
+    params.push(`animation=${encodeURIComponent('Avatars/avatar-normal')}`)
+    params.push("format=png")
+    return baseUrl + "?" + params.join("&")
+  }
+
   onMount(async () => {
     setSkeleton("follower")
+    axios.get("/v1/follower/colours").then(resp => allColours = resp.data)
   })
 </script>
 
-<nav class="navbar">
-  <div id="navbarBasicExample" class="navbar-menu">
+<nav class="navbar py-2 px-2">
+  <div id="navbar" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item button mx-1 my-1" class:is-primary={skeleton === "player"} on:click={()=> setSkeleton("player")}>
-        Player
+      <a class="navbar-item button mx-1" class:is-primary={skeleton === "player"} on:click={()=> setSkeleton("player")}>
+        Lamb
       </a>
-      <a class="navbar-item button mx-1 my-1" class:is-primary={skeleton === "follower"} on:click={() => setSkeleton("follower")}>
+      <a class="navbar-item button mx-1" class:is-primary={skeleton === "follower"} on:click={() => setSkeleton("follower")}>
         Follower
       </a>
-      <a class="navbar-item button mx-1 my-1" class:is-primary={skeleton === "ratau"} on:click={() => setSkeleton("ratau")}>
+      <a class="navbar-item button mx-1" class:is-primary={skeleton === "ratau"} on:click={() => setSkeleton("ratau")}>
         Ratau
+      </a>
+    </div>
+
+    <div class="navbar-end">
+      <a class="navbar-item button is-info mx-1" href={animationUrl() + "&format=gif&download=true"}>
+        Download GIF
+      </a>
+      <a class="navbar-item button is-info mx-1" href={animationUrl() + "&format=apng&download=true"}>
+        Download APNG
       </a>
     </div>
   </div>
@@ -169,9 +211,7 @@
 
     {#if skeleton === "follower"}
       <p class="mt-4">
-        <Color bind:value={color1}></Color>
-        <Color bind:value={color2}></Color>
-        <Color bind:value={color3}></Color>
+        <ColourPicker colours={filteredColours()} url={headUrl()} bind:value={colours}></ColourPicker>
       </p>
 
       <p class="mt-4">
