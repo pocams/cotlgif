@@ -2,6 +2,7 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::error::Error;
 use std::ffi::OsStr;
+use std::fs::File;
 use std::num::{ParseFloatError, ParseIntError};
 use std::ops::Deref;
 use std::path::PathBuf;
@@ -27,9 +28,11 @@ use tokio::task::spawn_blocking;
 use tracing::{debug, info, warn};
 use tower_http::services::{ServeDir, ServeFile};
 
-use crate::actors::{Actor, RenderParameters};
+use crate::actors::{Actor, RenderParameters, Slug};
+use crate::colours::SkinColours;
 
 mod actors;
+mod colours;
 
 const SPOILERS_HOST: &str = "cotl-spoilers.xl0.org";
 
@@ -85,6 +88,14 @@ impl OutputType {
             OutputType::Mp4 => "video/mp4",
         }
     }
+
+    fn extension(&self) -> &'static str {
+        match self {
+            OutputType::Gif => "gif",
+            OutputType::Apng | OutputType::Png => "png",
+            OutputType::Mp4 => "mp4",
+        }
+    }
 }
 
 impl Default for OutputType {
@@ -116,12 +127,11 @@ struct SkinParameters {
     antialiasing: Option<u32>,
     start_time: Option<f32>,
     end_time: Option<f32>,
-    color1: Option<Color>,
-    color2: Option<Color>,
-    color3: Option<Color>,
-    background_color: Option<Color>,
+    slot_colours: HashMap<String, Color>,
+    background_colour: Option<Color>,
     fps: Option<u32>,
-    only_head: Option<bool>
+    only_head: Option<bool>,
+    download: Option<bool>,
 }
 
 impl TryFrom<Vec<(String, String)>> for SkinParameters {
@@ -130,7 +140,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
     fn try_from(params: Vec<(String, String)>) -> Result<SkinParameters, Self::Error> {
         let mut sp = SkinParameters::default();
         for (key, value) in params.into_iter() {
-            match key.to_ascii_lowercase().as_str() {
+            match key.as_str() {
                 "format" => sp.output_type = Some(value.parse()?),
                 "add_skin" => sp.add_skin.push(value),
                 "animation" => sp.animation = Some(value),
@@ -138,18 +148,14 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                 "antialiasing" => sp.antialiasing = Some(value.parse().map_err(|e| json_400(format!("antialiasing: {e:?}")))?),
                 "start_time" => sp.start_time = Some(value.parse().map_err(|e| json_400(format!("start_time: {e:?}")))?),
                 "end_time" => sp.end_time = Some(value.parse().map_err(|e| json_400(format!("end_time: {e:?}")))?),
-                "color" => {
-                    let c = color_from_string(value.as_str()).map_err(|e| json_400(format!("color: {}", e)))?;
-                    sp.color1 = Some(c);
-                    sp.color2 = Some(c);
-                    sp.color3 = Some(c);
-                },
-                "color1" => sp.color1 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color1: {}", e)))?),
-                "color2" => sp.color2 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color2: {}", e)))?),
-                "color3" => sp.color3 = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("color3: {}", e)))?),
-                "background_color" => sp.background_color = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("background_color: {}", e)))?),
+                "background" => sp.background_colour = Some(color_from_string(value.as_str()).map_err(|e| json_400(format!("background_color: {}", e)))?),
                 "fps" => sp.fps = Some(value.parse().map_err(|e| json_400(format!("fps: {e:?}")))?),
                 "only_head" => sp.only_head = Some(value.parse().map_err(|e| json_400(format!("only_head: {e:?}")))?),
+                "download" => sp.download = Some(value.parse().map_err(|e| json_400(format!("download: {e:?}")))?),
+                // Skin colour parameters
+                "HEAD_SKIN_TOP" | "HEAD_SKIN_BTM" | "MARKINGS" | "ARM_LEFT_SKIN" | "ARM_RIGHT_SKIN" | "LEG_LEFT_SKIN" | "LEG_RIGHT_SKIN" => {
+                    sp.slot_colours.insert(key.clone(), color_from_string(value.as_str()).map_err(|e| json_400(format!("{}: {}", key, e)))?);
+                }
                 _ => return Err(json_400(Cow::from(format!("Invalid parameter {:?}", key))))
             }
         }
@@ -169,10 +175,8 @@ impl SkinParameters {
             start_time: self.start_time.unwrap_or(0.0),
             end_time: self.end_time.unwrap_or(1.0),
             frame_delay: 1.0 / fps,
-            background_color: self.background_color.unwrap_or_default(),
-            color1: self.color1,
-            color2: self.color2,
-            color3: self.color3,
+            background_colour: self.background_colour.unwrap_or_default(),
+            slot_colours: self.slot_colours,
             only_head: self.only_head.unwrap_or(false)
         })
     }
@@ -224,6 +228,7 @@ async fn main() -> color_eyre::Result<()> {
         .init();
 
     let actors = Arc::new(load_actors().await?);
+    let skin_colours = Arc::new(SkinColours::load());
 
     let serve_dir_service = get_service(ServeDir::new("static"))
         .handle_error(|err| async move {
@@ -237,10 +242,12 @@ async fn main() -> color_eyre::Result<()> {
         .route("/", get(get_index))
         .route("/v1", get(get_v1))
         .route("/v1/:actor", get(get_v1_actor))
+        .route("/v1/:actor/colours", get(get_v1_colours))
         .route("/v1/:actor/:skin", get(get_v1_skin))
         // If we don't match any routes, try serving static files from /static
         .fallback(serve_dir_service)
         .layer(Extension(actors))
+        .layer(Extension(skin_colours))
         .layer(TraceLayer::new_for_http());
 
     info!("Starting server");
@@ -301,8 +308,7 @@ async fn get_v1_actor(
     Path(actor_name): Path<String>,
     Host(host): Host
 ) -> impl IntoResponse {
-    // let show_spoilers = host == "cotl-spoilers.xl0.org" || host.starts_with("localhost");
-    let show_spoilers = host == SPOILERS_HOST;
+    let show_spoilers = host == SPOILERS_HOST || host.starts_with("localhost");
     info!("Request host {}, spoilers {}", host, show_spoilers);
 
     if let Some(actor) = actors.iter().find(|a| a.name == actor_name) {
@@ -315,6 +321,19 @@ async fn get_v1_actor(
     } else {
         (StatusCode::NOT_FOUND, Json(json!({"error": "no such actor"})))
     }
+}
+
+async fn get_v1_colours(
+    Extension(skin_colours): Extension<Arc<SkinColours>>,
+    Path(actor_name): Path<String>,
+    Host(host): Host
+) -> impl IntoResponse {
+    if actor_name != "follower" {
+        // Only followers have colour sets
+        return (StatusCode::NOT_FOUND, Json(json!({"error": "no colours available for actor"})))
+    }
+
+    (StatusCode::OK, Json(serde_json::to_value(skin_colours.deref()).unwrap()))
 }
 
 async fn get_v1_skin(
@@ -343,10 +362,20 @@ async fn get_v1_skin(
 
     let output_type = params.output_type.unwrap_or_default();
 
-    let render_params = params.into_render_parameters()?;
-
     let (tx, rx) = futures_channel::mpsc::unbounded::<Result<Vec<u8>, Report>>();
 
+    let mut builder = Response::builder()
+        .header("Content-Type", output_type.mime_type());
+
+    if params.download.unwrap_or(false) {
+        let disposition = format!("attachment; filename=\"{}-{}.{}\"", actor.name, animation.slug(), output_type.extension());
+        builder = builder.header("Content-Disposition", disposition);
+    }
+
+    let render_params = params.into_render_parameters()?;
+    if actor.name != "follower" && !render_params.slot_colours.is_empty() {
+        return Err(json_400(format!("Only follower supports slot colours")));
+    }
 
     spawn_blocking(move || {
         let render = match output_type {
@@ -360,8 +389,5 @@ async fn get_v1_skin(
         }
     });
 
-    Ok(Response::builder()
-        .header("Content-Type", output_type.mime_type())
-        .body(StreamBody::from(rx))
-        .unwrap())
+    Ok(builder.body(StreamBody::from(rx)).unwrap())
 }

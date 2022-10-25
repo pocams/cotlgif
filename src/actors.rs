@@ -69,10 +69,24 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
 
 static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
 
+pub trait Slug {
+    fn slugify_string(s: &str) -> String {
+        static NON_ALPHA: OnceCell<Regex> = OnceCell::new();
+        static LOWER_UPPER: OnceCell<Regex> = OnceCell::new();
+        let non_alpha = NON_ALPHA.get_or_init(|| Regex::new(r"[^A-Za-z0-9]").unwrap());
+        let lower_upper = LOWER_UPPER.get_or_init(|| Regex::new(r"([a-z])([A-Z])").unwrap());
+        let s = non_alpha.replace(s, "-");
+        let s = lower_upper.replace(&s, "$2-$1");
+        s.to_ascii_lowercase().to_owned()
+    }
+
+    fn slug(&self) -> String;
+}
+
 fn only_head_includes(slot_name: &str) -> bool {
     static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
     let only_head = ONLY_HEAD.get_or_init(|| Regex::new(
-        r"^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d|)$"
+        r"^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d)$"
     ).unwrap());
 
     only_head.is_match(slot_name)
@@ -150,12 +164,18 @@ pub struct Skin {
     pub name: String,
 }
 
+impl Slug for Animation {
+    fn slug(&self) -> String {
+        <Animation as Slug>::slugify_string(&self.name)
+    }
+}
+
 impl Skin {
     fn is_spoiler(&self, actor: &str) -> bool {
         static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
         static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
         let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
-            r"^(Archer|Badger\d?|BatDemon\d?|Crow\d?|DeerSkull\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|Other/Ghost.*|default)$"
+            r"^(Archer|Badger\d?|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|default)$"
         ).unwrap());
         let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
             "^(Goat|Owl|Snake|default|effects-top)$"
@@ -177,6 +197,12 @@ impl Skin {
 pub struct Animation {
     pub name: String,
     pub duration: f32
+}
+
+impl Slug for Skin {
+    fn slug(&self) -> String {
+        <Skin as Slug>::slugify_string(&self.name)
+    }
 }
 
 impl Animation {
@@ -240,10 +266,8 @@ pub struct RenderParameters {
     pub start_time: f32,
     pub end_time: f32,
     pub frame_delay: f32,
-    pub background_color: Color,
-    pub color1: Option<Color>,
-    pub color2: Option<Color>,
-    pub color3: Option<Color>,
+    pub background_colour: Color,
+    pub slot_colours: HashMap<String, Color>,
     pub only_head: bool,
 }
 
@@ -342,44 +366,6 @@ impl Actor {
         })
     }
 
-    fn apply_color(&self, controller: &mut SkeletonController, color1: &Option<Color>, color2: &Option<Color>, color3: &Option<Color>) {
-        let color1 = color1.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
-        let color2 = color2.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
-        let color3 = color3.unwrap_or(Color { r: 1.0, g: 1.0, b: 1.0, a: 1.0 });
-        if self.name == "follower" {
-            for mut slot in controller.skeleton.slots_mut() {
-                match slot.data().name() {
-                    "ARM_LEFT_SKIN" |
-                    "ARM_RIGHT_SKIN" |
-                    "LEG_LEFT_SKIN" |
-                    "LEG_RIGHT_SKIN" |
-                    "HEAD_SKIN_BTM" => {
-                        let c = slot.color_mut();
-                        c.set_r(color1.r);
-                        c.set_g(color1.g);
-                        c.set_b(color1.b);
-                        c.set_a(color1.a);
-                    },
-                    "HEAD_SKIN_TOP" => {
-                        let c = slot.color_mut();
-                        c.set_r(color2.r);
-                        c.set_g(color2.g);
-                        c.set_b(color2.b);
-                        c.set_a(color2.a);
-                    },
-                    "MARKINGS" => {
-                        let c = slot.color_mut();
-                        c.set_r(color3.r);
-                        c.set_g(color3.g);
-                        c.set_b(color3.b);
-                        c.set_a(color3.a);
-                    }
-                    _ => {}
-                }
-            }
-        }
-    }
-
     fn prepare_render(&self, params: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
         let _guard = self.actor_mutex.lock().unwrap();
 
@@ -397,8 +383,8 @@ impl Actor {
         for skin_name in &params.skins {
             skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
         }
-        controller.skeleton.set_skin(&skin);
 
+        controller.skeleton.set_skin(&skin);
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
@@ -419,19 +405,20 @@ impl Actor {
         let mut time = params.start_time;
         let mut frame_count = 0;
         while time <= params.end_time {
-            for r in controller.renderables() {
+            for r in controller.renderables().iter() {
                 if r.color.a < 0.001 { continue };
                 if params.only_head {
                     let slot = controller.skeleton.slot_at_index(r.slot_index).unwrap();
                     if !only_head_includes(slot.data().name()) {
+                        debug!("skip (only head): {}", slot.data().name());
                         continue
                     }
                 }
-                for [x, y] in r.vertices {
-                    min_x = min_x.min(x);
-                    min_y = min_y.min(y);
-                    max_x = max_x.max(x);
-                    max_y = max_y.max(y);
+                for [x, y] in &r.vertices {
+                    min_x = min_x.min(*x);
+                    min_y = min_y.min(*y);
+                    max_x = max_x.max(*x);
+                    max_y = max_y.max(*y);
                 }
             }
             controller.update(params.frame_delay);
@@ -469,11 +456,11 @@ impl Actor {
         let params = prepared_params.parameters;
         let render_scale = params.render_scale();
 
-        let background_color = SfmlColor::rgba(
-            (params.background_color.r * 255.0).round() as u8,
-            (params.background_color.g * 255.0).round() as u8,
-            (params.background_color.b * 255.0).round() as u8,
-            (params.background_color.a * 255.0).round() as u8,
+        let background_colour = SfmlColor::rgba(
+            (params.background_colour.r * 255.0).round() as u8,
+            (params.background_colour.g * 255.0).round() as u8,
+            (params.background_colour.b * 255.0).round() as u8,
+            (params.background_colour.a * 255.0).round() as u8,
         );
 
         let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
@@ -488,8 +475,18 @@ impl Actor {
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
-        debug!("Applying colors: {:?}, {:?}, {:?}", params.color1, params.color2, params.color3);
-        self.apply_color(&mut controller, &params.color1, &params.color2, &params.color3);
+        // Only follower has slot colours
+        if self.name == "follower" {
+            for mut slot in controller.skeleton.slots_mut() {
+                if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
+                    let c = slot.color_mut();
+                    c.set_r(colour.r);
+                    c.set_g(colour.g);
+                    c.set_b(colour.b);
+                    c.set_a(colour.a);
+                }
+            }
+        }
 
         controller.skeleton.set_x(prepared_params.x_offset);
         controller.skeleton.set_y(prepared_params.y_offset);
@@ -511,7 +508,7 @@ impl Actor {
         let mut frame = 0;
         while time <= params.end_time {
             // debug!("Processing frame {}", frame);
-            target.clear(background_color);
+            target.clear(background_colour);
 
             let renderables = controller.renderables();
             for renderable in renderables.iter() {
@@ -519,10 +516,12 @@ impl Actor {
                 if params.only_head {
                     let slot = controller.skeleton.slot_at_index(renderable.slot_index).unwrap();
                     if !only_head_includes(slot.data().name()) {
+                        debug!("skip (only head): {}", slot.data().name());
                         continue
                     }
                 }
-                let color = SfmlColor::rgba(
+
+                let colour = SfmlColor::rgba(
                     (renderable.color.r * 255.0).round() as u8,
                     (renderable.color.g * 255.0).round() as u8,
                     (renderable.color.b * 255.0).round() as u8,
@@ -546,7 +545,7 @@ impl Actor {
                     let t = renderable.uvs[*i as usize];
                     let t = [t[0] * texture_size.x as f32, t[1] * texture_size.y as f32];
                     vertexes.push(Vertex::new(
-                        Vector2f::new(v[0], v[1]), color, Vector2f::new(t[0], t[1])
+                        Vector2f::new(v[0], v[1]), colour, Vector2f::new(t[0], t[1])
                     ));
                 }
 
