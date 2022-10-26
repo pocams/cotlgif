@@ -172,7 +172,7 @@ impl Skin {
         static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
         static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
         let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
-            r"^(Archer|Badger\d?|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|default)$"
+            r"^(Archer|Badger\d?|Boss Beholder 5|Elephant4|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|default)$"
         ).unwrap());
         let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
             "^(Goat|Owl|Snake|default|effects-top)$"
