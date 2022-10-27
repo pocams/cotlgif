@@ -1,0 +1,13 @@
+
+fishpondSeller.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Fishing/axolotlGuy
+  rotate: false
+  xy: 2, 2
+  size: 283, 291
+  orig: 283, 291
+  offset: 0, 0
+  index: -1

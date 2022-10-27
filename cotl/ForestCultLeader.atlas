@@ -1,0 +1,279 @@
+
+ForestCultLeader.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Antler_0
+  rotate: false
+  xy: 2, 2
+  size: 140, 54
+  orig: 140, 54
+  offset: 0, 0
+  index: -1
+Antler_2
+  rotate: true
+  xy: 881, 376
+  size: 147, 104
+  orig: 147, 104
+  offset: 0, 0
+  index: -1
+Antler_3
+  rotate: true
+  xy: 898, 258
+  size: 116, 89
+  orig: 116, 89
+  offset: 0, 0
+  index: -1
+Antler_4
+  rotate: true
+  xy: 898, 147
+  size: 109, 91
+  orig: 109, 91
+  offset: 0, 0
+  index: -1
+Antler_5
+  rotate: false
+  xy: 952, 746
+  size: 144, 111
+  orig: 144, 111
+  offset: 0, 0
+  index: -1
+Antler_6
+  rotate: false
+  xy: 144, 3
+  size: 141, 53
+  orig: 141, 53
+  offset: 0, 0
+  index: -1
+AntlersLeft
+  rotate: false
+  xy: 295, 285
+  size: 218, 387
+  orig: 218, 387
+  offset: 0, 0
+  index: -1
+AntlersRight
+  rotate: true
+  xy: 295, 65
+  size: 218, 387
+  orig: 218, 387
+  offset: 0, 0
+  index: -1
+Antlers_1
+  rotate: true
+  xy: 681, 485
+  size: 206, 180
+  orig: 206, 180
+  offset: 0, 0
+  index: -1
+Antlers_2
+  rotate: false
+  xy: 681, 356
+  size: 198, 127
+  orig: 198, 127
+  offset: 0, 0
+  index: -1
+Antlers_3
+  rotate: false
+  xy: 684, 80
+  size: 212, 212
+  orig: 212, 212
+  offset: 0, 0
+  index: -1
+Antlers_4
+  rotate: false
+  xy: 287, 4
+  size: 143, 52
+  orig: 143, 52
+  offset: 0, 0
+  index: -1
+BandageHair1
+  rotate: false
+  xy: 678, 693
+  size: 68, 36
+  orig: 68, 36
+  offset: 0, 0
+  index: -1
+BandageHair2
+  rotate: false
+  xy: 748, 698
+  size: 46, 31
+  orig: 46, 31
+  offset: 0, 0
+  index: -1
+BehindCloak
+  rotate: true
+  xy: 772, 931
+  size: 87, 327
+  orig: 87, 327
+  offset: 0, 0
+  index: -1
+BehindCloak_Floating
+  rotate: true
+  xy: 346, 849
+  size: 169, 424
+  orig: 169, 424
+  offset: 0, 0
+  index: -1
+CROWN
+  rotate: false
+  xy: 971, 588
+  size: 89, 156
+  orig: 89, 156
+  offset: 0, 0
+  index: -1
+Cloak
+  rotate: true
+  xy: 2, 674
+  size: 344, 342
+  orig: 344, 342
+  offset: 0, 0
+  index: -1
+Cloak_Left
+  rotate: true
+  xy: 346, 680
+  size: 167, 330
+  orig: 167, 330
+  offset: 0, 0
+  index: -1
+Cloak_Right
+  rotate: false
+  xy: 515, 346
+  size: 164, 332
+  orig: 165, 332
+  offset: 1, 0
+  index: -1
+CrownEye
+  rotate: true
+  xy: 796, 305
+  size: 49, 43
+  orig: 49, 43
+  offset: 0, 0
+  index: -1
+CrownEye_Closed
+  rotate: false
+  xy: 796, 709
+  size: 47, 20
+  orig: 47, 20
+  offset: 0, 0
+  index: -1
+CrownGrass
+  rotate: false
+  xy: 605, 320
+  size: 112, 24
+  orig: 112, 24
+  offset: 0, 0
+  index: -1
+Drip1
+  rotate: true
+  xy: 699, 298
+  size: 20, 95
+  orig: 20, 95
+  offset: 0, 0
+  index: -1
+Drip2
+  rotate: true
+  xy: 605, 294
+  size: 24, 92
+  orig: 24, 92
+  offset: 0, 0
+  index: -1
+HEAD
+  rotate: true
+  xy: 2, 366
+  size: 306, 291
+  orig: 306, 291
+  offset: 0, 0
+  index: -1
+Hands_0
+  rotate: false
+  xy: 515, 297
+  size: 88, 47
+  orig: 88, 47
+  offset: 0, 0
+  index: -1
+Hands_1
+  rotate: false
+  xy: 527, 14
+  size: 90, 49
+  orig: 90, 50
+  offset: 0, 0
+  index: -1
+Head_Drips
+  rotate: true
+  xy: 2, 58
+  size: 306, 291
+  orig: 306, 291
+  offset: 0, 0
+  index: -1
+Neck
+  rotate: false
+  xy: 678, 731
+  size: 272, 116
+  orig: 272, 116
+  offset: 0, 0
+  index: -1
+Scarf
+  rotate: true
+  xy: 863, 525
+  size: 204, 106
+  orig: 204, 106
+  offset: 0, 0
+  index: -1
+Symbol_0
+  rotate: true
+  xy: 432, 13
+  size: 50, 93
+  orig: 50, 93
+  offset: 0, 0
+  index: -1
+Symbol_1
+  rotate: true
+  xy: 772, 858
+  size: 71, 152
+  orig: 71, 152
+  offset: 0, 0
+  index: -1
+Symbol_2
+  rotate: true
+  xy: 926, 859
+  size: 70, 146
+  orig: 70, 146
+  offset: 0, 0
+  index: -1
+Symbol_3
+  rotate: true
+  xy: 619, 14
+  size: 49, 90
+  orig: 49, 90
+  offset: 0, 0
+  index: -1
+Vine
+  rotate: true
+  xy: 830, 9
+  size: 69, 96
+  orig: 69, 96
+  offset: 0, 0
+  index: -1
+Vine_2
+  rotate: true
+  xy: 830, 9
+  size: 69, 96
+  orig: 69, 96
+  offset: 0, 0
+  index: -1
+Vine_0
+  rotate: true
+  xy: 711, 4
+  size: 74, 117
+  orig: 74, 117
+  offset: 0, 0
+  index: -1
+Vine_1
+  rotate: true
+  xy: 711, 4
+  size: 74, 117
+  orig: 74, 117
+  offset: 0, 0
+  index: -1

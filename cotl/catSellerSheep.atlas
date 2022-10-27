@@ -1,0 +1,27 @@
+
+catSellerSheep.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CatSheep/BODY
+  rotate: false
+  xy: 2, 186
+  size: 1434, 817
+  orig: 1434, 817
+  offset: 0, 0
+  index: -1
+CatSheep/FACE
+  rotate: false
+  xy: 1438, 2
+  size: 395, 258
+  orig: 395, 259
+  offset: 0, 1
+  index: -1
+CatSheep/HEAD
+  rotate: false
+  xy: 1438, 262
+  size: 461, 741
+  orig: 461, 741
+  offset: 0, 0
+  index: -1

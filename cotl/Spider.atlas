@@ -1,0 +1,510 @@
+
+Spider.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Monsters/MonsterHeart_glow
+  rotate: false
+  xy: 1686, 673
+  size: 213, 186
+  orig: 219, 194
+  offset: 3, 4
+  index: -1
+Monsters/Spider/Arm_Blade
+  rotate: false
+  xy: 479, 1006
+  size: 72, 409
+  orig: 72, 409
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Arm_Top
+  rotate: false
+  xy: 847, 15
+  size: 87, 332
+  orig: 87, 332
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Bandage
+  rotate: false
+  xy: 1379, 1450
+  size: 303, 138
+  orig: 303, 138
+  offset: 0, 0
+  index: -1
+Monsters/Spider/BodySpider
+  rotate: true
+  xy: 346, 1417
+  size: 629, 564
+  orig: 629, 564
+  offset: 0, 0
+  index: -1
+Monsters/Spider/BodySpider_Dead
+  rotate: true
+  xy: 2, 247
+  size: 709, 526
+  orig: 719, 534
+  offset: 5, 4
+  index: -1
+Monsters/Spider/Crown
+  rotate: false
+  xy: 912, 1667
+  size: 110, 184
+  orig: 110, 184
+  offset: 0, 0
+  index: -1
+Monsters/Spider/CrownEye
+  rotate: true
+  xy: 479, 959
+  size: 45, 48
+  orig: 45, 48
+  offset: 0, 0
+  index: -1
+Monsters/Spider/CrownEye_Closed
+  rotate: false
+  xy: 553, 1019
+  size: 47, 19
+  orig: 47, 19
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_0
+  rotate: true
+  xy: 1219, 360
+  size: 227, 103
+  orig: 227, 103
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_1
+  rotate: true
+  xy: 1324, 360
+  size: 227, 103
+  orig: 227, 103
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_2
+  rotate: false
+  xy: 1132, 1595
+  size: 227, 97
+  orig: 227, 97
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Blink_0
+  rotate: false
+  xy: 912, 1954
+  size: 215, 92
+  orig: 215, 92
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Blink_1
+  rotate: true
+  xy: 1534, 394
+  size: 215, 92
+  orig: 215, 92
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Red1
+  rotate: true
+  xy: 1429, 360
+  size: 227, 103
+  orig: 227, 103
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Red2
+  rotate: false
+  xy: 1132, 1496
+  size: 227, 97
+  orig: 227, 97
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_0
+  rotate: true
+  xy: 936, 2
+  size: 352, 70
+  orig: 352, 70
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_1
+  rotate: true
+  xy: 1074, 3
+  size: 352, 70
+  orig: 352, 70
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_2
+  rotate: true
+  xy: 1413, 4
+  size: 354, 64
+  orig: 354, 65
+  offset: 0, 1
+  index: -1
+Monsters/Spider/Eyes_Side_Blink_0
+  rotate: false
+  xy: 679, 965
+  size: 350, 73
+  orig: 351, 73
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_Blink_1
+  rotate: false
+  xy: 1031, 965
+  size: 346, 73
+  orig: 346, 73
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_Red1
+  rotate: true
+  xy: 1146, 3
+  size: 352, 70
+  orig: 352, 70
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Eyes_Side_Red2
+  rotate: true
+  xy: 1008, 2
+  size: 353, 64
+  orig: 353, 65
+  offset: 0, 1
+  index: -1
+Monsters/Spider/FlagThing
+  rotate: false
+  xy: 1450, 611
+  size: 156, 161
+  orig: 156, 161
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Head
+  rotate: true
+  xy: 553, 1040
+  size: 375, 284
+  orig: 375, 284
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_1_Btm
+  rotate: false
+  xy: 530, 342
+  size: 90, 618
+  orig: 90, 618
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_1_Top
+  rotate: true
+  xy: 1132, 1694
+  size: 86, 245
+  orig: 86, 245
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_2_Btm
+  rotate: false
+  xy: 255, 1411
+  size: 89, 635
+  orig: 89, 635
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_2_Top
+  rotate: false
+  xy: 401, 11
+  size: 78, 234
+  orig: 78, 234
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_3_Btm
+  rotate: false
+  xy: 160, 1408
+  size: 93, 638
+  orig: 93, 638
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Leg_3_Top
+  rotate: true
+  xy: 1060, 1394
+  size: 100, 307
+  orig: 100, 307
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Legs
+  rotate: true
+  xy: 160, 964
+  size: 442, 317
+  orig: 442, 317
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Bottom
+  rotate: false
+  xy: 529, 962
+  size: 148, 42
+  orig: 148, 42
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Bottom_Red
+  rotate: false
+  xy: 912, 1894
+  size: 149, 58
+  orig: 149, 58
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Closed
+  rotate: true
+  xy: 1379, 968
+  size: 126, 138
+  orig: 126, 138
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Default
+  rotate: false
+  xy: 912, 1418
+  size: 146, 142
+  orig: 146, 142
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Open
+  rotate: true
+  xy: 1534, 1845
+  size: 201, 150
+  orig: 201, 150
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Mouth_Red
+  rotate: true
+  xy: 1539, 1193
+  size: 146, 142
+  orig: 146, 142
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Robe_Left
+  rotate: false
+  xy: 1088, 589
+  size: 179, 374
+  orig: 179, 374
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Robe_Left_Torn
+  rotate: false
+  xy: 1269, 589
+  size: 179, 374
+  orig: 179, 374
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Robe_Right
+  rotate: false
+  xy: 839, 1040
+  size: 195, 375
+  orig: 212, 375
+  offset: 17, 0
+  index: -1
+Monsters/Spider/Robe_Right_Torn
+  rotate: false
+  xy: 891, 588
+  size: 195, 375
+  orig: 212, 375
+  offset: 17, 0
+  index: -1
+Monsters/Spider/Robe_TopBit
+  rotate: true
+  xy: 1036, 1562
+  size: 289, 94
+  orig: 289, 94
+  offset: 0, 0
+  index: -1
+Monsters/Spider/SpiderNeck
+  rotate: true
+  xy: 1686, 1566
+  size: 260, 308
+  orig: 260, 308
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Symbols
+  rotate: true
+  xy: 1479, 40
+  size: 318, 205
+  orig: 318, 205
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Tail
+  rotate: false
+  xy: 759, 4
+  size: 86, 343
+  orig: 86, 343
+  offset: 0, 0
+  index: -1
+Monsters/Spider/Web
+  rotate: false
+  xy: 2, 958
+  size: 77, 1088
+  orig: 77, 1088
+  offset: 0, 0
+  index: -1
+Monsters/Spider/WebDark
+  rotate: false
+  xy: 81, 958
+  size: 77, 1088
+  orig: 77, 1088
+  offset: 0, 0
+  index: -1
+Other/ATTACK_EFFECT
+  rotate: false
+  xy: 622, 349
+  size: 267, 611
+  orig: 267, 611
+  offset: 0, 0
+  index: -1
+Other/blood_explosion0001
+  rotate: false
+  xy: 912, 1565
+  size: 93, 100
+  orig: 323, 313
+  offset: 93, 132
+  index: -1
+Other/blood_explosion0002
+  rotate: true
+  xy: 1379, 1894
+  size: 152, 153
+  orig: 323, 313
+  offset: 70, 120
+  index: -1
+Other/blood_explosion0003
+  rotate: true
+  xy: 1628, 468
+  size: 203, 195
+  orig: 323, 313
+  offset: 48, 106
+  index: -1
+Other/blood_explosion0004
+  rotate: true
+  xy: 999, 357
+  size: 229, 218
+  orig: 323, 313
+  offset: 33, 95
+  index: -1
+Other/blood_explosion0005
+  rotate: false
+  xy: 481, 12
+  size: 249, 233
+  orig: 323, 313
+  offset: 20, 73
+  index: -1
+Other/blood_explosion0006
+  rotate: false
+  xy: 141, 5
+  size: 258, 240
+  orig: 323, 313
+  offset: 15, 66
+  index: -1
+Other/blood_explosion0007
+  rotate: true
+  xy: 1132, 1782
+  size: 264, 245
+  orig: 323, 313
+  offset: 9, 58
+  index: -1
+Other/blood_explosion0008
+  rotate: false
+  xy: 1686, 861
+  size: 272, 253
+  orig: 323, 313
+  offset: 6, 47
+  index: -1
+Other/blood_explosion0009
+  rotate: false
+  xy: 1686, 1306
+  size: 282, 258
+  orig: 323, 313
+  offset: 3, 39
+  index: -1
+Other/blood_explosion0010
+  rotate: true
+  xy: 1290, 1096
+  size: 296, 247
+  orig: 323, 313
+  offset: 3, 38
+  index: -1
+Other/blood_explosion0011
+  rotate: true
+  xy: 1036, 1095
+  size: 297, 252
+  orig: 323, 313
+  offset: 4, 21
+  index: -1
+Other/blood_explosion0012
+  rotate: false
+  xy: 1379, 1590
+  size: 304, 253
+  orig: 323, 313
+  offset: 2, 4
+  index: -1
+Other/blood_explosion0013
+  rotate: false
+  xy: 1686, 1828
+  size: 310, 218
+  orig: 323, 313
+  offset: 1, 20
+  index: -1
+Other/blood_explosion0014
+  rotate: false
+  xy: 1686, 1116
+  size: 279, 188
+  orig: 323, 313
+  offset: 0, 30
+  index: -1
+Other/blood_explosion0015
+  rotate: true
+  xy: 1218, 36
+  size: 319, 193
+  orig: 323, 313
+  offset: 0, 5
+  index: -1
+Other/blood_explosion0016
+  rotate: true
+  xy: 2, 3
+  size: 242, 137
+  orig: 323, 313
+  offset: 25, 34
+  index: -1
+Other/blood_explosion0017
+  rotate: false
+  xy: 1539, 1341
+  size: 145, 107
+  orig: 323, 313
+  offset: 28, 18
+  index: -1
+Other/slam_effect0001
+  rotate: false
+  xy: 1450, 774
+  size: 219, 91
+  orig: 264, 133
+  offset: 11, 23
+  index: -1
+Other/slam_effect0002
+  rotate: true
+  xy: 1539, 966
+  size: 225, 102
+  orig: 264, 133
+  offset: 10, 19
+  index: -1
+Other/slam_effect0003
+  rotate: true
+  xy: 891, 356
+  size: 230, 106
+  orig: 264, 133
+  offset: 10, 17
+  index: -1
+Other/slam_effect0004
+  rotate: false
+  xy: 1450, 867
+  size: 225, 97
+  orig: 264, 133
+  offset: 18, 19
+  index: -1
+Other/slam_effect0005
+  rotate: false
+  xy: 530, 247
+  size: 227, 93
+  orig: 264, 133
+  offset: 17, 25
+  index: -1
+Other/slam_effect0006
+  rotate: false
+  xy: 912, 1853
+  size: 218, 39
+  orig: 264, 133
+  offset: 17, 82
+  index: -1

@@ -1,0 +1,41 @@
+
+DecorationShopGuyFish.png
+size: 4096,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/Fish
+  rotate: true
+  xy: 2, 195
+  size: 1825, 1795
+  orig: 1825, 1795
+  offset: 0, 0
+  index: -1
+images/Fish_Eye
+  rotate: false
+  xy: 2, 2
+  size: 256, 191
+  orig: 256, 191
+  offset: 0, 0
+  index: -1
+images/Fish_Eye_1
+  rotate: false
+  xy: 260, 22
+  size: 256, 171
+  orig: 256, 191
+  offset: 0, 8
+  index: -1
+images/Fish_Eye_Blink
+  rotate: false
+  xy: 518, 26
+  size: 250, 167
+  orig: 256, 191
+  offset: 1, 19
+  index: -1
+images/Fish_Finn
+  rotate: false
+  xy: 1799, 1504
+  size: 362, 516
+  orig: 362, 516
+  offset: 0, 0
+  index: -1

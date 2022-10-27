@@ -1,0 +1,97 @@
+
+DeathCat.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BODY
+  rotate: false
+  xy: 406, 122
+  size: 226, 122
+  orig: 233, 122
+  offset: 7, 0
+  index: -1
+BODY_Snarl
+  rotate: false
+  xy: 180, 119
+  size: 224, 125
+  orig: 231, 125
+  offset: 7, 0
+  index: -1
+COLLAR
+  rotate: false
+  xy: 274, 13
+  size: 104, 52
+  orig: 104, 52
+  offset: 0, 0
+  index: -1
+FACE_CURTAINS
+  rotate: false
+  xy: 484, 2
+  size: 132, 90
+  orig: 132, 90
+  offset: 0, 0
+  index: -1
+FaceNormal
+  rotate: false
+  xy: 2, 6
+  size: 134, 52
+  orig: 134, 53
+  offset: 0, 1
+  index: -1
+FaceSnarl
+  rotate: false
+  xy: 138, 12
+  size: 134, 46
+  orig: 134, 46
+  offset: 0, 0
+  index: -1
+HEAD
+  rotate: false
+  xy: 2, 60
+  size: 176, 184
+  orig: 181, 184
+  offset: 5, 0
+  index: -1
+LEG_BACK
+  rotate: false
+  xy: 618, 38
+  size: 54, 82
+  orig: 54, 82
+  offset: 0, 0
+  index: -1
+LEG_RIGHT
+  rotate: false
+  xy: 380, 5
+  size: 102, 75
+  orig: 102, 75
+  offset: 0, 0
+  index: -1
+Mouth_Growl
+  rotate: false
+  xy: 180, 67
+  size: 115, 50
+  orig: 115, 50
+  offset: 0, 0
+  index: -1
+Mouth_Normal
+  rotate: false
+  xy: 505, 94
+  size: 30, 26
+  orig: 30, 26
+  offset: 0, 0
+  index: -1
+Mouth_Snarl
+  rotate: false
+  xy: 297, 82
+  size: 113, 35
+  orig: 113, 35
+  offset: 0, 0
+  index: -1
+SnarlSpit
+  rotate: false
+  xy: 412, 94
+  size: 91, 26
+  orig: 91, 26
+  offset: 0, 0
+  index: -1
