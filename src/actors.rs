@@ -1,16 +1,16 @@
 use std::{io, thread};
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader, Write};
-use std::num::NonZeroU32;
-use std::ops::Deref;
-use std::path::Path;
+
+
+
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicI64, Ordering};
 
 use color_eyre::eyre::{ErrReport, eyre};
 use color_eyre::Report;
-use fast_image_resize::PixelType;
+
 use gifski::progress::NoProgress;
 use gifski::Settings;
 use imgref::ImgVec;
@@ -21,7 +21,7 @@ use rgb::FromSlice;
 use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson};
 use rusty_spine::BlendMode as SpineBlendMode;
 use serde::Serialize;
-use serde_json::json;
+
 use sfml::graphics::{Color as SfmlColor, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
 use sfml::graphics::blend_mode::{Equation as BlendEquation, Factor as BlendFactor};
 use sfml::graphics::BlendMode as SfmlBlendMode;
@@ -138,6 +138,7 @@ pub struct SpineActor {
     pub skins: Vec<Skin>,
     pub animations: Vec<Animation>,
     has_slot_colours: bool,
+    #[allow(dead_code)]
     atlas: Arc<Atlas>,
     skeleton_data: Arc<SkeletonData>,
     animation_state_data: Arc<AnimationStateData>,

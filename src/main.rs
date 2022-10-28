@@ -1,6 +1,5 @@
 use std::borrow::Cow;
 use std::collections::HashMap;
-use std::fs;
 use std::net::SocketAddr;
 use std::ops::Deref;
 use std::str::FromStr;
