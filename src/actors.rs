@@ -2,6 +2,7 @@ use std::{io, thread};
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader, Write};
 use std::num::NonZeroU32;
+use std::ops::Deref;
 use std::path::Path;
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
@@ -27,6 +28,8 @@ use sfml::graphics::BlendMode as SfmlBlendMode;
 use sfml::SfBox;
 use sfml::system::Vector2f;
 use tracing::{debug, info, warn};
+use crate::resize;
+use crate::util::{ChannelWriter, Slug};
 
 const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
     color_src_factor: BlendFactor::SrcAlpha,
@@ -65,20 +68,6 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
 };
 
 static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
-
-pub trait Slug {
-    fn slugify_string(s: &str) -> String {
-        static NON_ALPHA: OnceCell<Regex> = OnceCell::new();
-        static LOWER_UPPER: OnceCell<Regex> = OnceCell::new();
-        let non_alpha = NON_ALPHA.get_or_init(|| Regex::new(r"[^A-Za-z0-9]").unwrap());
-        let lower_upper = LOWER_UPPER.get_or_init(|| Regex::new(r"([a-z])([A-Z])").unwrap());
-        let s = non_alpha.replace(s, "-");
-        let s = lower_upper.replace(&s, "$2-$1");
-        s.to_ascii_lowercase().to_owned()
-    }
-
-    fn slug(&self) -> String;
-}
 
 fn only_head_includes(slot_name: &str) -> bool {
     static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
@@ -121,42 +110,7 @@ fn spine_init() {
     });
 }
 
-// We want to own the image because we're going to mutate it before we resize it
-fn resize(from: (usize, usize), to: (usize, usize), image: Vec<u8>) -> Vec<u8> {
-    debug!("AA: resizing to {}x{}", to.0, to.1);
-    // RenderTexture lives on the GPU, so this could be done quicker with some GPU-based
-    // algorithm, but SFML doesn't have fancy resize algorithms on the GPU right now.
-
-    let mut resize_img = fast_image_resize::Image::from_vec_u8(
-        NonZeroU32::new(from.0 as u32).unwrap(),
-        NonZeroU32::new(from.1 as u32).unwrap(),
-        image.to_vec(),
-        PixelType::U8x4
-    ).unwrap();
-
-    // According to the docs this is required
-    let alpha_mul_div = fast_image_resize::MulDiv::default();
-    alpha_mul_div
-        .multiply_alpha_inplace(&mut resize_img.view_mut())
-        .unwrap();
-
-    let mut destination_image = fast_image_resize::Image::new(
-        NonZeroU32::new(to.0 as u32).unwrap(),
-        NonZeroU32::new(to.1 as u32).unwrap(),
-        PixelType::U8x4
-    );
-
-    let mut resizer = fast_image_resize::Resizer::new(
-        fast_image_resize::ResizeAlg::Convolution(fast_image_resize::FilterType::Lanczos3),
-    );
-    resizer.resize(&resize_img.view(), &mut destination_image.view_mut()).unwrap();
-
-    alpha_mul_div.divide_alpha_inplace(&mut destination_image.view_mut()).unwrap();
-    debug!("AA: resize finished");
-    destination_image.into_vec()
-}
-
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct Skin {
     pub name: String,
 }
@@ -167,32 +121,7 @@ impl Slug for Animation {
     }
 }
 
-impl Skin {
-    fn is_spoiler(&self, actor: &str) -> bool {
-        static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
-        static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
-        let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
-            r"^(Archer|Badger\d?|Boss Beholder 5|Elephant4|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|default)$"
-        ).unwrap());
-        let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
-            "^(Goat|Owl|Snake|default|effects-top)$"
-        ).unwrap());
-
-        if actor == "follower" {
-            hide_follower.is_match(&self.name)
-        } else if actor == "player" {
-            hide_player.is_match(&self.name)
-        } else if actor == "ratau" {
-            false
-        } else if actor == "fox" {
-            false
-        } else {
-            panic!("Unexpected actor for is_spoiler: {}", actor)
-        }
-    }
-}
-
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct Animation {
     pub name: String,
     pub duration: f32
@@ -204,59 +133,15 @@ impl Slug for Skin {
     }
 }
 
-impl Animation {
-    fn is_spoiler(&self, actor: &str) -> bool {
-        static HIDE_FOLLOWER: OnceCell<Regex> = OnceCell::new();
-        static HIDE_PLAYER: OnceCell<Regex> = OnceCell::new();
-        let hide_follower = HIDE_FOLLOWER.get_or_init(|| Regex::new(
-            r"^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Fishing/.*|Food/food-fillbowl|Insane/.*|OldStuff/.*|Possessed/.*|Prison/(stocks-dead.*|stocks-die.*)|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*)$"
-        ).unwrap());
-        let hide_player = HIDE_PLAYER.get_or_init(|| Regex::new(
-            r"^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple-.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$"
-        ).unwrap());
-
-        if actor == "follower" {
-            hide_follower.is_match(&self.name)
-        } else if actor == "player" {
-            hide_player.is_match(&self.name)
-        } else if actor == "ratau" {
-            false
-        } else if actor == "fox" {
-            false
-        } else {
-            panic!("Unexpected actor for is_spoiler: {}", actor)
-        }
-    }
-}
-
-#[derive(Serialize)]
-pub struct Actor {
-    pub name: String,
-    pub description: String,
+#[derive(Debug)]
+pub struct SpineActor {
     pub skins: Vec<Skin>,
     pub animations: Vec<Animation>,
-    #[serde(skip)]
-    #[allow(dead_code)]
+    has_slot_colours: bool,
     atlas: Arc<Atlas>,
-    #[serde(skip)]
     skeleton_data: Arc<SkeletonData>,
-    #[serde(skip)]
     animation_state_data: Arc<AnimationStateData>,
-    #[serde(skip)]
-    actor_mutex: std::sync::Mutex<()>
-}
-
-impl Actor {
-    pub fn serialize_without_spoilers(&self) -> serde_json::Value {
-        let skins: Vec<serde_json::Value> = self.skins.iter().filter(|s| !s.is_spoiler(&self.name)).map(|s| json!({"name": s.name})).collect();
-        let animations: Vec<serde_json::Value> = self.animations.iter().filter(|a| !a.is_spoiler(&self.name)).map(|a| json!({"name": a.name, "duration": a.duration})).collect();
-        json!({
-            "name": self.name,
-            "description": self.description,
-            "skins": skins,
-            "animations": animations
-        })
-    }
+    mutex: std::sync::Mutex<()>
 }
 
 #[derive(Debug)]
@@ -283,6 +168,7 @@ impl RenderParameters {
 #[derive(Debug)]
 struct PreparedRenderParameters {
     parameters: RenderParameters,
+    skin: rusty_spine::Skin,
     frame_count: u32,
     render_width: usize,
     render_height: usize,
@@ -300,43 +186,18 @@ struct Frame<'a> {
     timestamp: f64
 }
 
-struct ChannelWriter {
-    sender: Option<futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>>
-}
-
-impl ChannelWriter {
-    fn new(sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> ChannelWriter {
-        ChannelWriter { sender: Some(sender) }
-    }
-}
-
-impl io::Write for ChannelWriter {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.sender.as_ref().unwrap().unbounded_send(Ok(buf.to_vec())).map_err(|_| io::Error::new(io::ErrorKind::BrokenPipe, "Receiver closed"))?;
-        Ok(buf.len())
-    }
-
-    fn flush(&mut self) -> io::Result<()> {
-        drop(self.sender.take());
-        Ok(())
-    }
-}
-
-impl Actor {
-    pub async fn new<P: AsRef<Path>>(name: String, description: String, skeleton_path: P, atlas_path: P) -> color_eyre::Result<Actor> {
+impl SpineActor {
+    pub fn from_config(config: &crate::ActorConfig) -> color_eyre::Result<SpineActor> {
         spine_init();
 
-        let atlas = Arc::new(Atlas::new_from_file(atlas_path)?);
+        let atlas = Arc::new(Atlas::new_from_file(&config.atlas)?);
 
-        let skeleton_data = match skeleton_path.as_ref().extension().map(|f| f.to_string_lossy()) {
-            Some(ext) if ext == "json" => {
-                let skeleton_json = SkeletonJson::new(atlas.clone());
-                Arc::new(skeleton_json.read_skeleton_data_file(skeleton_path)?)
-            },
-            _ => {
-                let skeleton_binary = SkeletonBinary::new(atlas.clone());
-                Arc::new(skeleton_binary.read_skeleton_data_file(skeleton_path)?)
-            }
+        let skeleton_data = if config.skeleton.ends_with(".json") {
+            let skeleton_json = SkeletonJson::new(atlas.clone());
+            Arc::new(skeleton_json.read_skeleton_data_file(&config.skeleton)?)
+        } else {
+            let skeleton_binary = SkeletonBinary::new(atlas.clone());
+            Arc::new(skeleton_binary.read_skeleton_data_file(&config.skeleton)?)
         };
 
         let animation_state_data = Arc::new(AnimationStateData::new(skeleton_data.clone()));
@@ -356,33 +217,33 @@ impl Actor {
             })
         };
 
-        Ok(Actor {
-            name,
-            description,
+        Ok(SpineActor {
             skins,
             animations,
+            has_slot_colours: config.has_slot_colours,
             atlas,
             skeleton_data,
             animation_state_data,
-            actor_mutex: std::sync::Mutex::new(())
+            mutex: std::sync::Mutex::new(())
         })
     }
 
-    fn prepare_render(&self, params: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
-        let _guard = self.actor_mutex.lock().unwrap();
+    fn prepare_render(&self, parameters: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
+        let _guard = self.mutex.lock().unwrap();
 
         let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
-        let render_scale = params.render_scale();
-        let aa_factor = if params.antialiasing == 0 { 1 } else { params.antialiasing };
+        let render_scale = parameters.render_scale();
+        let aa_factor = if parameters.antialiasing == 0 { 1 } else { parameters.antialiasing };
 
-        debug!("Scale x{}, AA x{}, total render scale {}", params.scale, aa_factor, render_scale);
+        debug!("Scale x{}, AA x{}, total render scale {}", parameters.scale, aa_factor, render_scale);
 
-        debug!("{}-{} will be {} frames ({} fps)", params.start_time, params.end_time, (params.end_time - params.start_time) / params.frame_delay, 1.0 / params.frame_delay);
+        debug!("{}-{} will be {} frames ({} fps)", parameters.start_time, parameters.end_time, (parameters.end_time - parameters.start_time) / parameters.frame_delay, 1.0 / parameters.frame_delay);
 
-        // can we avoid having to make the skin twice?
+        // Make sure we don't duplicate skin names - not sure if this is crucial but I was getting
+        // some mysterious crashes before.
         let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
         let mut skin = rusty_spine::Skin::new(&skin_name);
-        for skin_name in &params.skins {
+        for skin_name in &parameters.skins {
             skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
         }
 
@@ -390,11 +251,7 @@ impl Actor {
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
-        // for slot in controller.skeleton.slots() {
-        //     debug!("slot: {}", slot.data().name());
-        // }
-
-        if params.only_head {
+        if parameters.only_head {
             for mut slot in controller.skeleton.slots_mut() {
                 if !only_head_includes(slot.data().name()) {
                     // Make the slot transparent
@@ -411,11 +268,11 @@ impl Actor {
         let mut min_y = f32::MAX;
         let mut max_y = f32::MIN;
         controller.animation_state.clear_tracks();
-        controller.animation_state.set_animation_by_name(0, &params.animation, true).unwrap();
-        controller.update(params.start_time);
-        let mut time = params.start_time;
+        controller.animation_state.set_animation_by_name(0, &parameters.animation, true).unwrap();
+        controller.update(parameters.start_time);
+        let mut time = parameters.start_time;
         let mut frame_count = 0;
-        while time <= params.end_time {
+        while time <= parameters.end_time {
             for r in controller.renderables().iter() {
                 if r.color.a < 0.001 { continue };
                 for [x, y] in &r.vertices {
@@ -425,8 +282,8 @@ impl Actor {
                     max_y = max_y.max(*y);
                 }
             }
-            controller.update(params.frame_delay);
-            time += params.frame_delay;
+            controller.update(parameters.frame_delay);
+            time += parameters.frame_delay;
             frame_count += 1;
         }
         debug!("Bounding box: ({min_x}, {min_y}) - ({max_x}, {max_y})");
@@ -441,7 +298,8 @@ impl Actor {
         debug!("Final scale is {}x{}, render will be {}x{}", final_width, final_height, render_width, render_height);
 
         Ok(PreparedRenderParameters {
-            parameters: params,
+            parameters,
+            skin,
             frame_count,
             render_width,
             render_height,
@@ -453,7 +311,7 @@ impl Actor {
     }
 
     fn render(&self, prepared_params: PreparedRenderParameters, mut frame_callback: impl FnMut(&Frame) -> Result<(), ErrReport>) {
-        let _guard = self.actor_mutex.lock().unwrap();
+        let _guard = self.mutex.lock().unwrap();
 
         let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
 
@@ -467,20 +325,12 @@ impl Actor {
             (params.background_colour.a * 255.0).round() as u8,
         );
 
-        let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
-        let mut skin = rusty_spine::Skin::new(&skin_name);
-        for skin_name in &params.skins {
-            skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
-        }
-
-        debug!("Created skin from {} requested", params.skins.len());
-
-        controller.skeleton.set_skin(&skin);
+        controller.skeleton.set_skin(&prepared_params.skin);
         controller.skeleton.set_scale([render_scale, render_scale]);
         controller.skeleton.set_to_setup_pose();
 
-        // Only follower has slot colours
-        if self.name == "follower" {
+        // Only follower supports slot colours and only_head
+        if self.has_slot_colours {
             for mut slot in controller.skeleton.slots_mut() {
                 if params.only_head && !only_head_includes(slot.data().name()) {
                     // Make the slot transparent
@@ -564,7 +414,7 @@ impl Actor {
                 // No antialiasing, so just use the image as-is
                 image
             } else {
-                resize((prepared_params.render_width, prepared_params.render_height), (prepared_params.final_width, prepared_params.final_height), image)
+                resize::resize((prepared_params.render_width, prepared_params.render_height), (prepared_params.final_width, prepared_params.final_height), image)
             };
 
             let f = Frame {
@@ -576,6 +426,7 @@ impl Actor {
             };
 
             if let Err(e) = frame_callback(&f) {
+                // If we can't send the frames anywhere, there's no point carrying on with rendering them
                 warn!("frame callback failed {:?}, aborting render", e);
                 break;
             }

@@ -15,46 +15,32 @@
   }
 
   function setSkeleton(target) {
-    skeleton = target
-    if (target === "player") {
-      selectedAnimation = {name: "idle"}
-      selectedSkins = [{name: "Lamb"}]
-    } else if (target === "ratau") {
-      selectedAnimation = {name: "idle"}
-      selectedSkins = [{name: "normal"}]
-    } else if (target === "fox") {
-      selectedAnimation = {name: "animation"}
-      selectedSkins = [{name: "default"}]
-    } else {
-      selectedAnimation = {name: "idle"}
-      selectedSkins = [{name: "Fox"}]
-    }
-
-    axios.get(`/v1/${skeleton}`)
+    axios.get(`/v1/${target.slug}`)
             .then(resp => {
               allAnimations = resp.data["animations"]
                       .sort((a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
                       .map(anim => ({
-                        css_class: `${skeleton}-animations`,
-                        id: `${skeleton}-animations-${slugify(anim["name"])}`,
+                        css_class: `${target.slug}-animations`,
+                        id: `${target.slug}-animations-${slugify(anim["name"])}`,
                         ...anim
                       }))
               allSkins = resp.data["skins"]
                       .sort((a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
                       .map(skin => ({
-                        css_class: `${skeleton}-skins`,
-                        id: `${skeleton}-skins-${slugify(skin["name"])}`,
+                        css_class: `${target.slug}-skins`,
+                        id: `${target.slug}-skins-${slugify(skin["name"])}`,
                         ...skin
                       }))
 
-              // Turn the default selectedAnimation and selectedSkins values into real objects
-              selectedAnimation = allAnimations.find(a => a.name === selectedAnimation.name)
-              selectedSkins = [allSkins.find(s => s.name === selectedSkins[0].name)]
+              selectedSkeleton = target
+              selectedAnimation = allAnimations.find(a => target.default_animation === a.name)
+              selectedSkins = allSkins.filter(s => target.default_skins.includes(s.name))
+              scale = target.default_scale
             });
   }
 
-  let skeleton
-  let selectedAnimation
+  let selectedSkeleton = {}
+  let selectedAnimation = ""
   let selectedSkins = []
   let showWelcomeModal = true
   let spoilersEnabled = window.spoilersEnabled
@@ -67,6 +53,7 @@
   let singleFrame = false
   let singleFrameTimestamp = 0.0
 
+  let allSkeletons = [];
   let allAnimations = [];
   let allSkins = [];
   let allColours = {};
@@ -107,13 +94,13 @@
   $: animationUrl = () => {
     if (selectedSkins.length === 0 || !selectedAnimation) { return "" }
     let params = [];
-    let baseUrl = `/v1/${skeleton}/${encodeURIComponent(selectedSkins[0].name)}`
+    let baseUrl = `/v1/${selectedSkeleton.slug}/${encodeURIComponent(selectedSkins[0].name)}`
     for (const additionalSkin of selectedSkins.slice(1)) {
       params.push(`add_skin=${encodeURIComponent(additionalSkin.name)}`)
     }
     params.push(`scale=${scale}`)
     params.push(`animation=${selectedAnimation.name}`)
-    if (skeleton === "follower") {
+    if (selectedSkeleton.slug === "follower") {
       for (const [key, value] of Object.entries(colours)){
         // "last" is an unknown colour entry, but it doesn't seem to have any effect - just suppress it for now.
         // I haven't removed it from the json just in case it does turn out to be something.
@@ -132,8 +119,9 @@
 
   $: headUrl = () => {
     if (selectedSkins.length === 0) { return "" }
+    if (!selectedSkeleton.slug) { return "" }
     let params = [];
-    let baseUrl = `/v1/${skeleton}/${encodeURIComponent(selectedSkins[0].name)}`
+    let baseUrl = `/v1/${selectedSkeleton.slug}/${encodeURIComponent(selectedSkins[0].name)}`
     for (const additionalSkin of selectedSkins.slice(1)) {
       params.push(`add_skin=${encodeURIComponent(additionalSkin.name)}`)
     }
@@ -144,7 +132,10 @@
   }
 
   onMount(async () => {
-    setSkeleton("follower")
+    axios.get("/v1/").then(resp => {
+      allSkeletons = resp.data.actors
+      setSkeleton(allSkeletons.find(s => s.slug === "follower"))
+    })
     axios.get("/v1/follower/colours").then(resp => allColours = resp.data)
   })
 </script>
@@ -152,18 +143,18 @@
 <nav class="navbar py-2 px-2">
   <div id="navbar" class="navbar-menu is-active">
     <div class="navbar-start">
-      <a class="navbar-item button mx-1" class:is-primary={skeleton === "player"} on:click={()=> setSkeleton("player")}>
-        Lamb
-      </a>
-      <a class="navbar-item button mx-1" class:is-primary={skeleton === "follower"} on:click={() => setSkeleton("follower")}>
-        Follower
-      </a>
-      <a class="navbar-item button mx-1" class:is-primary={skeleton === "ratau"} on:click={() => setSkeleton("ratau")}>
-        Ratau
-      </a>
-      <a class="navbar-item button mx-1" class:is-primary={skeleton === "fox"} on:click={() => setSkeleton("fox")}>
-        Fox
-      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          {selectedSkeleton.name}
+        </a>
+        <div class="navbar-dropdown">
+          {#each allSkeletons as skel}
+            <a class="navbar-item" class:is-primary={selectedSkeleton.slug === skel.slug} on:click={()=> setSkeleton(skel)}>
+              {skel.name}
+            </a>
+          {/each}
+        </div>
+      </div>
     </div>
 
     <div class="navbar-end">
@@ -224,7 +215,7 @@
     <div class="column">
       <Scale bind:value={scale}></Scale>
 
-    {#if skeleton === "follower"}
+    {#if selectedSkeleton.slug === "follower"}
       <p class="mt-4">
         <ColourPicker colours={filteredColours()} url={headUrl()} bind:value={colours}></ColourPicker>
       </p>

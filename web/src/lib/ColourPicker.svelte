@@ -16,6 +16,7 @@
     }
 
     function urlFor(colourSet) {
+        if (!url) { return "" }
         // "last" is an unknown colour entry, but it doesn't seem to have any effect - just suppress it for now.
         // I haven't removed it from the json just in case it does turn out to be something.
         let params = Object.entries(colourSet).filter(([k, _]) => k !== "last").map(([k, v]) => `${k}=${encodeURIComponent(v)}`)

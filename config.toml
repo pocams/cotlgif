@@ -1,0 +1,224 @@
+[[actors]]
+name = "Lamb"
+slug = "player"
+atlas = "cotl/player-main.atlas"
+skeleton = "cotl/player-main.skel"
+order = 100
+default_skins = ["Lamb"]
+default_animation = "idle"
+spoiler_skins = '^(Goat|Owl|Snake|default|effects-top)$'
+spoiler_animations = '^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple-.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$'
+
+[[actors]]
+name = "Follower"
+slug = "follower"
+atlas = "cotl/Follower.atlas"
+skeleton = "cotl/Follower.skel"
+order = 99
+default_skins = ["Fox"]
+default_animation = "idle"
+spoiler_skins = '^(Archer|Badger\d?|Boss Beholder 5|Elephant4|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Rags.*|Robes.*|Warrior)|Hats/Chef|HorseKing|default)$'
+spoiler_animations = '^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Fishing/.*|Food/food-fillbowl|Insane/.*|OldStuff/.*|Possessed/.*|Prison/(stocks-dead.*|stocks-die.*)|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*)$'
+has_slot_colours = true
+
+[[actors]]
+name = "Cat seller sheep"
+slug = "cat-seller-sheep"
+atlas = "cotl/catSellerSheep.atlas"
+skeleton = "cotl/catSellerSheep.skel"
+is_spoiler = true
+default_skins = ["default"]
+default_animation = "animation"
+default_scale = 0.3
+
+[[actors]]
+name = "Rakshasa"
+slug = "rakshasa"
+atlas = "cotl/chefSeller.atlas"
+skeleton = "cotl/chefSeller.skel"
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "TOWW"
+slug = "toww"
+atlas = "cotl/DeathBig.atlas"
+skeleton = "cotl/DeathBig.skel"
+default_skins = ["default", "NoChains"]
+default_animation = "idle-crouched"
+default_scale = 0.5
+
+[[actors]]
+name = "Death cat"
+slug = "death-cat"
+atlas = "cotl/DeathCat.atlas"
+skeleton = "cotl/DeathCat.skel"
+is_spoiler = true
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "Plimbo"
+slug = "plimbo"
+atlas = "cotl/DecorationShopGuy.atlas"
+skeleton = "cotl/DecorationShopGuy.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Plimbo's fish"
+slug = "plimbos-fish"
+atlas = "cotl/DecorationShopGuyFish.atlas"
+skeleton = "cotl/DecorationShopGuyFish.skel"
+default_skins = ["default"]
+default_animation = "animation"
+default_scale = 0.3
+
+[[actors]]
+name = "Fisherman"
+slug = "fisherman"
+atlas = "cotl/Fisherman.atlas"
+skeleton = "cotl/Fisherman.skel"
+default_skins = ["default"]
+default_animation = "fishing"
+
+#[[actors]]
+#name = "Fishpond seller"
+#slug = "fishpond-seller"
+#atlas = "cotl/fishpondSeller.atlas"
+#skeleton = "cotl/fishpondSeller.skel"
+#default_skins = ["default"]
+#default_animation = "idle"
+
+[[actors]]
+name = "Leshy"
+slug = "leshy"
+atlas = "cotl/ForestCultLeader.atlas"
+skeleton = "cotl/ForestCultLeader.skel"
+default_skins = ["default"]
+default_animation = "idle"
+default_scale = 0.5
+
+[[actors]]
+name = "Fox"
+slug = "fox"
+atlas = "cotl/Fox.atlas"
+skeleton = "cotl/Fox.skel"
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "Heket"
+slug = "heket"
+atlas = "cotl/FrogCultLeader.atlas"
+skeleton = "cotl/FrogCultLeader.skel"
+default_skins = ["default"]
+default_animation = "idle"
+default_scale = 0.5
+
+[[actors]]
+name = "Haro"
+slug = "haro"
+atlas = "cotl/Haro.atlas"
+skeleton = "cotl/Haro.skel"
+default_skins = ["default"]
+default_animation = "idle"
+default_scale = 0.5
+
+[[actors]]
+name = "Kallamar"
+slug = "kallamar"
+atlas = "cotl/JellyBoss.atlas"
+skeleton = "cotl/JellyBoss.skel"
+default_skins = ["default"]
+default_animation = "leader/idle"
+default_scale = 0.5
+
+[[actors]]
+name = "Flinky"
+slug = "flinky"
+atlas = "cotl/KnucklebonesPlayer_0_Flinky.atlas"
+skeleton = "cotl/KnucklebonesPlayer_0_Flinky.skel"
+default_skins = ["Normal"]
+default_animation = "animation"
+
+[[actors]]
+name = "Klunko and Bop"
+slug = "klunko-and-bop"
+atlas = "cotl/KnucklebonesPlayer_1_KlunkoAndBop.atlas"
+skeleton = "cotl/KnucklebonesPlayer_1_KlunkoAndBop.skel"
+default_skins = ["Normal"]
+default_animation = "animation"
+
+[[actors]]
+name = "Shrumy"
+slug = "shrumy"
+atlas = "cotl/KnucklebonesPlayer_2_Shrumy.atlas"
+skeleton = "cotl/KnucklebonesPlayer_2_Shrumy.skel"
+default_skins = ["Normal"]
+default_animation = "animation"
+
+[[actors]]
+name = "Lighthouse Follower"
+slug = "lighthouse-follower"
+atlas = "cotl/LighthouseFollower.atlas"
+skeleton = "cotl/LighthouseFollower.skel"
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "Lighthouse Keeper"
+slug = "lighthouse-keeper"
+atlas = "cotl/LighthouseKeeper.atlas"
+skeleton = "cotl/LighthouseKeeper.skel"
+default_skins = ["Axolotl"]
+default_animation = "animation"
+
+[[actors]]
+name = "Sozo"
+slug = "sozo"
+atlas = "cotl/mushroomNPC.atlas"
+skeleton = "cotl/mushroomNPC.skel"
+default_skins = ["default"]
+default_animation = "animation2"
+
+[[actors]]
+name = "Ratau"
+slug = "ratau"
+atlas = "cotl/RatNPC.atlas"
+skeleton = "cotl/RatNPC.skel"
+default_skins = ["normal"]
+default_animation = "idle"
+
+[[actors]]
+name = "Ratoo"
+slug = "ratoo"
+atlas = "cotl/Ratoo.atlas"
+skeleton = "cotl/Ratoo.skel"
+default_skins = ["normal"]
+default_animation = "animation"
+
+[[actors]]
+name = "Shamura"
+slug = "shamura"
+atlas = "cotl/Spider.atlas"
+skeleton = "cotl/Spider.skel"
+default_skins = ["default"]
+default_animation = "idle"
+default_scale = 0.5
+
+[[actors]]
+name = "Helob"
+slug = "helob"
+atlas = "cotl/SpiderFollowerSeller.atlas"
+skeleton = "cotl/SpiderFollowerSeller.skel"
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "Clauneck"
+slug = "clauneck"
+atlas = "cotl/TarotSeller.atlas"
+skeleton = "cotl/TarotSeller.skel"
+default_skins = ["red"]
+default_animation = "idle"
