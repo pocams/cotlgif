@@ -222,3 +222,22 @@ atlas = "cotl/TarotSeller.atlas"
 skeleton = "cotl/TarotSeller.skel"
 default_skins = ["red"]
 default_animation = "idle"
+
+[[actors]]
+name = "Midas"
+slug = "midas"
+atlas = "cotl/MidasNPC.atlas"
+skeleton = "cotl/MidasNPC.skel"
+default_skins = ["default"]
+default_animation = "animation"
+
+[[actors]]
+name = "Baal & Aym"
+slug = "baal-aym"
+atlas = "cotl/DoorGuardians_2.atlas"
+skeleton = "cotl/DoorGuardians_2.skel"
+default_skins = ["red"]
+default_animation = "idle"
+# Hide the skins/animations that duplicate Death Cat
+spoiler_skins = '^default$'
+spoiler_animations = '^(animation|snarling-cat|oldbits.*|.*OLD)$'
