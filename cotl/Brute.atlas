@@ -1,0 +1,433 @@
+
+Brute.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Brute/Dust/Dust_0000
+  rotate: false
+  xy: 1263, 112
+  size: 161, 255
+  orig: 167, 255
+  offset: 6, 0
+  index: -1
+Brute/Dust/Dust_0002
+  rotate: true
+  xy: 1491, 602
+  size: 71, 200
+  orig: 167, 255
+  offset: 12, 8
+  index: -1
+Brute/Dust/Dust_0003
+  rotate: false
+  xy: 808, 16
+  size: 158, 219
+  orig: 167, 255
+  offset: 0, 0
+  index: -1
+Brute/Dust/Dust_0004
+  rotate: false
+  xy: 257, 300
+  size: 98, 195
+  orig: 167, 255
+  offset: 6, 0
+  index: -1
+Brute/Dust/Dust_0005
+  rotate: false
+  xy: 291, 3
+  size: 34, 114
+  orig: 167, 255
+  offset: 39, 4
+  index: -1
+Brute/Dust/Dust_0006
+  rotate: false
+  xy: 257, 2
+  size: 32, 183
+  orig: 167, 255
+  offset: 41, 0
+  index: -1
+Brute/EarthBits/EarthBit_0000
+  rotate: false
+  xy: 839, 433
+  size: 69, 65
+  orig: 69, 65
+  offset: 0, 0
+  index: -1
+Brute/EarthBits/EarthBit_0001
+  rotate: false
+  xy: 980, 459
+  size: 35, 39
+  orig: 35, 39
+  offset: 0, 0
+  index: -1
+Brute/EarthBits/EarthBit_0002
+  rotate: true
+  xy: 291, 119
+  size: 66, 63
+  orig: 66, 63
+  offset: 0, 0
+  index: -1
+Brute/EarthBits/EarthBit_0003
+  rotate: true
+  xy: 1313, 1317
+  size: 40, 46
+  orig: 40, 46
+  offset: 0, 0
+  index: -1
+Brute/EarthBits/EarthBit_0004
+  rotate: true
+  xy: 136, 31
+  size: 31, 43
+  orig: 31, 43
+  offset: 0, 0
+  index: -1
+Brute/Executioner/ArmLeft
+  rotate: true
+  xy: 1042, 1618
+  size: 138, 240
+  orig: 138, 240
+  offset: 0, 0
+  index: -1
+Brute/Executioner/ArmRight
+  rotate: true
+  xy: 1528, 1621
+  size: 145, 242
+  orig: 145, 242
+  offset: 0, 0
+  index: -1
+Brute/Executioner/Axe
+  rotate: false
+  xy: 1042, 623
+  size: 223, 478
+  orig: 223, 478
+  offset: 0, 0
+  index: -1
+Brute/Executioner/Axe_Stuck
+  rotate: false
+  xy: 1431, 363
+  size: 58, 310
+  orig: 59, 310
+  offset: 1, 0
+  index: -1
+Brute/Executioner/Cape_Executioner
+  rotate: false
+  xy: 615, 765
+  size: 425, 329
+  orig: 425, 329
+  offset: 0, 0
+  index: -1
+Brute/Executioner/HandRight
+  rotate: true
+  xy: 257, 187
+  size: 111, 94
+  orig: 111, 94
+  offset: 0, 0
+  index: -1
+Brute/Executioner/HandWeapon
+  rotate: false
+  xy: 1920, 1923
+  size: 88, 123
+  orig: 88, 123
+  offset: 0, 0
+  index: -1
+Brute/Executioner/Head
+  rotate: false
+  xy: 371, 923
+  size: 242, 243
+  orig: 242, 243
+  offset: 0, 0
+  index: -1
+Brute/Executioner/Robes
+  rotate: false
+  xy: 2, 644
+  size: 367, 399
+  orig: 367, 399
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Axe_Glow
+  rotate: true
+  xy: 1388, 1768
+  size: 278, 530
+  orig: 285, 537
+  offset: 3, 3
+  index: -1
+Brute/GoatCult/Body
+  rotate: false
+  xy: 1009, 1315
+  size: 302, 300
+  orig: 302, 300
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Eyes_Closed_Executioner
+  rotate: true
+  xy: 1920, 1772
+  size: 149, 37
+  orig: 149, 37
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Eyes_Executioner
+  rotate: false
+  xy: 968, 57
+  size: 168, 75
+  orig: 168, 75
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Eyes_Squint_Executioner
+  rotate: false
+  xy: 2, 11
+  size: 132, 51
+  orig: 132, 51
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Head
+  rotate: true
+  xy: 371, 384
+  size: 277, 223
+  orig: 277, 223
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/LegLeft
+  rotate: false
+  xy: 1335, 393
+  size: 71, 124
+  orig: 71, 124
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/LegRight
+  rotate: false
+  xy: 1335, 519
+  size: 87, 121
+  orig: 87, 121
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/Robes_Dead
+  rotate: false
+  xy: 2, 1045
+  size: 367, 399
+  orig: 367, 399
+  offset: 0, 0
+  index: -1
+Brute/GoatCult/SummonSparks
+  rotate: false
+  xy: 1267, 675
+  size: 280, 234
+  orig: 282, 238
+  offset: 1, 2
+  index: -1
+Brute/Impact/Impact_0000
+  rotate: false
+  xy: 1267, 911
+  size: 291, 190
+  orig: 331, 229
+  offset: 22, 13
+  index: -1
+Brute/Impact/Impact_0001
+  rotate: true
+  xy: 613, 432
+  size: 331, 224
+  orig: 331, 229
+  offset: 0, 1
+  index: -1
+Brute/Impact/Impact_0002
+  rotate: false
+  xy: 1009, 1103
+  size: 322, 210
+  orig: 331, 229
+  offset: 3, 12
+  index: -1
+Brute/MonsterHeart
+  rotate: false
+  xy: 1659, 1217
+  size: 180, 155
+  orig: 180, 155
+  offset: 0, 0
+  index: -1
+Brute/MonsterHeart_glow
+  rotate: false
+  xy: 1560, 922
+  size: 213, 186
+  orig: 219, 194
+  offset: 3, 4
+  index: -1
+Brute/Pants
+  rotate: false
+  xy: 839, 500
+  size: 184, 58
+  orig: 184, 58
+  offset: 0, 0
+  index: -1
+Brute/Rock
+  rotate: false
+  xy: 1042, 1758
+  size: 344, 288
+  orig: 344, 288
+  offset: 0, 0
+  index: -1
+Brute/SmearLarge/SmearLarge
+  rotate: false
+  xy: 615, 1096
+  size: 392, 519
+  orig: 401, 519
+  offset: 0, 0
+  index: -1
+Brute/blood_explosion0001
+  rotate: false
+  xy: 917, 331
+  size: 93, 100
+  orig: 323, 313
+  offset: 93, 132
+  index: -1
+Brute/blood_explosion0002
+  rotate: true
+  xy: 1560, 768
+  size: 152, 153
+  orig: 323, 313
+  offset: 70, 120
+  index: -1
+Brute/blood_explosion0003
+  rotate: true
+  xy: 839, 560
+  size: 203, 195
+  orig: 323, 313
+  offset: 48, 106
+  index: -1
+Brute/blood_explosion0004
+  rotate: false
+  xy: 577, 17
+  size: 229, 218
+  orig: 323, 313
+  offset: 33, 95
+  index: -1
+Brute/blood_explosion0005
+  rotate: false
+  xy: 1012, 134
+  size: 249, 233
+  orig: 323, 313
+  offset: 20, 73
+  index: -1
+Brute/blood_explosion0006
+  rotate: true
+  xy: 371, 663
+  size: 258, 240
+  orig: 323, 313
+  offset: 15, 66
+  index: -1
+Brute/blood_explosion0007
+  rotate: false
+  xy: 1597, 1374
+  size: 264, 245
+  orig: 323, 313
+  offset: 9, 58
+  index: -1
+Brute/blood_explosion0008
+  rotate: true
+  xy: 2, 64
+  size: 272, 253
+  orig: 323, 313
+  offset: 6, 47
+  index: -1
+Brute/blood_explosion0009
+  rotate: false
+  xy: 1313, 1359
+  size: 282, 258
+  orig: 323, 313
+  offset: 3, 39
+  index: -1
+Brute/blood_explosion0010
+  rotate: false
+  xy: 1361, 1110
+  size: 296, 247
+  orig: 323, 313
+  offset: 3, 38
+  index: -1
+Brute/blood_explosion0011
+  rotate: false
+  xy: 1036, 369
+  size: 297, 252
+  orig: 323, 313
+  offset: 4, 21
+  index: -1
+Brute/blood_explosion0012
+  rotate: true
+  xy: 2, 338
+  size: 304, 253
+  orig: 323, 313
+  offset: 2, 4
+  index: -1
+Brute/blood_explosion0013
+  rotate: true
+  xy: 357, 72
+  size: 310, 218
+  orig: 323, 313
+  offset: 1, 20
+  index: -1
+Brute/blood_explosion0014
+  rotate: false
+  xy: 1426, 173
+  size: 279, 188
+  orig: 323, 313
+  offset: 0, 30
+  index: -1
+Brute/blood_explosion0015
+  rotate: false
+  xy: 596, 237
+  size: 319, 193
+  orig: 323, 313
+  offset: 0, 5
+  index: -1
+Brute/blood_explosion0016
+  rotate: false
+  xy: 1284, 1619
+  size: 242, 137
+  orig: 323, 313
+  offset: 25, 34
+  index: -1
+Brute/blood_explosion0017
+  rotate: true
+  xy: 257, 497
+  size: 145, 107
+  orig: 323, 313
+  offset: 28, 18
+  index: -1
+Brute/pentagram/Dash
+  rotate: true
+  xy: 1267, 642
+  size: 31, 162
+  orig: 33, 167
+  offset: 2, 5
+  index: -1
+Brute/pentagram/Ring
+  rotate: false
+  xy: 2, 1446
+  size: 611, 600
+  orig: 611, 600
+  offset: 0, 0
+  index: -1
+Brute/pentagram/Ring Small
+  rotate: true
+  xy: 615, 1617
+  size: 429, 425
+  orig: 429, 425
+  offset: 0, 0
+  index: -1
+Brute/pentagram/Skull
+  rotate: true
+  xy: 1772, 1622
+  size: 144, 148
+  orig: 144, 148
+  offset: 0, 0
+  index: -1
+Brute/pentagram/Triangle
+  rotate: true
+  xy: 371, 1168
+  size: 276, 242
+  orig: 276, 243
+  offset: 0, 1
+  index: -1
+Face/EYE_SHOCKED
+  rotate: true
+  xy: 910, 433
+  size: 65, 68
+  orig: 65, 68
+  offset: 0, 0
+  index: -1

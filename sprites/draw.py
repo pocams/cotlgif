@@ -29,6 +29,8 @@ def make_spritesheet(items, url, filename, css_prefix=""):
     this_row = 0
     css = open(f"{filename}.css", "w")
 
+    css.write('.%s { background: url("%s.png"); }\n\n' % (filename, filename))
+
     for i, item in enumerate(items):
         slug = slugify(item["name"])
         print(f"#{i}", item["name"], slug, f"({x}, {y})")
@@ -166,25 +168,13 @@ def animations_dumb(data, skin="Coloured/Fox", fps=6, duration=1):
         with open(f"{SPRITE}/animations/{slug}.gif", "wb") as f:
             f.write(resp.content)
 
+actor_list = httpx.get("http://localhost:3000/v1").json()["actors"]
 
-if 0:
-    sprite = "player"
-    animation = "idle"
-    skin = "Lamb"
-elif 0:
-    sprite = "follower"
-    animation = "idle"
-    skin = "Fox"
-elif 0:
-    sprite = "ratau"
-    animation = "idle"
-    skin = "normal"
-else:
-    sprite = "fox"
-    animation = "animation"
-    skin = "default"
+for actor in actor_list:
+    data = httpx.get(f"http://localhost:3000/v1/{actor['slug']}").json()
+    animation_url = f"http://localhost:3000/v1/{actor['slug']}/{actor['default_skins'][0]}?animation=%s&format=png&start_time=0.25"
+    for skin in actor["default_skins"][1:]:
+        animation_url += "&add_skin=" + skin
 
-data = httpx.get(f"http://localhost:3000/v1/{sprite}").json()
-
-make_spritesheet(data["animations"], f"http://localhost:3000/v1/{sprite}/{skin}?animation=%s&format=png&start_time=0.25", f"{sprite}-animations", css_prefix=sprite + "-animations-")
-make_spritesheet(data["skins"], f"http://localhost:3000/v1/{sprite}/%s?animation={animation}&format=png", f"{sprite}-skins", css_prefix=sprite + "-skins-")
+    make_spritesheet(data["animations"], animation_url, f"{actor['slug']}-animations", css_prefix=actor['slug'] + "-animations-")
+    make_spritesheet(data["skins"], f"http://localhost:3000/v1/{actor['slug']}/%s?animation={actor['default_animation']}&format=png", f"{actor['slug']}-skins", css_prefix=actor['slug'] + "-skins-")

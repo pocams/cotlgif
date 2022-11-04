@@ -24,13 +24,16 @@
                     you see anything I missed, please let me know.</p>
             {/if}
             <hr>
-            <p class="mt-4">
+            <p>
                 <a class="is-size-6" href="https://discord.com/invite/massivemonster">pocams#0058 on Massive Monster discord</a>
             </p>
-            <p class="is-size-6">Sorry the UI is terrible.</p>
+            <p>
+                <a class="is-size-6" href="https://github.com/pocams/cotlgif">Source on Github</a>
+            </p>
+            <p class="is-size-6 mt-4">Sorry the UI is terrible.</p>
         </section>
         <footer class="modal-card-foot">
-            <button class="button is-success is-fullwidth" on:click={() => visible = false}>Okay</button>
+            <button class="button is-info is-fullwidth" on:click={() => visible = false}>Okay</button>
         </footer>
     </div>
 </div>

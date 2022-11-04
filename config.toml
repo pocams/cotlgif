@@ -240,4 +240,24 @@ default_skins = ["red"]
 default_animation = "idle"
 # Hide the skins/animations that duplicate Death Cat
 spoiler_skins = '^default$'
-spoiler_animations = '^(animation|snarling-cat|oldbits.*|.*OLD)$'
+spoiler_animations = '^(animation|snarling-cat|oldbits.*|.*OLD|.*heart.*|sneakyboirunlol)$'
+
+[[actors]]
+name = "Executioner"
+slug = "executioner"
+atlas = "cotl/Brute.atlas"
+skeleton = "cotl/Brute.skel"
+default_skins = ["Executioner"]
+default_animation = "idle"
+default_scale = 0.5
+spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
+
+# Have to fix this when I have more time to hammer out the spoilers
+[[actors]]
+name = "Cultist"
+slug = "cultist"
+atlas = "cotl/Human.atlas"
+skeleton = "cotl/Human.skel"
+default_skins = ["Cult_Scamp"]
+default_animation = "idle"
+is_spoiler = true

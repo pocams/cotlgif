@@ -1,3 +1,815 @@
+.baal-aym-animations { background: url("baal-aym-animations.png"); }
+
+#baal-aym-animations-coughing {
+  background-position: -2px -2px
+}
+
+#baal-aym-animations-animation {
+  background-position: -52px -2px
+}
+
+#baal-aym-animations-attack1 {
+  background-position: -102px -2px
+}
+
+#baal-aym-animations-attack2 {
+  background-position: -152px -2px
+}
+
+#baal-aym-animations-attack3 {
+  background-position: -202px -2px
+}
+
+#baal-aym-animations-oldbits-attack-old {
+  background-position: -252px -2px
+}
+
+#baal-aym-animations-dash {
+  background-position: -302px -2px
+}
+
+#baal-aym-animations-dead {
+  background-position: -352px -2px
+}
+
+#baal-aym-animations-dead-monsterheart {
+  background-position: -402px -2px
+}
+
+#baal-aym-animations-dead-noheart {
+  background-position: -452px -2px
+}
+
+#baal-aym-animations-dead2 {
+  background-position: -502px -2px
+}
+
+#baal-aym-animations-die {
+  background-position: -552px -2px
+}
+
+#baal-aym-animations-die-monsterheart {
+  background-position: -602px -2px
+}
+
+#baal-aym-animations-die-noheart {
+  background-position: -652px -2px
+}
+
+#baal-aym-animations-floating {
+  background-position: -702px -2px
+}
+
+#baal-aym-animations-floating-spin {
+  background-position: -752px -2px
+}
+
+#baal-aym-animations-floating-start {
+  background-position: -2px -52px
+}
+
+#baal-aym-animations-floating-stop {
+  background-position: -52px -52px
+}
+
+#baal-aym-animations-hurt {
+  background-position: -102px -52px
+}
+
+#baal-aym-animations-idle {
+  background-position: -152px -52px
+}
+
+#baal-aym-animations-idle-old {
+  background-position: -202px -52px
+}
+
+#baal-aym-animations-intro {
+  background-position: -252px -52px
+}
+
+#baal-aym-animations-intro2 {
+  background-position: -302px -52px
+}
+
+#baal-aym-animations-projectiles-loop {
+  background-position: -352px -52px
+}
+
+#baal-aym-animations-projectiles-start {
+  background-position: -402px -52px
+}
+
+#baal-aym-animations-projectiles-stop {
+  background-position: -452px -52px
+}
+
+#baal-aym-animations-run {
+  background-position: -502px -52px
+}
+
+#baal-aym-animations-run-old {
+  background-position: -552px -52px
+}
+
+#baal-aym-animations-oldbits-run-old {
+  background-position: -602px -52px
+}
+
+#baal-aym-animations-sleeping {
+  background-position: -652px -52px
+}
+
+#baal-aym-animations-sleeping-alert {
+  background-position: -702px -52px
+}
+
+#baal-aym-animations-sleeping-hidden {
+  background-position: -752px -52px
+}
+
+#baal-aym-animations-snarling {
+  background-position: -2px -102px
+}
+
+#baal-aym-animations-snarling-cat {
+  background-position: -52px -102px
+}
+
+#baal-aym-animations-sneakyboirunlol {
+  background-position: -102px -102px
+}
+
+#baal-aym-animations-summon {
+  background-position: -152px -102px
+}
+
+#baal-aym-animations-summon-fast {
+  background-position: -202px -102px
+}
+
+#baal-aym-animations-talk-sleeping-1 {
+  background-position: -252px -102px
+}
+
+#baal-aym-animations-walk {
+  background-position: -302px -102px
+}
+
+#baal-aym-animations-walk2 {
+  background-position: -352px -102px
+}
+
+#baal-aym-animations-walk4 {
+  background-position: -402px -102px
+}
+
+.baal-aym-skins { background: url("baal-aym-skins.png"); }
+
+#baal-aym-skins-default {
+  background-position: -2px -2px
+}
+
+#baal-aym-skins-blue {
+  background-position: -52px -2px
+}
+
+#baal-aym-skins-enforcer {
+  background-position: -102px -2px
+}
+
+#baal-aym-skins-enforcer-big {
+  background-position: -152px -2px
+}
+
+#baal-aym-skins-red {
+  background-position: -202px -2px
+}
+
+.clauneck-skins { background: url("clauneck-skins.png"); }
+
+#clauneck-skins-default {
+  background-position: -2px -2px
+}
+
+#clauneck-skins-blue {
+  background-position: -52px -2px
+}
+
+#clauneck-skins-red {
+  background-position: -102px -2px
+}
+
+.cultist-animations { background: url("cultist-animations.png"); }
+
+#cultist-animations-2 {
+  background-position: -2px -2px
+}
+
+#cultist-animations-old-oldcheer1 {
+  background-position: -52px -2px
+}
+
+#cultist-animations-old-oldgrunt-attack-impact {
+  background-position: -102px -2px
+}
+
+#cultist-animations-old-oldshield-attack-charge {
+  background-position: -152px -2px
+}
+
+#cultist-animations-old-oldshield-attack-impact {
+  background-position: -202px -2px
+}
+
+#cultist-animations-old-oldshield-deflect {
+  background-position: -252px -2px
+}
+
+#cultist-animations-alarm {
+  background-position: -302px -2px
+}
+
+#cultist-animations-alarm-quick {
+  background-position: -352px -2px
+}
+
+#cultist-animations-old-alarm-old {
+  background-position: -402px -2px
+}
+
+#cultist-animations-archer-attack-charge {
+  background-position: -452px -2px
+}
+
+#cultist-animations-archer-attack-impact {
+  background-position: -502px -2px
+}
+
+#cultist-animations-archer-teleport-in {
+  background-position: -552px -2px
+}
+
+#cultist-animations-archer-teleport-out {
+  background-position: -602px -2px
+}
+
+#cultist-animations-cheer1 {
+  background-position: -652px -2px
+}
+
+#cultist-animations-cheer2 {
+  background-position: -702px -2px
+}
+
+#cultist-animations-dance {
+  background-position: -752px -2px
+}
+
+#cultist-animations-dead {
+  background-position: -2px -52px
+}
+
+#cultist-animations-dead-on-ground {
+  background-position: -52px -52px
+}
+
+#cultist-animations-dead-on-ground-resurrection {
+  background-position: -102px -52px
+}
+
+#cultist-animations-directions-direction-down {
+  background-position: -152px -52px
+}
+
+#cultist-animations-directions-direction-normal {
+  background-position: -202px -52px
+}
+
+#cultist-animations-directions-direction-side {
+  background-position: -252px -52px
+}
+
+#cultist-animations-directions-direction-up {
+  background-position: -302px -52px
+}
+
+#cultist-animations--idles-eating {
+  background-position: -352px -52px
+}
+
+#cultist-animations-fall {
+  background-position: -402px -52px
+}
+
+#cultist-animations-grave-spawn {
+  background-position: -452px -52px
+}
+
+#cultist-animations-grunt-attack-charge {
+  background-position: -502px -52px
+}
+
+#cultist-animations-grunt-attack-charge2 {
+  background-position: -552px -52px
+}
+
+#cultist-animations-grunt-attack-charge-old {
+  background-position: -602px -52px
+}
+
+#cultist-animations-grunt-attack-impact {
+  background-position: -652px -52px
+}
+
+#cultist-animations-grunt-attack-impact2 {
+  background-position: -702px -52px
+}
+
+#cultist-animations-grunt-attack-impact3 {
+  background-position: -752px -52px
+}
+
+#cultist-animations-hurt-back {
+  background-position: -2px -102px
+}
+
+#cultist-animations-hurt-eyes {
+  background-position: -52px -102px
+}
+
+#cultist-animations-hurt-front {
+  background-position: -102px -102px
+}
+
+#cultist-animations-idle {
+  background-position: -152px -102px
+}
+
+#cultist-animations-ritual-idle {
+  background-position: -202px -102px
+}
+
+#cultist-animations-idle-up {
+  background-position: -252px -102px
+}
+
+#cultist-animations-idle2 {
+  background-position: -302px -102px
+}
+
+#cultist-animations-jeer {
+  background-position: -352px -102px
+}
+
+#cultist-animations-jeer-up {
+  background-position: -402px -102px
+}
+
+#cultist-animations-knockback {
+  background-position: -452px -102px
+}
+
+#cultist-animations-knockback-loop {
+  background-position: -502px -102px
+}
+
+#cultist-animations-knockback-up {
+  background-position: -552px -102px
+}
+
+#cultist-animations--idles-look-around {
+  background-position: -602px -102px
+}
+
+#cultist-animations-mutate {
+  background-position: -652px -102px
+}
+
+#cultist-animations-mutate-old {
+  background-position: -702px -102px
+}
+
+#cultist-animations-mutate2 {
+  background-position: -752px -102px
+}
+
+#cultist-animations-notice-player {
+  background-position: -2px -152px
+}
+
+#cultist-animations-parry {
+  background-position: -52px -152px
+}
+
+#cultist-animations-possess-fall {
+  background-position: -102px -152px
+}
+
+#cultist-animations-possess-inair-loop {
+  background-position: -152px -152px
+}
+
+#cultist-animations-pray {
+  background-position: -202px -152px
+}
+
+#cultist-animations--idles-pray {
+  background-position: -252px -152px
+}
+
+#cultist-animations--idles-pray-standing {
+  background-position: -302px -152px
+}
+
+#cultist-animations-ritual-preach {
+  background-position: -352px -152px
+}
+
+#cultist-animations-ritual-preach2 {
+  background-position: -402px -152px
+}
+
+#cultist-animations--idles-prodding-fire {
+  background-position: -452px -152px
+}
+
+#cultist-animations-roll {
+  background-position: -502px -152px
+}
+
+#cultist-animations-roll-stop {
+  background-position: -552px -152px
+}
+
+#cultist-animations-run {
+  background-position: -602px -152px
+}
+
+#cultist-animations-run-charge {
+  background-position: -652px -152px
+}
+
+#cultist-animations-run-scared {
+  background-position: -702px -152px
+}
+
+#cultist-animations-run-up {
+  background-position: -752px -152px
+}
+
+#cultist-animations-ritual-sacrifice {
+  background-position: -2px -202px
+}
+
+#cultist-animations-sacrifice {
+  background-position: -52px -202px
+}
+
+#cultist-animations-ritual-sacrifice2 {
+  background-position: -102px -202px
+}
+
+#cultist-animations-ritual-sacrificed {
+  background-position: -152px -202px
+}
+
+#cultist-animations-scared {
+  background-position: -202px -202px
+}
+
+#cultist-animations-scared-loop {
+  background-position: -252px -202px
+}
+
+#cultist-animations-old-shield-attack {
+  background-position: -302px -202px
+}
+
+#cultist-animations-old-shield-attack-charge {
+  background-position: -352px -202px
+}
+
+#cultist-animations-old-shield-attack-impact {
+  background-position: -402px -202px
+}
+
+#cultist-animations-old-shield-attack-run {
+  background-position: -452px -202px
+}
+
+#cultist-animations-old-shield-deflect {
+  background-position: -502px -202px
+}
+
+#cultist-animations-shield-deflect {
+  background-position: -552px -202px
+}
+
+#cultist-animations-old-shield-deflect-attack {
+  background-position: -602px -202px
+}
+
+#cultist-animations--idles-sitting {
+  background-position: -652px -202px
+}
+
+#cultist-animations-sleeping {
+  background-position: -702px -202px
+}
+
+#cultist-animations-spawn-in {
+  background-position: -752px -202px
+}
+
+#cultist-animations-stagger {
+  background-position: -2px -252px
+}
+
+#cultist-animations-stagger-loop {
+  background-position: -52px -252px
+}
+
+#cultist-animations-stagger-up {
+  background-position: -102px -252px
+}
+
+#cultist-animations--idles-talk1 {
+  background-position: -152px -252px
+}
+
+#cultist-animations-throw-bomb {
+  background-position: -202px -252px
+}
+
+#cultist-animations--idles-training1 {
+  background-position: -252px -252px
+}
+
+#cultist-animations--idles-training2 {
+  background-position: -302px -252px
+}
+
+#cultist-animations-vulnerable {
+  background-position: -352px -252px
+}
+
+#cultist-animations-wake-up {
+  background-position: -402px -252px
+}
+
+#cultist-animations-walk {
+  background-position: -452px -252px
+}
+
+#cultist-animations-worship {
+  background-position: -502px -252px
+}
+
+.cultist-skins { background: url("cultist-skins.png"); }
+
+#cultist-skins-default {
+  background-position: -2px -2px
+}
+
+#cultist-skins-cult-archer {
+  background-position: -52px -2px
+}
+
+#cultist-skins-cult-archer-captain {
+  background-position: -102px -2px
+}
+
+#cultist-skins-cult-archer-shadow {
+  background-position: -152px -2px
+}
+
+#cultist-skins-cult-scamp {
+  background-position: -202px -2px
+}
+
+#cultist-skins-cult-scamp2 {
+  background-position: -252px -2px
+}
+
+#cultist-skins-cult-scamp-shadow {
+  background-position: -302px -2px
+}
+
+#cultist-skins-cult-scout {
+  background-position: -352px -2px
+}
+
+#cultist-skins-cult-swordsman {
+  background-position: -402px -2px
+}
+
+#cultist-skins-cult-swordsman-captain {
+  background-position: -452px -2px
+}
+
+#cultist-skins-cult-swordsman-shadow {
+  background-position: -502px -2px
+}
+
+#cultist-skins-mushroom-cult-grunt-mushroom {
+  background-position: -552px -2px
+}
+
+#cultist-skins-ritual-swordsman {
+  background-position: -602px -2px
+}
+
+#cultist-skins-mushroom-cult-scamp-mushroom {
+  background-position: -652px -2px
+}
+
+#cultist-skins-skeles-skeleton1 {
+  background-position: -702px -2px
+}
+
+#cultist-skins-skeles-skeleton2 {
+  background-position: -752px -2px
+}
+
+#cultist-skins-skeles-skeleton-deer-ritual {
+  background-position: -2px -52px
+}
+
+.executioner-animations { background: url("executioner-animations.png"); }
+
+#executioner-animations-attack-charge {
+  background-position: -2px -2px
+}
+
+#executioner-animations-attack-impact {
+  background-position: -52px -2px
+}
+
+#executioner-animations-attack-impact-multi {
+  background-position: -102px -2px
+}
+
+#executioner-animations-dead {
+  background-position: -152px -2px
+}
+
+#executioner-animations-dead-noheart {
+  background-position: -202px -2px
+}
+
+#executioner-animations-die {
+  background-position: -252px -2px
+}
+
+#executioner-animations-execute {
+  background-position: -302px -2px
+}
+
+#executioner-animations-hurt-back {
+  background-position: -352px -2px
+}
+
+#executioner-animations-hurt-eyes {
+  background-position: -402px -2px
+}
+
+#executioner-animations-hurt-front {
+  background-position: -452px -2px
+}
+
+#executioner-animations-idle {
+  background-position: -502px -2px
+}
+
+#executioner-animations-idle2 {
+  background-position: -552px -2px
+}
+
+#executioner-animations-jeer {
+  background-position: -602px -2px
+}
+
+#executioner-animations-notice-player {
+  background-position: -652px -2px
+}
+
+#executioner-animations-quickattack-charge {
+  background-position: -702px -2px
+}
+
+#executioner-animations-quickattack-impact {
+  background-position: -752px -2px
+}
+
+#executioner-animations-run {
+  background-position: -2px -52px
+}
+
+#executioner-animations-sleeping {
+  background-position: -52px -52px
+}
+
+#executioner-animations-summon {
+  background-position: -102px -52px
+}
+
+#executioner-animations-throw {
+  background-position: -152px -52px
+}
+
+#executioner-animations-wake-up {
+  background-position: -202px -52px
+}
+
+.executioner-skins { background: url("executioner-skins.png"); }
+
+#executioner-skins-default {
+  background-position: -2px -2px
+}
+
+#executioner-skins-executioner {
+  background-position: -52px -2px
+}
+
+.fisherman-animations { background: url("fisherman-animations.png"); }
+
+#fisherman-animations-animation {
+  background-position: -2px -2px
+}
+
+#fisherman-animations-fishing {
+  background-position: -52px -2px
+}
+
+#fisherman-animations-talk {
+  background-position: -102px -2px
+}
+
+#fisherman-animations-talk-angry {
+  background-position: -152px -2px
+}
+
+#fisherman-animations-talk-excited {
+  background-position: -202px -2px
+}
+
+#fisherman-animations-talk-laugh {
+  background-position: -252px -2px
+}
+
+#fisherman-animations-talk-snooty {
+  background-position: -302px -2px
+}
+
+.flinky-animations { background: url("flinky-animations.png"); }
+
+#flinky-animations-animation {
+  background-position: -2px -2px
+}
+
+#flinky-animations-knucklebones-lose-dice {
+  background-position: -52px -2px
+}
+
+#flinky-animations-knucklebones-lose-game {
+  background-position: -102px -2px
+}
+
+#flinky-animations-knucklebones-lose-game-loop {
+  background-position: -152px -2px
+}
+
+#flinky-animations-knucklebones-play-dice {
+  background-position: -202px -2px
+}
+
+#flinky-animations-read-map {
+  background-position: -252px -2px
+}
+
+#flinky-animations-selected {
+  background-position: -302px -2px
+}
+
+#flinky-animations-knucklebones-take-dice {
+  background-position: -352px -2px
+}
+
+#flinky-animations-talk {
+  background-position: -402px -2px
+}
+
+#flinky-animations-knucklebones-win-game {
+  background-position: -452px -2px
+}
+
+#flinky-animations-knucklebones-win-game-loop {
+  background-position: -502px -2px
+}
+
+.follower-animations { background: url("follower-animations.png"); }
+
 #follower-animations-farming-water {
   background-position: -2px -2px
 }
@@ -1642,6 +2454,8 @@
   background-position: -502px -1252px
 }
 
+.follower-skins { background: url("follower-skins.png"); }
+
 #follower-skins-default {
   background-position: -2px -2px
 }
@@ -2642,6 +3456,8 @@
   background-position: -452px -752px
 }
 
+.fox-animations { background: url("fox-animations.png"); }
+
 #fox-animations-animation {
   background-position: -2px -2px
 }
@@ -2685,6 +3501,394 @@
 #fox-animations-talk2 {
   background-position: -502px -2px
 }
+
+.haro-animations { background: url("haro-animations.png"); }
+
+#haro-animations-enter {
+  background-position: -2px -2px
+}
+
+#haro-animations-enter-old {
+  background-position: -52px -2px
+}
+
+#haro-animations-enter-oldd {
+  background-position: -102px -2px
+}
+
+#haro-animations-exit {
+  background-position: -152px -2px
+}
+
+#haro-animations-exit-old {
+  background-position: -202px -2px
+}
+
+#haro-animations-hidden {
+  background-position: -252px -2px
+}
+
+#haro-animations-idle {
+  background-position: -302px -2px
+}
+
+#haro-animations-talk {
+  background-position: -352px -2px
+}
+
+#haro-animations-talk2 {
+  background-position: -402px -2px
+}
+
+#haro-animations-talk3 {
+  background-position: -452px -2px
+}
+
+#haro-animations-transform {
+  background-position: -502px -2px
+}
+
+.heket-animations { background: url("heket-animations.png"); }
+
+#heket-animations-enter {
+  background-position: -2px -2px
+}
+
+#heket-animations-exit {
+  background-position: -52px -2px
+}
+
+#heket-animations-hidden {
+  background-position: -102px -2px
+}
+
+#heket-animations-idle {
+  background-position: -152px -2px
+}
+
+#heket-animations-talk {
+  background-position: -202px -2px
+}
+
+#heket-animations-talk-short {
+  background-position: -252px -2px
+}
+
+#heket-animations-transform {
+  background-position: -302px -2px
+}
+
+.helob-skins { background: url("helob-skins.png"); }
+
+#helob-skins-default {
+  background-position: -2px -2px
+}
+
+.kallamar-animations { background: url("kallamar-animations.png"); }
+
+#kallamar-animations-animation {
+  background-position: -2px -2px
+}
+
+#kallamar-animations-attack-dagger {
+  background-position: -52px -2px
+}
+
+#kallamar-animations-attack-grenade {
+  background-position: -102px -2px
+}
+
+#kallamar-animations-attack-grenade-start {
+  background-position: -152px -2px
+}
+
+#kallamar-animations-attack-staff {
+  background-position: -202px -2px
+}
+
+#kallamar-animations-attack-sword {
+  background-position: -252px -2px
+}
+
+#kallamar-animations-attack-sword-anticipate {
+  background-position: -302px -2px
+}
+
+#kallamar-animations-attack-sword-loop {
+  background-position: -352px -2px
+}
+
+#kallamar-animations-dead {
+  background-position: -402px -2px
+}
+
+#kallamar-animations-dead-noheart {
+  background-position: -452px -2px
+}
+
+#kallamar-animations-die {
+  background-position: -502px -2px
+}
+
+#kallamar-animations-die-noheart {
+  background-position: -552px -2px
+}
+
+#kallamar-animations-leader-enter {
+  background-position: -602px -2px
+}
+
+#kallamar-animations-leader-exit {
+  background-position: -652px -2px
+}
+
+#kallamar-animations-leader-hidden {
+  background-position: -702px -2px
+}
+
+#kallamar-animations-leader-idle {
+  background-position: -752px -2px
+}
+
+#kallamar-animations-roar {
+  background-position: -2px -52px
+}
+
+#kallamar-animations-leader-talk {
+  background-position: -52px -52px
+}
+
+#kallamar-animations-leader-talk-short {
+  background-position: -102px -52px
+}
+
+#kallamar-animations-leader-talk2 {
+  background-position: -152px -52px
+}
+
+#kallamar-animations-teleport {
+  background-position: -202px -52px
+}
+
+#kallamar-animations-transform {
+  background-position: -252px -52px
+}
+
+.klunko-and-bop-animations { background: url("klunko-and-bop-animations.png"); }
+
+#klunko-and-bop-animations-animation {
+  background-position: -2px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-lose-dice {
+  background-position: -52px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-lose-game {
+  background-position: -102px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-lose-game-loop {
+  background-position: -152px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-play-dice {
+  background-position: -202px -2px
+}
+
+#klunko-and-bop-animations-read-map {
+  background-position: -252px -2px
+}
+
+#klunko-and-bop-animations-selected {
+  background-position: -302px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-take-dice {
+  background-position: -352px -2px
+}
+
+#klunko-and-bop-animations-talk {
+  background-position: -402px -2px
+}
+
+#klunko-and-bop-animations-talk-bop {
+  background-position: -452px -2px
+}
+
+#klunko-and-bop-animations-talk-hello {
+  background-position: -502px -2px
+}
+
+#klunko-and-bop-animations-talk-hello3 {
+  background-position: -552px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-win-game {
+  background-position: -602px -2px
+}
+
+#klunko-and-bop-animations-knucklebones-win-game-loop {
+  background-position: -652px -2px
+}
+
+.klunko-and-bop-skins { background: url("klunko-and-bop-skins.png"); }
+
+#klunko-and-bop-skins-default {
+  background-position: -2px -2px
+}
+
+#klunko-and-bop-skins-just-head {
+  background-position: -52px -2px
+}
+
+#klunko-and-bop-skins-normal {
+  background-position: -102px -2px
+}
+
+.leshy-animations { background: url("leshy-animations.png"); }
+
+#leshy-animations-enter {
+  background-position: -2px -2px
+}
+
+#leshy-animations-exit {
+  background-position: -52px -2px
+}
+
+#leshy-animations-hidden {
+  background-position: -102px -2px
+}
+
+#leshy-animations-idle {
+  background-position: -152px -2px
+}
+
+#leshy-animations-talk {
+  background-position: -202px -2px
+}
+
+#leshy-animations-transform {
+  background-position: -252px -2px
+}
+
+#leshy-animations-transform2 {
+  background-position: -302px -2px
+}
+
+.lighthouse-follower-animations { background: url("lighthouse-follower-animations.png"); }
+
+#lighthouse-follower-animations-animation {
+  background-position: -2px -2px
+}
+
+#lighthouse-follower-animations-buy {
+  background-position: -52px -2px
+}
+
+#lighthouse-follower-animations-cant-afford {
+  background-position: -102px -2px
+}
+
+#lighthouse-follower-animations-prayer-idle {
+  background-position: -152px -2px
+}
+
+#lighthouse-follower-animations-talk {
+  background-position: -202px -2px
+}
+
+#lighthouse-follower-animations-worship {
+  background-position: -252px -2px
+}
+
+.lighthouse-keeper-animations { background: url("lighthouse-keeper-animations.png"); }
+
+#lighthouse-keeper-animations-animation {
+  background-position: -2px -2px
+}
+
+#lighthouse-keeper-animations-buy {
+  background-position: -52px -2px
+}
+
+#lighthouse-keeper-animations-cant-afford {
+  background-position: -102px -2px
+}
+
+#lighthouse-keeper-animations-prayer-idle {
+  background-position: -152px -2px
+}
+
+#lighthouse-keeper-animations-ritual {
+  background-position: -202px -2px
+}
+
+#lighthouse-keeper-animations-run-away {
+  background-position: -252px -2px
+}
+
+#lighthouse-keeper-animations-talk {
+  background-position: -302px -2px
+}
+
+#lighthouse-keeper-animations-talk-angry {
+  background-position: -352px -2px
+}
+
+#lighthouse-keeper-animations-talk-excited {
+  background-position: -402px -2px
+}
+
+#lighthouse-keeper-animations-talk-happy {
+  background-position: -452px -2px
+}
+
+#lighthouse-keeper-animations-worship {
+  background-position: -502px -2px
+}
+
+.lighthouse-keeper-skins { background: url("lighthouse-keeper-skins.png"); }
+
+#lighthouse-keeper-skins-default {
+  background-position: -2px -2px
+}
+
+#lighthouse-keeper-skins-axolotl {
+  background-position: -52px -2px
+}
+
+#lighthouse-keeper-skins-mushroom {
+  background-position: -102px -2px
+}
+
+.midas-animations { background: url("midas-animations.png"); }
+
+#midas-animations-animation {
+  background-position: -2px -2px
+}
+
+#midas-animations-enter {
+  background-position: -52px -2px
+}
+
+#midas-animations-exit {
+  background-position: -102px -2px
+}
+
+#midas-animations-idle {
+  background-position: -152px -2px
+}
+
+#midas-animations-talk {
+  background-position: -202px -2px
+}
+
+#midas-animations-warning {
+  background-position: -252px -2px
+}
+
+.player-animations { background: url("player-animations.png"); }
 
 #player-animations-oldstuff-farming-dig {
   background-position: -2px -2px
@@ -4334,6 +5538,8 @@
   background-position: -552px -1252px
 }
 
+.player-skins { background: url("player-skins.png"); }
+
 #player-skins-default {
   background-position: -2px -2px
 }
@@ -4454,6 +5660,102 @@
   background-position: -652px -52px
 }
 
+.plimbo-animations { background: url("plimbo-animations.png"); }
+
+#plimbo-animations-animation {
+  background-position: -2px -2px
+}
+
+#plimbo-animations-animation2 {
+  background-position: -52px -2px
+}
+
+#plimbo-animations-animation-test {
+  background-position: -102px -2px
+}
+
+#plimbo-animations-buy {
+  background-position: -152px -2px
+}
+
+#plimbo-animations-idle {
+  background-position: -202px -2px
+}
+
+#plimbo-animations-talk {
+  background-position: -252px -2px
+}
+
+#plimbo-animations-talk-angry {
+  background-position: -302px -2px
+}
+
+#plimbo-animations-talk-excited {
+  background-position: -352px -2px
+}
+
+#plimbo-animations-talk-laugh {
+  background-position: -402px -2px
+}
+
+#plimbo-animations-talk-wink {
+  background-position: -452px -2px
+}
+
+#plimbo-animations-talk2 {
+  background-position: -502px -2px
+}
+
+.plimbos-fish-skins { background: url("plimbos-fish-skins.png"); }
+
+#plimbos-fish-skins-default {
+  background-position: -2px -2px
+}
+
+.rakshasa-animations { background: url("rakshasa-animations.png"); }
+
+#rakshasa-animations-animation {
+  background-position: -2px -2px
+}
+
+#rakshasa-animations-animation-angry {
+  background-position: -52px -2px
+}
+
+#rakshasa-animations-attack {
+  background-position: -102px -2px
+}
+
+#rakshasa-animations-attack-anticipate {
+  background-position: -152px -2px
+}
+
+#rakshasa-animations-buy {
+  background-position: -202px -2px
+}
+
+#rakshasa-animations-cant-afford {
+  background-position: -252px -2px
+}
+
+#rakshasa-animations-furious {
+  background-position: -302px -2px
+}
+
+#rakshasa-animations-run {
+  background-position: -352px -2px
+}
+
+#rakshasa-animations-scared {
+  background-position: -402px -2px
+}
+
+#rakshasa-animations-talk {
+  background-position: -452px -2px
+}
+
+.ratau-animations { background: url("ratau-animations.png"); }
+
 #ratau-animations-animation {
   background-position: -2px -2px
 }
@@ -4546,15 +5848,441 @@
   background-position: -302px -52px
 }
 
-#ratau-skins-default {
+.ratoo-animations { background: url("ratoo-animations.png"); }
+
+#ratoo-animations-animation {
   background-position: -2px -2px
 }
 
-#ratau-skins-just-head {
+#ratoo-animations-enter {
   background-position: -52px -2px
 }
 
-#ratau-skins-normal {
+#ratoo-animations-exit {
   background-position: -102px -2px
+}
+
+#ratoo-animations-fishing {
+  background-position: -152px -2px
+}
+
+#ratoo-animations-fishing-talk {
+  background-position: -202px -2px
+}
+
+#ratoo-animations-talk {
+  background-position: -252px -2px
+}
+
+.ratoo-skins { background: url("ratoo-skins.png"); }
+
+#ratoo-skins-default {
+  background-position: -2px -2px
+}
+
+#ratoo-skins-heart {
+  background-position: -52px -2px
+}
+
+#ratoo-skins-normal {
+  background-position: -102px -2px
+}
+
+.shamura-animations { background: url("shamura-animations.png"); }
+
+#shamura-animations-angry {
+  background-position: -2px -2px
+}
+
+#shamura-animations-angry-intro {
+  background-position: -52px -2px
+}
+
+#shamura-animations-attack {
+  background-position: -102px -2px
+}
+
+#shamura-animations-attack2 {
+  background-position: -152px -2px
+}
+
+#shamura-animations-attack3 {
+  background-position: -202px -2px
+}
+
+#shamura-animations-bomb-even-more {
+  background-position: -252px -2px
+}
+
+#shamura-animations-bomb-even-more2 {
+  background-position: -302px -2px
+}
+
+#shamura-animations-bomb-more {
+  background-position: -352px -2px
+}
+
+#shamura-animations-bomb-more2 {
+  background-position: -402px -2px
+}
+
+#shamura-animations-bombs {
+  background-position: -452px -2px
+}
+
+#shamura-animations-dead {
+  background-position: -502px -2px
+}
+
+#shamura-animations-dead-noheart {
+  background-position: -552px -2px
+}
+
+#shamura-animations-die {
+  background-position: -602px -2px
+}
+
+#shamura-animations-die-noheart {
+  background-position: -652px -2px
+}
+
+#shamura-animations-enter {
+  background-position: -702px -2px
+}
+
+#shamura-animations-exit {
+  background-position: -752px -2px
+}
+
+#shamura-animations-hidden {
+  background-position: -2px -52px
+}
+
+#shamura-animations-hurt-back {
+  background-position: -52px -52px
+}
+
+#shamura-animations-hurt-front {
+  background-position: -102px -52px
+}
+
+#shamura-animations-idle {
+  background-position: -152px -52px
+}
+
+#shamura-animations-idle-angry {
+  background-position: -202px -52px
+}
+
+#shamura-animations-idle-boss {
+  background-position: -252px -52px
+}
+
+#shamura-animations-idle-boss2 {
+  background-position: -302px -52px
+}
+
+#shamura-animations-jump {
+  background-position: -352px -52px
+}
+
+#shamura-animations-jump-attack {
+  background-position: -402px -52px
+}
+
+#shamura-animations-mutate {
+  background-position: -452px -52px
+}
+
+#shamura-animations-roar {
+  background-position: -502px -52px
+}
+
+#shamura-animations-run {
+  background-position: -552px -52px
+}
+
+#shamura-animations-run2 {
+  background-position: -602px -52px
+}
+
+#shamura-animations-run3 {
+  background-position: -652px -52px
+}
+
+#shamura-animations-run4 {
+  background-position: -702px -52px
+}
+
+#shamura-animations-swing-away {
+  background-position: -752px -52px
+}
+
+#shamura-animations-swing-in {
+  background-position: -2px -102px
+}
+
+#shamura-animations-talk {
+  background-position: -52px -102px
+}
+
+#shamura-animations-talk-short {
+  background-position: -102px -102px
+}
+
+.shamura-skins { background: url("shamura-skins.png"); }
+
+#shamura-skins-default {
+  background-position: -2px -2px
+}
+
+#shamura-skins-mask {
+  background-position: -52px -2px
+}
+
+#shamura-skins-no-mask {
+  background-position: -102px -2px
+}
+
+.shrumy-animations { background: url("shrumy-animations.png"); }
+
+#shrumy-animations-animation {
+  background-position: -2px -2px
+}
+
+#shrumy-animations-knucklebones-lose-dice {
+  background-position: -52px -2px
+}
+
+#shrumy-animations-knucklebones-lose-game {
+  background-position: -102px -2px
+}
+
+#shrumy-animations-knucklebones-lose-game-loop {
+  background-position: -152px -2px
+}
+
+#shrumy-animations-knucklebones-play-dice {
+  background-position: -202px -2px
+}
+
+#shrumy-animations-read-map {
+  background-position: -252px -2px
+}
+
+#shrumy-animations-selected {
+  background-position: -302px -2px
+}
+
+#shrumy-animations-knucklebones-take-dice {
+  background-position: -352px -2px
+}
+
+#shrumy-animations-talk {
+  background-position: -402px -2px
+}
+
+#shrumy-animations-talk-hello {
+  background-position: -452px -2px
+}
+
+#shrumy-animations-knucklebones-win-game {
+  background-position: -502px -2px
+}
+
+#shrumy-animations-knucklebones-win-game-loop {
+  background-position: -552px -2px
+}
+
+.shrumy-skins { background: url("shrumy-skins.png"); }
+
+#shrumy-skins-default {
+  background-position: -2px -2px
+}
+
+#shrumy-skins-just-head {
+  background-position: -52px -2px
+}
+
+#shrumy-skins-normal {
+  background-position: -102px -2px
+}
+
+.sozo-animations { background: url("sozo-animations.png"); }
+
+#sozo-animations-animation {
+  background-position: -2px -2px
+}
+
+#sozo-animations-animation2 {
+  background-position: -52px -2px
+}
+
+#sozo-animations-crop-0 {
+  background-position: -102px -2px
+}
+
+#sozo-animations-crop-1 {
+  background-position: -152px -2px
+}
+
+#sozo-animations-crop-2 {
+  background-position: -202px -2px
+}
+
+#sozo-animations-crop-3 {
+  background-position: -252px -2px
+}
+
+#sozo-animations-crop-4 {
+  background-position: -302px -2px
+}
+
+#sozo-animations-dead {
+  background-position: -352px -2px
+}
+
+#sozo-animations-idle-in-base {
+  background-position: -402px -2px
+}
+
+#sozo-animations-talk {
+  background-position: -452px -2px
+}
+
+#sozo-animations-talk-laugh {
+  background-position: -502px -2px
+}
+
+#sozo-animations-talk-mushroom {
+  background-position: -552px -2px
+}
+
+#sozo-animations-talk-no {
+  background-position: -602px -2px
+}
+
+#sozo-animations-talk-welcome {
+  background-position: -652px -2px
+}
+
+#sozo-animations-talk-yes {
+  background-position: -702px -2px
+}
+
+#sozo-animations-tripping-balls {
+  background-position: -752px -2px
+}
+
+.toww-animations { background: url("toww-animations.png"); }
+
+#toww-animations-break-free {
+  background-position: -2px -2px
+}
+
+#toww-animations-break-free-crown {
+  background-position: -52px -2px
+}
+
+#toww-animations-combined {
+  background-position: -102px -2px
+}
+
+#toww-animations-cool {
+  background-position: -152px -2px
+}
+
+#toww-animations-crouch-down {
+  background-position: -202px -2px
+}
+
+#toww-animations-give-life {
+  background-position: -252px -2px
+}
+
+#toww-animations-give-life2 {
+  background-position: -302px -2px
+}
+
+#toww-animations-give-life3 {
+  background-position: -352px -2px
+}
+
+#toww-animations-idle-crouched {
+  background-position: -402px -2px
+}
+
+#toww-animations-idle-standing {
+  background-position: -452px -2px
+}
+
+#toww-animations-idle-standing-nochain {
+  background-position: -502px -2px
+}
+
+#toww-animations-stand-up {
+  background-position: -552px -2px
+}
+
+#toww-animations-struggle {
+  background-position: -602px -2px
+}
+
+#toww-animations-talk {
+  background-position: -652px -2px
+}
+
+#toww-animations-talk-angry {
+  background-position: -702px -2px
+}
+
+#toww-animations-talk-angry2 {
+  background-position: -752px -2px
+}
+
+#toww-animations-talk-crouch {
+  background-position: -2px -52px
+}
+
+#toww-animations-talk-laugh {
+  background-position: -52px -52px
+}
+
+#toww-animations-talk-smile {
+  background-position: -102px -52px
+}
+
+#toww-animations-talk2 {
+  background-position: -152px -52px
+}
+
+#toww-animations-talk3 {
+  background-position: -202px -52px
+}
+
+#toww-animations-transform {
+  background-position: -252px -52px
+}
+
+#toww-animations-transform2 {
+  background-position: -302px -52px
+}
+
+.toww-skins { background: url("toww-skins.png"); }
+
+#toww-skins-default {
+  background-position: -2px -2px
+}
+
+#toww-skins-crown {
+  background-position: -52px -2px
+}
+
+#toww-skins-no-chains {
+  background-position: -102px -2px
+}
+
+#toww-skins-no-crown {
+  background-position: -152px -2px
 }
 
