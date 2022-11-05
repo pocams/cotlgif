@@ -1,5 +1,6 @@
 use std::{io, thread};
 use std::collections::HashMap;
+use std::default::Default;
 use std::io::{BufRead, BufReader, Write};
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
@@ -102,7 +103,7 @@ fn spine_init() {
             atlas_page.renderer_object().dispose::<Texture>();
         });
 
-        ()
+        
     });
 }
 
@@ -359,14 +360,12 @@ impl SpineActor {
                 if params.only_head && !only_head_includes(slot.data().name()) {
                     // Make the slot transparent
                     slot.color_mut().set_a(0.0);
-                } else {
-                    if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
-                        let c = slot.color_mut();
-                        c.set_r(colour.r);
-                        c.set_g(colour.g);
-                        c.set_b(colour.b);
-                        c.set_a(colour.a);
-                    }
+                } else if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
+                    let c = slot.color_mut();
+                    c.set_r(colour.r);
+                    c.set_g(colour.g);
+                    c.set_b(colour.b);
+                    c.set_a(colour.a);
                 }
             }
         }
@@ -464,7 +463,7 @@ impl SpineActor {
     }
 
     pub fn render_gif(&self, params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
-        let mut settings = Settings::default();
+        let mut settings = Settings { quality: 75, ..Default::default() };
         settings.quality = 75;
         let (gs_collector, gs_writer) = gifski::new(settings).unwrap();
         let writer = ChannelWriter::new(response_sender);
@@ -581,7 +580,7 @@ impl SpineActor {
 
             // Feed rendered frames into ffmpeg's stdin
             scope.spawn(move || self.render(prepared_params, |frame| {
-                stdin.write(frame.pixel_data)?;
+                stdin.write_all(frame.pixel_data)?;
                 Ok(())
             }));
 

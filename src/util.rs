@@ -39,7 +39,7 @@ pub trait Slug {
         let lower_upper = LOWER_UPPER.get_or_init(|| Regex::new(r"([a-z])([A-Z])").unwrap());
         let s = non_alpha.replace(s, "-");
         let s = lower_upper.replace(&s, "$2-$1");
-        s.to_ascii_lowercase().to_owned()
+        s.to_ascii_lowercase()
     }
 
     fn slug(&self) -> String;

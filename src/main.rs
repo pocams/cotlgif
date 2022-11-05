@@ -184,7 +184,7 @@ impl SkinParameters {
 
         Ok(RenderParameters {
             skins: self.add_skin,
-            animation: self.animation.ok_or(util::json_400("animation= is required"))?,
+            animation: self.animation.ok_or_else(|| util::json_400("animation= is required"))?,
             scale: self.scale.unwrap_or(1.0).max(0.1),
             antialiasing: self.antialiasing.unwrap_or(1),
             start_time: self.start_time.unwrap_or(0.0),
@@ -208,7 +208,7 @@ async fn load_actors(config: &Config) -> color_eyre::Result<Vec<Arc<Actor>>> {
         actors.push(Arc::new(
             Actor {
                 config: actor_config.clone(),
-                spine: SpineActor::from_config(&actor_config)?
+                spine: SpineActor::from_config(actor_config)?
             }))
     }
     Ok(actors)
@@ -243,7 +243,7 @@ async fn main() -> color_eyre::Result<()> {
             )
         });
 
-    let listen_host = args.listen.clone();
+    let listen_host = args.listen;
     let app = Router::new()
         .route("/", get(get_index))
         .route("/init.js", get(get_spoiler_js))
@@ -375,10 +375,10 @@ async fn get_v1_skin(
     let mut params = SkinParameters::try_from(params)?;
     debug!("params: {:?}", params);
 
-    let actor = actors.iter().find(|a| a.config.slug == actor_slug).ok_or(util::json_404("No such actor"))?.clone();
+    let actor = actors.iter().find(|a| a.config.slug == actor_slug).ok_or_else(|| util::json_404("No such actor"))?.clone();
 
-    let animation_name = params.animation.as_deref().ok_or(util::json_400("animation= parameter is required"))?;
-    let animation = actor.spine.animations.iter().find(|anim| anim.name == animation_name).ok_or(util::json_404("No such animation for actor"))?;
+    let animation_name = params.animation.as_deref().ok_or_else(|| util::json_400("animation= parameter is required"))?;
+    let animation = actor.spine.animations.iter().find(|anim| anim.name == animation_name).ok_or_else(|| util::json_404("No such animation for actor"))?;
 
     if params.end_time.is_none() {
         params.end_time = Some(animation.duration);
@@ -386,7 +386,7 @@ async fn get_v1_skin(
 
     params.add_skin.insert(0, skin_name);
     for add_skin in &params.add_skin {
-        if actor.spine.skins.iter().find(|s| &s.name == add_skin).is_none() {
+        if !actor.spine.skins.iter().any(|s| &s.name == add_skin) {
             return Err(util::json_400(format!("No such skin for actor: {add_skin:?}")))
         }
     }
