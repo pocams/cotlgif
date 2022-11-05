@@ -44,6 +44,10 @@ struct Args {
     /// Show spoilers when accessed via this vhost
     #[arg(long, default_value = "")]
     spoilers_host: String,
+
+    /// Limit parameters to try to avoid abuse
+    #[arg(long)]
+    public: bool
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -227,7 +231,7 @@ impl SkinParameters {
         Ok(RenderParameters {
             skins: self.add_skin,
             animation: self.animation.ok_or(util::json_400("animation= is required"))?,
-            scale: self.scale.unwrap_or(1.0),
+            scale: self.scale.unwrap_or(1.0).max(0.1),
             antialiasing: self.antialiasing.unwrap_or(1),
             start_time: self.start_time.unwrap_or(0.0),
             end_time: self.end_time.unwrap_or(1.0),
@@ -410,6 +414,7 @@ async fn get_v1_colours(
 
 async fn get_v1_skin(
     Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>,
+    Extension(args): Extension<Arc<Args>>,
     Path((actor_slug, skin_name)): Path<(String, String)>,
     Query(params): Query<Vec<(String, String)>>
 ) -> Result<impl IntoResponse, JsonError> {
@@ -444,7 +449,11 @@ async fn get_v1_skin(
         builder = builder.header("Content-Disposition", disposition);
     }
 
-    let render_params = params.into_render_parameters()?;
+    let mut render_params = params.into_render_parameters()?;
+
+    if args.public {
+        render_params.apply_reasonable_limits();
+    }
 
     spawn_blocking(move || {
         let render = match output_type {

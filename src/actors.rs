@@ -160,6 +160,33 @@ pub struct RenderParameters {
 }
 
 impl RenderParameters {
+    pub fn apply_reasonable_limits(&mut self) {
+        if self.skins.len() > 7 {
+            debug!("LIMITS: skins reducing from {} to 7", self.skins.len());
+            self.skins.truncate(7);
+        }
+        if self.scale > 3.0 {
+            debug!("LIMITS: scale reducing from {} to 3.0", self.scale);
+            self.scale = 3.0;
+        }
+        if self.antialiasing > 4 {
+            debug!("LIMITS: antialiasing reducing from {} to 4", self.antialiasing);
+            self.antialiasing = 4;
+        }
+        if self.start_time > 60.0 {
+            debug!("LIMITS: start_time increasing from {} to 60", self.start_time);
+            self.start_time = 60.0;
+        }
+        if self.end_time > 60.0 {
+            debug!("LIMITS: end_time increasing from {} to 60", self.end_time);
+            self.end_time = 60.0;
+        }
+        if self.frame_delay < 1.0 / 120.0 {
+            debug!("LIMITS: frame_delay increasing from {} to 1/120", self.frame_delay);
+            self.frame_delay = 1.0 / 120.0;
+        }
+    }
+
     fn render_scale(&self) -> f32 {
         let aa_factor = if self.antialiasing == 0 { 1 } else { self.antialiasing };
         self.scale * aa_factor as f32
