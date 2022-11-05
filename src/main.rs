@@ -2,7 +2,6 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::ops::Deref;
-use std::str::FromStr;
 use std::sync::Arc;
 
 use axum::{Extension, Json, Router};
@@ -25,7 +24,8 @@ use tower_http::services::ServeDir;
 use tower_http::trace::TraceLayer;
 use tracing::{debug, info, warn};
 use tracing_subscriber::EnvFilter;
-use util::{JsonError, Slug};
+
+use util::{JsonError, OutputType, Slug};
 
 use crate::actors::{RenderParameters, SpineActor};
 use crate::colours::SkinColours;
@@ -128,52 +128,6 @@ impl Actor {
                 "skins": self.spine.skins,
                 "animations": self.spine.animations,
             }))
-        }
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-enum OutputType {
-    Gif,
-    Apng,
-    Png,
-    Mp4,
-}
-
-impl OutputType {
-    fn mime_type(&self) -> &'static str {
-        match self {
-            OutputType::Gif => "image/gif",
-            OutputType::Apng | OutputType::Png => "image/png",
-            OutputType::Mp4 => "video/mp4",
-        }
-    }
-
-    fn extension(&self) -> &'static str {
-        match self {
-            OutputType::Gif => "gif",
-            OutputType::Apng | OutputType::Png => "png",
-            OutputType::Mp4 => "mp4",
-        }
-    }
-}
-
-impl Default for OutputType {
-    fn default() -> Self {
-        OutputType::Apng
-    }
-}
-
-impl FromStr for OutputType {
-    type Err = JsonError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_ascii_lowercase().as_ref() {
-            "gif" => Ok(OutputType::Gif),
-            "png" => Ok(OutputType::Png),
-            "apng"  => Ok(OutputType::Apng),
-            "mp4" => Ok(OutputType::Mp4),
-            _ => Err(util::json_400("Invalid format, expected gif, png, apng, mp4"))
         }
     }
 }

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
-use serde::{Serialize, Deserialize, Serializer};
 
+use serde::{Deserialize, Serialize, Serializer};
 
 const COLOUR_DATA: &str = include_str!("../worshipper_data.json");
 

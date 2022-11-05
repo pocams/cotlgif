@@ -1,4 +1,5 @@
 use std::num::NonZeroU32;
+
 use fast_image_resize::PixelType;
 use tracing::debug;
 

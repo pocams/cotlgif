@@ -1,16 +1,12 @@
 use std::{io, thread};
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader, Write};
-
-
-
 use std::process::{abort, Command, Stdio};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicI64, Ordering};
 
 use color_eyre::eyre::{ErrReport, eyre};
 use color_eyre::Report;
-
 use gifski::progress::NoProgress;
 use gifski::Settings;
 use imgref::ImgVec;
@@ -21,13 +17,13 @@ use rgb::FromSlice;
 use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson};
 use rusty_spine::BlendMode as SpineBlendMode;
 use serde::Serialize;
-
 use sfml::graphics::{Color as SfmlColor, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
 use sfml::graphics::blend_mode::{Equation as BlendEquation, Factor as BlendFactor};
 use sfml::graphics::BlendMode as SfmlBlendMode;
 use sfml::SfBox;
 use sfml::system::Vector2f;
 use tracing::{debug, info, warn};
+
 use crate::resize;
 use crate::util::{ChannelWriter, Slug};
 
