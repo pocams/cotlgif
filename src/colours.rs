@@ -12,6 +12,18 @@ pub struct Colour {
     a: f32,
 }
 
+// Ooof, this is rapidly getting out of hand
+impl Into<rusty_spine::Color> for Colour {
+    fn into(self) -> rusty_spine::Color {
+        rusty_spine::Color {
+            r: self.r,
+            g: self.g,
+            b: self.b,
+            a: self.a,
+        }
+    }
+}
+
 impl Serialize for Colour {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
         if self.a > 0.9999 {
@@ -46,6 +58,23 @@ pub struct SkinColours {
 impl SkinColours {
     pub(crate) fn load() -> SkinColours {
         serde_json::from_str(COLOUR_DATA).unwrap()
+    }
+
+    pub fn colour_set_from_index(&self, skin_name: &str, index: usize) -> Option<HashMap<String, Colour>> {
+        let mut index = index;
+        for follower_skin_set in &self.skins {
+            if follower_skin_set.skins.iter().any(|s| s == skin_name) {
+                if index < follower_skin_set.sets.len() {
+                    return Some(follower_skin_set.sets[index].clone())
+                } else {
+                    // Reduce index by the number of custom sets available for this follower
+                    index -= follower_skin_set.sets.len();
+                }
+                break;
+            }
+        }
+
+        self.global.get(index).map(|h| h.clone())
     }
 
     /*

@@ -141,6 +141,7 @@ struct SkinParameters {
     antialiasing: Option<u32>,
     start_time: Option<f32>,
     end_time: Option<f32>,
+    colour_set: Option<u32>,
     slot_colours: HashMap<String, Color>,
     background_colour: Option<Color>,
     fps: Option<u32>,
@@ -163,6 +164,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                 "antialiasing" => sp.antialiasing = Some(value.parse().map_err(|e| util::json_400(format!("antialiasing: {e:?}")))?),
                 "start_time" => sp.start_time = Some(value.parse().map_err(|e| util::json_400(format!("start_time: {e:?}")))?),
                 "end_time" => sp.end_time = Some(value.parse().map_err(|e| util::json_400(format!("end_time: {e:?}")))?),
+                "colour_set" => sp.colour_set = Some(value.parse().map_err(|e| util::json_400(format!("colour_set: {e:?}")))?),
                 "background" => sp.background_colour = Some(color_from_string(value.as_str()).map_err(|e| util::json_400(format!("background_color: {}", e)))?),
                 "fps" => sp.fps = Some(value.parse().map_err(|e| util::json_400(format!("fps: {e:?}")))?),
                 "only_head" => sp.only_head = Some(value.parse().map_err(|e| util::json_400(format!("only_head: {e:?}")))?),
@@ -179,8 +181,22 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
 }
 
 impl SkinParameters {
-    fn into_render_parameters(self) -> Result<RenderParameters, JsonError> {
+    fn into_render_parameters(self, skin_colours: Arc<SkinColours>) -> Result<RenderParameters, JsonError> {
         let fps = (self.fps.unwrap_or(50) as f32).max(1.0);
+
+        let mut final_colours: HashMap<String, Color> = if let Some(colour_set) = self.colour_set {
+            skin_colours.colour_set_from_index(&self.add_skin[0], colour_set as usize)
+                .unwrap_or_default()
+                .into_iter()
+                .map(|(slot, colour)| (slot, colour.into()))
+                .collect()
+        } else {
+            Default::default()
+        };
+
+        for (slot, color) in self.slot_colours.into_iter() {
+            final_colours.insert(slot, color);
+        }
 
         Ok(RenderParameters {
             skins: self.add_skin,
@@ -191,7 +207,7 @@ impl SkinParameters {
             end_time: self.end_time.unwrap_or(1.0),
             frame_delay: 1.0 / fps,
             background_colour: self.background_colour.unwrap_or_default(),
-            slot_colours: self.slot_colours,
+            slot_colours: final_colours,
             only_head: self.only_head.unwrap_or(false)
         })
     }
@@ -369,6 +385,7 @@ async fn get_v1_colours(
 async fn get_v1_skin(
     Extension(actors): Extension<Arc<Vec<Arc<Actor>>>>,
     Extension(args): Extension<Arc<Args>>,
+    Extension(skin_colours): Extension<Arc<SkinColours>>,
     Path((actor_slug, skin_name)): Path<(String, String)>,
     Query(params): Query<Vec<(String, String)>>
 ) -> Result<impl IntoResponse, JsonError> {
@@ -403,7 +420,7 @@ async fn get_v1_skin(
         builder = builder.header("Content-Disposition", disposition);
     }
 
-    let mut render_params = params.into_render_parameters()?;
+    let mut render_params = params.into_render_parameters(skin_colours)?;
 
     if args.public {
         render_params.apply_reasonable_limits();
