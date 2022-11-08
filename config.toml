@@ -7,7 +7,7 @@ order = 100
 default_skins = ["Lamb"]
 default_animation = "idle"
 spoiler_skins = '^(Goat|Owl|Snake|default|effects-top)$'
-spoiler_animations = '^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple-.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$'
+spoiler_animations = '^(altar-hop|attack-.*OLD|.*blunderbuss.*|attack-combo3-axe-test|.*chalice.*|grabber-.*|grapple.*|intro/goat-.*|lute-.*|oldstuff/.*|shield.*|slide|specials.*|teleport-.*|testing|throw|unconverted.*|warp-out-down-(alt|old)|zipline.*)$'
 
 [[actors]]
 name = "Follower"
