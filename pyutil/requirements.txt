@@ -1,0 +1,6 @@
+# For drawing sprites (draw.py)
+httpx
+pillow
+
+# For extracting Unity bundles (extract.py)
+UnityPy
