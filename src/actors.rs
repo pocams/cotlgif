@@ -25,7 +25,7 @@ use sfml::SfBox;
 use sfml::system::Vector2f;
 use tracing::{debug, info, warn};
 
-use crate::resize;
+use crate::{ActorConfig, resize};
 use crate::util::{ChannelWriter, Slug};
 
 const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
@@ -65,6 +65,8 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
 };
 
 static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
+const PETPET_TIMESCALE: f32 = 3.0;
+const PETPET_NATIVE_WIDTH: f32 = 100.0;
 
 fn only_head_includes(slot_name: &str) -> bool {
     static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
@@ -73,6 +75,37 @@ fn only_head_includes(slot_name: &str) -> bool {
     ).unwrap());
 
     only_head.is_match(slot_name)
+}
+
+fn get_petpet_actor() -> &'static SpineActor {
+    static ACTOR: OnceCell<SpineActor> = OnceCell::new();
+    ACTOR.get_or_init(||
+        SpineActor::from_config(
+            &ActorConfig::petpet()
+        ).unwrap()
+    )
+}
+
+fn apply_petpet(controller: &mut SkeletonController, petpet_state: &str, original_offset: (f32, f32), original_scale: f32) {
+    /*
+        https://benisland.neocities.org/petpet/main.js
+        { x: 0, y: 0, w: 0, h: 0 },
+        { x: -4, y: 12, w: 4, h: -12 },
+        { x: -12, y: 18, w: 12, h: -18 },
+        { x: -8, y: 12, w: 4, h: -12 },
+        { x: -4, y: 0, w: 0, h: 0 },
+     */
+    let squish_factor = 0.7;
+    let (scale, position): ((f32, f32), (f32, f32)) = match petpet_state {
+        "petpet0" => ((0.0, 0.0), (0.0, 0.0)),
+        "petpet1" => ((0.3, -0.2), (4.0, 0.0)),
+        "petpet2" => ((0.5, -0.3), (12.0, 0.0)),
+        "petpet3" => ((0.4, -0.2), (4.0, 0.0)),
+        "petpet4" => ((0.2, 0.0), (0.0, 0.0)),
+        other => panic!("bad petpet state {}", other),
+    };
+    controller.skeleton.set_scale([(1.0 + (scale.0 * squish_factor)) * original_scale, (1.0 + (scale.1 * squish_factor)) * original_scale]);
+    controller.skeleton.set_position([original_offset.0 + position.0, original_offset.1 + position.1]);
 }
 
 fn spine_init() {
@@ -154,6 +187,7 @@ pub struct RenderParameters {
     pub background_colour: Color,
     pub slot_colours: HashMap<String, Color>,
     pub only_head: bool,
+    pub petpet: bool,
 }
 
 impl RenderParameters {
@@ -201,6 +235,7 @@ struct PreparedRenderParameters {
     final_height: usize,
     x_offset: f32,
     y_offset: f32,
+    petpet: bool,
 }
 
 struct Frame<'a> {
@@ -292,22 +327,44 @@ impl SpineActor {
         let mut max_x = f32::MIN;
         let mut min_y = f32::MAX;
         let mut max_y = f32::MIN;
+
+        let mut controllers = vec![];
+
         controller.animation_state.clear_tracks();
         controller.animation_state.set_animation_by_name(0, &parameters.animation, true).unwrap();
-        controller.update(parameters.start_time);
+        controllers.push(controller);
+
+        let petpet_guard = if parameters.petpet {
+            let petpet = get_petpet_actor();
+            let mut petpet_controller = SkeletonController::new(petpet.skeleton_data.clone(), petpet.animation_state_data.clone());
+            petpet_controller.skeleton.set_skin_by_name("default").unwrap();
+            petpet_controller.animation_state.set_animation_by_name(0, "petpet", true).unwrap();
+            petpet_controller.animation_state.set_timescale(PETPET_TIMESCALE);
+            controllers.push(petpet_controller);
+            Some(petpet.mutex.lock().unwrap())
+        } else {
+            None
+        };
+
+        for controller in &mut controllers {
+            controller.update(parameters.start_time);
+        };
+
         let mut time = parameters.start_time;
         let mut frame_count = 0;
         while time <= parameters.end_time {
-            for r in controller.renderables().iter() {
-                if r.color.a < 0.001 { continue };
-                for [x, y] in &r.vertices {
-                    min_x = min_x.min(*x);
-                    min_y = min_y.min(*y);
-                    max_x = max_x.max(*x);
-                    max_y = max_y.max(*y);
+            for controller in &mut controllers {
+                for r in controller.renderables().iter() {
+                    if r.color.a < 0.001 { continue };
+                    for [x, y] in &r.vertices {
+                        min_x = min_x.min(*x);
+                        min_y = min_y.min(*y);
+                        max_x = max_x.max(*x);
+                        max_y = max_y.max(*y);
+                    }
                 }
+                controller.update(parameters.frame_delay);
             }
-            controller.update(parameters.frame_delay);
             time += parameters.frame_delay;
             frame_count += 1;
         }
@@ -332,6 +389,7 @@ impl SpineActor {
             final_height,
             x_offset: -min_x,
             y_offset: -min_y,
+            petpet: petpet_guard.is_some(),
         })
     }
 
@@ -384,49 +442,85 @@ impl SpineActor {
 
         controller.animation_state.clear_tracks();
         controller.animation_state.set_animation_by_name(0, &params.animation, true).unwrap();
-        controller.update(params.start_time);
+
+        let mut controllers = vec![controller];
+
+        let _petpet_guard = if prepared_params.petpet {
+            let petpet = get_petpet_actor();
+            let mut petpet_controller = SkeletonController::new(petpet.skeleton_data.clone(), petpet.animation_state_data.clone());
+            petpet_controller.skeleton.set_skin_by_name("default").unwrap();
+            petpet_controller.animation_state.set_animation_by_name(0, "petpet", true).unwrap();
+            petpet_controller.animation_state.set_timescale(PETPET_TIMESCALE);
+            let petpet_scale = if prepared_params.render_width > prepared_params.render_height {
+                (prepared_params.render_width as f32 / PETPET_NATIVE_WIDTH) * 0.9 * (prepared_params.render_height as f32 / prepared_params.render_width as f32)
+            } else {
+                (prepared_params.render_width as f32 / PETPET_NATIVE_WIDTH) * 0.9
+            };
+            petpet_controller.skeleton.set_scale([petpet_scale, petpet_scale]);
+            // petpet_controller.skeleton.set_x(3.0);
+            petpet_controller.skeleton.set_y(prepared_params.render_height as f32 - (35.0 * petpet_scale));
+
+            controllers.push(petpet_controller);
+            Some(petpet.mutex.lock().unwrap())
+        } else {
+            None
+        };
+
+        for controller in &mut controllers {
+            controller.update(params.start_time);
+        }
+
         let mut time = params.start_time;
         let mut elapsed_time = 0.0;
         let mut frame = 0;
         while time <= params.end_time {
+            if params.petpet {
+                // Work around a bit of borrow checker nonsense - we can't pass controllers[0] as mutable
+                // if we're holding a borrow from controllers[1], so just copy the string :<
+                let petpet_state = controllers[1].skeleton.slot_at_index(0).unwrap().attachment().unwrap().name().to_owned();
+                apply_petpet(&mut controllers[0], &petpet_state, (prepared_params.x_offset, prepared_params.y_offset), render_scale);
+            }
             // debug!("Processing frame {}", frame);
             target.clear(background_colour);
 
-            let renderables = controller.renderables();
-            for renderable in renderables.iter() {
-                if renderable.color.a < 0.001 { continue };
+            for controller in &mut controllers {
+                let renderables = controller.renderables();
+                for renderable in renderables.iter() {
+                    if renderable.color.a < 0.001 { continue };
 
-                let colour = SfmlColor::rgba(
-                    (renderable.color.r * 255.0).round() as u8,
-                    (renderable.color.g * 255.0).round() as u8,
-                    (renderable.color.b * 255.0).round() as u8,
-                    (renderable.color.a * 255.0).round() as u8,
-                );
+                    let colour = SfmlColor::rgba(
+                        (renderable.color.r * 255.0).round() as u8,
+                        (renderable.color.g * 255.0).round() as u8,
+                        (renderable.color.b * 255.0).round() as u8,
+                        (renderable.color.a * 255.0).round() as u8,
+                    );
 
-                let texture = unsafe { &*(renderable.attachment_renderer_object.unwrap() as *const SfBox<Texture>) };
-                let texture_size = texture.size();
-                render_states.set_texture(Some(texture));
+                    let texture = unsafe { &*(renderable.attachment_renderer_object.unwrap() as *const SfBox<Texture>) };
+                    let texture_size = texture.size();
+                    render_states.set_texture(Some(texture));
 
-                render_states.blend_mode = match renderable.blend_mode {
-                    SpineBlendMode::Normal => BLEND_NORMAL,
-                    SpineBlendMode::Additive => BLEND_ADDITIVE,
-                    SpineBlendMode::Multiply => BLEND_MULTIPLY,
-                    SpineBlendMode::Screen => BLEND_SCREEN,
-                };
+                    render_states.blend_mode = match renderable.blend_mode {
+                        SpineBlendMode::Normal => BLEND_NORMAL,
+                        SpineBlendMode::Additive => BLEND_ADDITIVE,
+                        SpineBlendMode::Multiply => BLEND_MULTIPLY,
+                        SpineBlendMode::Screen => BLEND_SCREEN,
+                    };
 
-                let mut vertexes = Vec::with_capacity(renderable.indices.len());
-                for i in &renderable.indices {
-                    let v = renderable.vertices[*i as usize];
-                    let t = renderable.uvs[*i as usize];
-                    let t = [t[0] * texture_size.x as f32, t[1] * texture_size.y as f32];
-                    vertexes.push(Vertex::new(
-                        Vector2f::new(v[0], v[1]), colour, Vector2f::new(t[0], t[1])
-                    ));
+                    let mut vertexes = Vec::with_capacity(renderable.indices.len());
+                    for i in &renderable.indices {
+                        let v = renderable.vertices[*i as usize];
+                        let t = renderable.uvs[*i as usize];
+                        let t = [t[0] * texture_size.x as f32, t[1] * texture_size.y as f32];
+                        vertexes.push(Vertex::new(
+                            Vector2f::new(v[0], v[1]), colour, Vector2f::new(t[0], t[1])
+                        ));
+                    }
+
+                    target.draw_primitives(vertexes.as_slice(), PrimitiveType::TRIANGLES, &render_states);
                 }
 
-                target.draw_primitives(vertexes.as_slice(), PrimitiveType::TRIANGLES, &render_states);
+                controller.update(params.frame_delay);
             }
-            // debug!("Rendered {} objects", renderables.len());
 
             // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to
             // give us ownership of the pixel data.
@@ -457,7 +551,6 @@ impl SpineActor {
             frame += 1;
             time += params.frame_delay;
             elapsed_time += params.frame_delay as f64;
-            controller.update(params.frame_delay);
         }
         info!("Finished rendering");
     }

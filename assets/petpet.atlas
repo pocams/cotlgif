@@ -1,0 +1,41 @@
+
+petpet.png
+size: 520,84
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+petpet0
+  rotate: false
+  xy: 419, 12
+  size: 99, 70
+  orig: 99, 70
+  offset: 0, 0
+  index: -1
+petpet1
+  rotate: false
+  xy: 212, 13
+  size: 107, 69
+  orig: 107, 69
+  offset: 0, 0
+  index: -1
+petpet2
+  rotate: false
+  xy: 2, 3
+  size: 104, 79
+  orig: 104, 79
+  offset: 0, 0
+  index: -1
+petpet3
+  rotate: false
+  xy: 108, 2
+  size: 102, 80
+  orig: 102, 80
+  offset: 0, 0
+  index: -1
+petpet4
+  rotate: false
+  xy: 321, 7
+  size: 96, 75
+  orig: 96, 75
+  offset: 0, 0
+  index: -1

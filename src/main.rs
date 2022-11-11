@@ -77,8 +77,6 @@ pub struct ActorConfig {
     #[serde(default)]
     category: Category,
     #[serde(default)]
-    order: i32,
-    #[serde(default)]
     is_spoiler: bool,
     default_skins: Vec<String>,
     default_animation: String,
@@ -90,6 +88,25 @@ pub struct ActorConfig {
     spoiler_animations: Option<Regex>,
     #[serde(default)]
     has_slot_colours: bool,
+}
+
+impl ActorConfig {
+    fn petpet() -> ActorConfig {
+        ActorConfig {
+            name: "Petpet".to_owned(),
+            slug: "petpet".to_owned(),
+            atlas: "assets/petpet.atlas".to_owned(),
+            skeleton: "assets/petpet.skel".to_owned(),
+            category: Category::None,
+            is_spoiler: true,
+            default_skins: vec!["default".to_owned()],
+            default_animation: "petpet".to_owned(),
+            default_scale: 1.0,
+            spoiler_skins: None,
+            spoiler_animations: None,
+            has_slot_colours: false
+        }
+    }
 }
 
 fn default_scale() -> f32 { 1.0 }
@@ -134,7 +151,6 @@ impl Actor {
                     json!({
                         "name": self.config.name,
                         "slug": self.config.slug,
-                        "order": self.config.order,
                         "category": self.config.category,
                         "skins": skins,
                         "animations": animations,
@@ -145,7 +161,6 @@ impl Actor {
             Some(json!({
                 "name": self.config.name,
                 "slug": self.config.slug,
-                "order": self.config.order,
                 "category": self.config.category,
                 "skins": self.spine.skins,
                 "animations": self.spine.animations,
@@ -169,6 +184,7 @@ struct SkinParameters {
     fps: Option<u32>,
     only_head: Option<bool>,
     download: Option<bool>,
+    petpet: Option<bool>,
 }
 
 // Convert a list of HTTP GET query parameters to SkinParameters
@@ -195,6 +211,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                 "HEAD_SKIN_TOP" | "HEAD_SKIN_BTM" | "MARKINGS" | "ARM_LEFT_SKIN" | "ARM_RIGHT_SKIN" | "LEG_LEFT_SKIN" | "LEG_RIGHT_SKIN" => {
                     sp.slot_colours.insert(key.clone(), color_from_string(value.as_str()).map_err(|e| util::json_400(format!("{}: {}", key, e)))?);
                 }
+                "petpet" => sp.petpet = Some(value.parse().map_err(|e| util::json_400(format!("petpet: {e:?}")))?),
                 _ => return Err(util::json_400(Cow::from(format!("Invalid parameter {:?}", key))))
             }
         }
@@ -230,7 +247,8 @@ impl SkinParameters {
             frame_delay: 1.0 / fps,
             background_colour: self.background_colour.unwrap_or_default(),
             slot_colours: final_colours,
-            only_head: self.only_head.unwrap_or(false)
+            only_head: self.only_head.unwrap_or(false),
+            petpet: self.petpet.unwrap_or(false),
         })
     }
 }
