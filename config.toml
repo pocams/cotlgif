@@ -489,8 +489,8 @@ category = "Others"
 [[actors]]
 name = "Hopper"
 slug = "hopper"
-atlas = "cotl/Hopper.atlas"
-skeleton = "cotl/Hopper.skel"
+atlas = "cotl/hopper.atlas"
+skeleton = "cotl/hopper.skel"
 default_skins = ["hopper-front"]
 default_animation = "idle"
 category = "Enemies"
