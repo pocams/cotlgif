@@ -535,13 +535,13 @@ default_scale = 0.3
 category = "Enemies"
 
 [[actors]]
-name = "MiniBossWorm"
+name = "Budget Leshy"
 slug = "mini-boss-worm"
 atlas = "cotl/MiniBossWorm.atlas"
 skeleton = "cotl/MiniBossWorm.skel"
 default_skins = ["HEAD"]
 default_animation = "animation"
-category = "Enemies"
+category = "Minibosses"
 is_spoiler = true
 
 [[actors]]
