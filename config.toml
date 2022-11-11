@@ -24,7 +24,6 @@ name = "Forneus"
 slug = "forneus"
 atlas = "cotl/catSeller.atlas"
 skeleton = "cotl/catSeller.skel"
-is_spoiler = true
 default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.3
