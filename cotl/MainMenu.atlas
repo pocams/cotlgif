@@ -1,0 +1,223 @@
+
+MainMenu.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/BELL
+  rotate: true
+  xy: 944, 757
+  size: 121, 124
+  orig: 121, 124
+  offset: 0, 0
+  index: -1
+images/BlackFloorBlob
+  rotate: true
+  xy: 1632, 576
+  size: 299, 208
+  orig: 299, 208
+  offset: 0, 0
+  index: -1
+images/Crown
+  rotate: false
+  xy: 1632, 877
+  size: 218, 358
+  orig: 218, 358
+  offset: 0, 0
+  index: -1
+images/Crown_Back
+  rotate: true
+  xy: 3890, 1768
+  size: 205, 84
+  orig: 205, 84
+  offset: 0, 0
+  index: -1
+images/Crown_Eye
+  rotate: false
+  xy: 3890, 1975
+  size: 159, 125
+  orig: 159, 125
+  offset: 0, 0
+  index: -1
+images/Crown_EyeIris
+  rotate: true
+  xy: 4028, 2891
+  size: 15, 42
+  orig: 15, 42
+  offset: 0, 0
+  index: -1
+images/Crown_EyeLash
+  rotate: false
+  xy: 3890, 2102
+  size: 169, 124
+  orig: 170, 125
+  offset: 0, 0
+  index: -1
+images/EYES
+  rotate: true
+  xy: 3890, 2574
+  size: 332, 136
+  orig: 332, 136
+  offset: 0, 0
+  index: -1
+images/Fire/flame_0000
+  rotate: true
+  xy: 1117, 788
+  size: 447, 513
+  orig: 517, 546
+  offset: 46, 18
+  index: -1
+images/Fire/flame_0001
+  rotate: false
+  xy: 3217, 356
+  size: 471, 510
+  orig: 517, 546
+  offset: 41, 36
+  index: -1
+images/Fire/flame_0002
+  rotate: true
+  xy: 3217, 868
+  size: 493, 501
+  orig: 517, 546
+  offset: 22, 45
+  index: -1
+images/Fire/flame_0003
+  rotate: false
+  xy: 3303, 1363
+  size: 500, 494
+  orig: 517, 546
+  offset: 17, 45
+  index: -1
+images/Fire/flame_0004
+  rotate: true
+  xy: 2, 31
+  size: 427, 446
+  orig: 517, 546
+  offset: 14, 45
+  index: -1
+images/Fire/flame_0005
+  rotate: true
+  xy: 489, 454
+  size: 424, 453
+  orig: 517, 546
+  offset: 16, 5
+  index: -1
+images/Fire/flame_0006
+  rotate: false
+  xy: 3690, 2
+  size: 403, 393
+  orig: 517, 546
+  offset: 20, 36
+  index: -1
+images/Fire/flame_0007
+  rotate: false
+  xy: 450, 62
+  size: 406, 390
+  orig: 517, 546
+  offset: 25, 54
+  index: -1
+images/Fire/flame_0008
+  rotate: true
+  xy: 3690, 397
+  size: 405, 396
+  orig: 517, 546
+  offset: 35, 54
+  index: -1
+images/Fire/flame_0009
+  rotate: true
+  xy: 1070, 379
+  size: 407, 424
+  orig: 517, 546
+  offset: 39, 45
+  index: -1
+images/Fire/flame_0010
+  rotate: true
+  xy: 2, 460
+  size: 418, 485
+  orig: 517, 546
+  offset: 45, 21
+  index: -1
+images/HeadOutline_1
+  rotate: true
+  xy: 3720, 804
+  size: 550, 321
+  orig: 550, 321
+  offset: 0, 0
+  index: -1
+images/HeadOutline_2
+  rotate: true
+  xy: 2895, 378
+  size: 553, 320
+  orig: 553, 320
+  offset: 0, 0
+  index: -1
+images/HeadOutline_3
+  rotate: true
+  xy: 2895, 933
+  size: 555, 320
+  orig: 555, 320
+  offset: 0, 0
+  index: -1
+images/Horns
+  rotate: true
+  xy: 3890, 2228
+  size: 344, 128
+  orig: 344, 128
+  offset: 0, 0
+  index: -1
+images/Lines_1
+  rotate: false
+  xy: 1854, 567
+  size: 1039, 921
+  orig: 1039, 921
+  offset: 0, 0
+  index: -1
+images/Lines_2
+  rotate: true
+  xy: 3303, 1859
+  size: 1047, 585
+  orig: 1047, 585
+  offset: 0, 0
+  index: -1
+images/PLAYER
+  rotate: true
+  xy: 1117, 1237
+  size: 588, 735
+  orig: 588, 735
+  offset: 0, 0
+  index: -1
+images/Pentagram
+  rotate: false
+  xy: 2, 1827
+  size: 1875, 1079
+  orig: 1875, 1079
+  offset: 0, 0
+  index: -1
+images/Pentagram-Star
+  rotate: true
+  xy: 1879, 1490
+  size: 1416, 1422
+  orig: 1580, 1580
+  offset: 98, 90
+  index: -1
+images/RED_TRIANGLE
+  rotate: false
+  xy: 2, 880
+  size: 1113, 945
+  orig: 1113, 945
+  offset: 0, 0
+  index: -1
+images/Symbol
+  rotate: false
+  xy: 3976, 1847
+  size: 82, 126
+  orig: 100, 150
+  offset: 9, 12
+  index: -1
+images/Tunic
+  rotate: true
+  xy: 3805, 1356
+  size: 410, 220
+  orig: 410, 220
+  offset: 0, 0
+  index: -1

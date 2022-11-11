@@ -1,0 +1,27 @@
+
+PropagandaSpeakers.png
+size: 512,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+PropagandaSpeaker_Circle
+  rotate: true
+  xy: 2, 12
+  size: 35, 103
+  orig: 35, 103
+  offset: 0, 0
+  index: -1
+PropagandaSpeaker_Pole
+  rotate: true
+  xy: 2, 49
+  size: 73, 206
+  orig: 73, 206
+  offset: 0, 0
+  index: -1
+Speaker
+  rotate: false
+  xy: 210, 2
+  size: 132, 120
+  orig: 132, 120
+  offset: 0, 0
+  index: -1

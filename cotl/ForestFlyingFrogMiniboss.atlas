@@ -1,0 +1,153 @@
+
+ForestFlyingFrogMiniboss.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/Body
+  rotate: true
+  xy: 2, 163
+  size: 346, 321
+  orig: 346, 321
+  offset: 0, 0
+  index: -1
+images/BtmLegLeft
+  rotate: true
+  xy: 494, 190
+  size: 88, 80
+  orig: 88, 80
+  offset: 0, 0
+  index: -1
+images/BtmLegRight
+  rotate: true
+  xy: 442, 8
+  size: 88, 80
+  orig: 88, 80
+  offset: 0, 0
+  index: -1
+images/Cheek_Left
+  rotate: true
+  xy: 355, 93
+  size: 91, 85
+  orig: 91, 85
+  offset: 0, 0
+  index: -1
+images/Cheek_Right
+  rotate: true
+  xy: 325, 186
+  size: 92, 80
+  orig: 92, 80
+  offset: 0, 0
+  index: -1
+images/Eye
+  rotate: true
+  xy: 355, 2
+  size: 89, 85
+  orig: 89, 85
+  offset: 0, 0
+  index: -1
+images/Eye_Attack
+  rotate: true
+  xy: 407, 189
+  size: 89, 85
+  orig: 89, 85
+  offset: 0, 0
+  index: -1
+images/Eye_Shut
+  rotate: true
+  xy: 589, 68
+  size: 53, 49
+  orig: 53, 49
+  offset: 0, 0
+  index: -1
+images/Horns
+  rotate: false
+  xy: 2, 45
+  size: 239, 116
+  orig: 239, 116
+  offset: 0, 0
+  index: -1
+images/Mouth
+  rotate: false
+  xy: 442, 98
+  size: 61, 89
+  orig: 61, 89
+  offset: 0, 0
+  index: -1
+images/Mouth_Shut
+  rotate: true
+  xy: 568, 123
+  size: 65, 62
+  orig: 65, 62
+  offset: 0, 0
+  index: -1
+images/Mouth_Wide
+  rotate: false
+  xy: 243, 50
+  size: 110, 111
+  orig: 110, 111
+  offset: 0, 0
+  index: -1
+images/Paw
+  rotate: true
+  xy: 505, 119
+  size: 69, 61
+  orig: 69, 61
+  offset: 0, 0
+  index: -1
+images/TummyBulge_1
+  rotate: true
+  xy: 2, 2
+  size: 41, 40
+  orig: 41, 40
+  offset: 0, 0
+  index: -1
+images/TummyBulge_2
+  rotate: false
+  xy: 79, 12
+  size: 30, 31
+  orig: 30, 31
+  offset: 0, 0
+  index: -1
+images/TummyBulge_3
+  rotate: false
+  xy: 288, 4
+  size: 49, 44
+  orig: 49, 44
+  offset: 0, 0
+  index: -1
+images/TummyBulge_4
+  rotate: true
+  xy: 243, 3
+  size: 45, 43
+  orig: 45, 43
+  offset: 0, 0
+  index: -1
+images/TummyBulge_5
+  rotate: false
+  xy: 44, 10
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+images/TummyBulge_6
+  rotate: true
+  xy: 111, 17
+  size: 26, 25
+  orig: 26, 25
+  offset: 0, 0
+  index: -1
+images/TummyBulge_7
+  rotate: true
+  xy: 524, 51
+  size: 66, 63
+  orig: 66, 64
+  offset: 0, 0
+  index: -1
+images/Wing
+  rotate: false
+  xy: 325, 280
+  size: 222, 229
+  orig: 222, 229
+  offset: 0, 0
+  index: -1

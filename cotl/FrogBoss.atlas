@@ -1,0 +1,538 @@
+
+FrogBoss.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/Arm_Left_Btm
+  rotate: true
+  xy: 3756, 357
+  size: 225, 244
+  orig: 225, 244
+  offset: 0, 0
+  index: -1
+images/Arm_Left_Top
+  rotate: true
+  xy: 2024, 853
+  size: 190, 244
+  orig: 190, 244
+  offset: 0, 0
+  index: -1
+images/Arm_Right_Btm
+  rotate: false
+  xy: 3555, 1402
+  size: 285, 276
+  orig: 285, 276
+  offset: 0, 0
+  index: -1
+images/Arm_Right_Top
+  rotate: false
+  xy: 3130, 388
+  size: 196, 189
+  orig: 196, 189
+  offset: 0, 0
+  index: -1
+images/Body
+  rotate: false
+  xy: 2, 1528
+  size: 1009, 913
+  orig: 1049, 913
+  offset: 40, 0
+  index: -1
+images/BodyDead
+  rotate: false
+  xy: 1013, 1867
+  size: 1074, 574
+  orig: 1074, 883
+  offset: 0, 0
+  index: -1
+images/CheekLeft
+  rotate: false
+  xy: 2332, 371
+  size: 124, 185
+  orig: 124, 185
+  offset: 0, 0
+  index: -1
+images/CheekRight
+  rotate: true
+  xy: 2482, 485
+  size: 158, 187
+  orig: 158, 187
+  offset: 0, 0
+  index: -1
+images/Cloak
+  rotate: false
+  xy: 3003, 1154
+  size: 355, 641
+  orig: 355, 641
+  offset: 0, 0
+  index: -1
+images/Crown
+  rotate: false
+  xy: 2186, 433
+  size: 144, 217
+  orig: 144, 217
+  offset: 0, 0
+  index: -1
+images/CrownEye
+  rotate: false
+  xy: 4028, 579
+  size: 59, 49
+  orig: 59, 49
+  offset: 0, 0
+  index: -1
+images/CrownEye_Shut
+  rotate: true
+  xy: 4057, 1059
+  size: 47, 37
+  orig: 47, 37
+  offset: 0, 0
+  index: -1
+images/Eye_Back
+  rotate: false
+  xy: 2270, 839
+  size: 212, 204
+  orig: 212, 204
+  offset: 0, 0
+  index: -1
+images/Eye_Back_Blink_0
+  rotate: false
+  xy: 1972, 648
+  size: 212, 203
+  orig: 212, 203
+  offset: 0, 0
+  index: -1
+images/Eye_Back_Blink_1
+  rotate: false
+  xy: 2484, 842
+  size: 212, 201
+  orig: 212, 201
+  offset: 0, 0
+  index: -1
+images/Eye_Back_Shut
+  rotate: false
+  xy: 1736, 568
+  size: 212, 203
+  orig: 212, 203
+  offset: 0, 0
+  index: -1
+images/Eye_Big
+  rotate: false
+  xy: 2186, 652
+  size: 188, 185
+  orig: 188, 185
+  offset: 0, 0
+  index: -1
+images/Eye_Big_Blink_0
+  rotate: true
+  xy: 3328, 364
+  size: 192, 182
+  orig: 192, 182
+  offset: 0, 0
+  index: -1
+images/Eye_Big_Blink_1
+  rotate: false
+  xy: 3512, 228
+  size: 192, 182
+  orig: 192, 182
+  offset: 0, 0
+  index: -1
+images/Eye_Big_Shut
+  rotate: false
+  xy: 2689, 471
+  size: 205, 187
+  orig: 205, 187
+  offset: 0, 0
+  index: -1
+images/Eye_Small
+  rotate: false
+  xy: 3845, 232
+  size: 128, 123
+  orig: 128, 123
+  offset: 0, 0
+  index: -1
+images/Eye_Small_Blink_0
+  rotate: false
+  xy: 3953, 90
+  size: 125, 118
+  orig: 125, 118
+  offset: 0, 0
+  index: -1
+images/Eye_Small_Blink_1
+  rotate: false
+  xy: 3812, 2
+  size: 125, 118
+  orig: 125, 118
+  offset: 0, 0
+  index: -1
+images/Eye_Small_Shut
+  rotate: false
+  xy: 1950, 517
+  size: 142, 129
+  orig: 142, 129
+  offset: 0, 0
+  index: -1
+images/Eye_Socket_Left
+  rotate: false
+  xy: 3514, 412
+  size: 240, 239
+  orig: 240, 249
+  offset: 0, 10
+  index: -1
+images/Eye_Socket_Right
+  rotate: false
+  xy: 3781, 584
+  size: 245, 241
+  orig: 245, 257
+  offset: 0, 16
+  index: -1
+images/Hand_Left
+  rotate: true
+  xy: 2376, 558
+  size: 279, 104
+  orig: 279, 104
+  offset: 0, 0
+  index: -1
+images/Hand_Left2
+  rotate: true
+  xy: 3173, 579
+  size: 243, 160
+  orig: 243, 162
+  offset: 0, 2
+  index: -1
+images/Hand_Right
+  rotate: true
+  xy: 3247, 824
+  size: 328, 106
+  orig: 328, 106
+  offset: 0, 0
+  index: -1
+images/Hand_Right2
+  rotate: true
+  xy: 2996, 647
+  size: 270, 175
+  orig: 270, 175
+  offset: 0, 0
+  index: -1
+images/Head
+  rotate: true
+  xy: 3569, 1680
+  size: 761, 523
+  orig: 761, 523
+  offset: 0, 0
+  index: -1
+images/HeadLeader
+  rotate: true
+  xy: 1753, 1465
+  size: 400, 286
+  orig: 400, 286
+  offset: 0, 0
+  index: -1
+images/Leg_Back_Btm
+  rotate: false
+  xy: 2776, 1391
+  size: 218, 312
+  orig: 218, 312
+  offset: 0, 0
+  index: -1
+images/Leg_Back_Top
+  rotate: false
+  xy: 1736, 773
+  size: 234, 307
+  orig: 234, 307
+  offset: 0, 0
+  index: -1
+images/MonsterHeart_glow
+  rotate: false
+  xy: 2698, 660
+  size: 213, 186
+  orig: 219, 194
+  offset: 3, 4
+  index: -1
+images/Mouth
+  rotate: true
+  xy: 2089, 1797
+  size: 644, 738
+  orig: 644, 738
+  offset: 0, 0
+  index: -1
+images/Mouth Shut
+  rotate: true
+  xy: 2041, 1045
+  size: 644, 733
+  orig: 644, 733
+  offset: 0, 0
+  index: -1
+images/Mouth2
+  rotate: true
+  xy: 1013, 1221
+  size: 644, 738
+  orig: 644, 738
+  offset: 0, 0
+  index: -1
+images/Mouth3
+  rotate: true
+  xy: 2, 882
+  size: 644, 738
+  orig: 644, 738
+  offset: 0, 0
+  index: -1
+images/Mouth4
+  rotate: true
+  xy: 2829, 1797
+  size: 644, 738
+  orig: 644, 738
+  offset: 0, 0
+  index: -1
+images/Mouth_Back
+  rotate: true
+  xy: 2, 251
+  size: 629, 703
+  orig: 629, 703
+  offset: 0, 0
+  index: -1
+images/Mouth_Mid
+  rotate: true
+  xy: 1008, 578
+  size: 641, 726
+  orig: 641, 726
+  offset: 0, 0
+  index: -1
+images/Robes_Left
+  rotate: false
+  xy: 1753, 1082
+  size: 218, 381
+  orig: 218, 381
+  offset: 0, 0
+  index: -1
+images/Robes_Right
+  rotate: false
+  xy: 742, 1150
+  size: 264, 376
+  orig: 264, 376
+  offset: 0, 0
+  index: -1
+images/Slime_1
+  rotate: false
+  xy: 3787, 1027
+  size: 41, 113
+  orig: 41, 113
+  offset: 0, 0
+  index: -1
+images/Slime_2
+  rotate: false
+  xy: 3787, 936
+  size: 39, 89
+  orig: 39, 89
+  offset: 0, 0
+  index: -1
+images/Slime_3
+  rotate: false
+  xy: 2041, 1691
+  size: 39, 174
+  orig: 45, 174
+  offset: 6, 0
+  index: -1
+images/Slime_4
+  rotate: false
+  xy: 1973, 1223
+  size: 56, 240
+  orig: 56, 240
+  offset: 0, 0
+  index: -1
+images/Slime_5
+  rotate: false
+  xy: 4028, 630
+  size: 58, 195
+  orig: 68, 195
+  offset: 0, 0
+  index: -1
+images/Slime_7
+  rotate: false
+  xy: 1973, 970
+  size: 49, 251
+  orig: 49, 251
+  offset: 0, 0
+  index: -1
+images/Slime_8
+  rotate: false
+  xy: 707, 757
+  size: 33, 123
+  orig: 33, 123
+  offset: 0, 0
+  index: -1
+images/Stick_1
+  rotate: false
+  xy: 3360, 870
+  size: 159, 323
+  orig: 159, 323
+  offset: 0, 0
+  index: -1
+images/Stick_2
+  rotate: true
+  xy: 2544, 1705
+  size: 90, 457
+  orig: 90, 457
+  offset: 0, 0
+  index: -1
+images/Stick_3
+  rotate: true
+  xy: 2082, 1704
+  size: 91, 460
+  orig: 91, 460
+  offset: 0, 0
+  index: -1
+images/Stick_4
+  rotate: false
+  xy: 3355, 558
+  size: 157, 310
+  orig: 157, 310
+  offset: 0, 0
+  index: -1
+images/Stick_5
+  rotate: false
+  xy: 3830, 827
+  size: 225, 279
+  orig: 225, 279
+  offset: 0, 0
+  index: -1
+images/Stick_6
+  rotate: true
+  xy: 3706, 239
+  size: 116, 137
+  orig: 116, 137
+  offset: 0, 0
+  index: -1
+images/Stick_7
+  rotate: false
+  xy: 3706, 90
+  size: 104, 147
+  orig: 104, 147
+  offset: 0, 0
+  index: -1
+images/Stick_8
+  rotate: true
+  xy: 3812, 122
+  size: 108, 139
+  orig: 108, 139
+  offset: 0, 0
+  index: -1
+images/blood_explosion0001
+  rotate: false
+  xy: 2896, 558
+  size: 93, 100
+  orig: 323, 313
+  offset: 93, 132
+  index: -1
+images/blood_explosion0002
+  rotate: true
+  xy: 2458, 331
+  size: 152, 153
+  orig: 323, 313
+  offset: 70, 120
+  index: -1
+images/blood_explosion0003
+  rotate: false
+  xy: 2484, 645
+  size: 203, 195
+  orig: 323, 313
+  offset: 48, 106
+  index: -1
+images/blood_explosion0004
+  rotate: true
+  xy: 2776, 848
+  size: 229, 218
+  orig: 323, 313
+  offset: 33, 95
+  index: -1
+images/blood_explosion0005
+  rotate: false
+  xy: 2996, 919
+  size: 249, 233
+  orig: 323, 313
+  offset: 20, 73
+  index: -1
+images/blood_explosion0006
+  rotate: false
+  xy: 3521, 653
+  size: 258, 240
+  orig: 323, 313
+  offset: 15, 66
+  index: -1
+images/blood_explosion0007
+  rotate: false
+  xy: 3521, 895
+  size: 264, 245
+  orig: 323, 313
+  offset: 9, 58
+  index: -1
+images/blood_explosion0008
+  rotate: true
+  xy: 3834, 1108
+  size: 272, 253
+  orig: 323, 313
+  offset: 6, 47
+  index: -1
+images/blood_explosion0009
+  rotate: false
+  xy: 3550, 1142
+  size: 282, 258
+  orig: 323, 313
+  offset: 3, 39
+  index: -1
+images/blood_explosion0010
+  rotate: true
+  xy: 3842, 1382
+  size: 296, 247
+  orig: 323, 313
+  offset: 3, 38
+  index: -1
+images/blood_explosion0011
+  rotate: true
+  xy: 742, 545
+  size: 297, 252
+  orig: 323, 313
+  offset: 4, 21
+  index: -1
+images/blood_explosion0012
+  rotate: true
+  xy: 742, 844
+  size: 304, 253
+  orig: 323, 313
+  offset: 2, 4
+  index: -1
+images/blood_explosion0013
+  rotate: true
+  xy: 2776, 1079
+  size: 310, 218
+  orig: 323, 313
+  offset: 1, 20
+  index: -1
+images/blood_explosion0014
+  rotate: true
+  xy: 3360, 1195
+  size: 279, 188
+  orig: 323, 313
+  offset: 0, 30
+  index: -1
+images/blood_explosion0015
+  rotate: true
+  xy: 3360, 1476
+  size: 319, 193
+  orig: 323, 313
+  offset: 0, 5
+  index: -1
+images/blood_explosion0016
+  rotate: true
+  xy: 2991, 403
+  size: 242, 137
+  orig: 323, 313
+  offset: 25, 34
+  index: -1
+images/blood_explosion0017
+  rotate: true
+  xy: 3975, 210
+  size: 145, 107
+  orig: 323, 313
+  offset: 28, 18
+  index: -1

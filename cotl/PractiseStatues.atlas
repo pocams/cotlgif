@@ -1,0 +1,314 @@
+
+PractiseStatues.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/DefeatedMarking
+  rotate: false
+  xy: 1823, 1542
+  size: 203, 203
+  orig: 203, 204
+  offset: 0, 1
+  index: -1
+images/PractiseStatue_1
+  rotate: false
+  xy: 2, 1223
+  size: 538, 760
+  orig: 538, 760
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Broken
+  rotate: false
+  xy: 1186, 1520
+  size: 348, 172
+  orig: 348, 172
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece1
+  rotate: false
+  xy: 1261, 794
+  size: 158, 202
+  orig: 158, 202
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece2
+  rotate: false
+  xy: 1421, 656
+  size: 155, 155
+  orig: 155, 155
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece3
+  rotate: false
+  xy: 1726, 993
+  size: 205, 167
+  orig: 205, 168
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece4
+  rotate: false
+  xy: 1261, 670
+  size: 154, 122
+  orig: 154, 122
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece5
+  rotate: true
+  xy: 542, 1382
+  size: 276, 267
+  orig: 276, 267
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece6
+  rotate: true
+  xy: 1440, 1699
+  size: 284, 193
+  orig: 285, 193
+  offset: 1, 0
+  index: -1
+images/PractiseStatue_1_Piece7
+  rotate: true
+  xy: 773, 1678
+  size: 305, 215
+  orig: 305, 215
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_1_Piece8
+  rotate: true
+  xy: 840, 927
+  size: 296, 205
+  orig: 296, 205
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2
+  rotate: false
+  xy: 2, 439
+  size: 447, 782
+  orig: 447, 782
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Broken
+  rotate: true
+  xy: 753, 23
+  size: 441, 225
+  orig: 441, 225
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece1
+  rotate: true
+  xy: 1460, 970
+  size: 162, 202
+  orig: 162, 202
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece2
+  rotate: false
+  xy: 1421, 813
+  size: 165, 155
+  orig: 165, 155
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece3
+  rotate: false
+  xy: 1301, 1230
+  size: 214, 165
+  orig: 214, 165
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece4
+  rotate: false
+  xy: 1047, 1385
+  size: 172, 115
+  orig: 172, 115
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece5
+  rotate: false
+  xy: 542, 1660
+  size: 229, 323
+  orig: 229, 323
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece6
+  rotate: true
+  xy: 1635, 1746
+  size: 237, 186
+  orig: 237, 186
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece7
+  rotate: true
+  xy: 1823, 1747
+  size: 236, 183
+  orig: 236, 183
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_2_Piece8
+  rotate: true
+  xy: 1215, 1733
+  size: 250, 223
+  orig: 250, 223
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3
+  rotate: false
+  xy: 451, 466
+  size: 387, 755
+  orig: 387, 755
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Broken
+  rotate: false
+  xy: 811, 1502
+  size: 373, 174
+  orig: 373, 174
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece1
+  rotate: false
+  xy: 1551, 1320
+  size: 189, 202
+  orig: 189, 202
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece2
+  rotate: false
+  xy: 1664, 836
+  size: 192, 155
+  orig: 192, 155
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece3
+  rotate: false
+  xy: 840, 471
+  size: 241, 192
+  orig: 241, 192
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece4
+  rotate: false
+  xy: 1221, 1397
+  size: 176, 121
+  orig: 176, 121
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece5
+  rotate: false
+  xy: 1517, 1134
+  size: 207, 184
+  orig: 207, 184
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece6
+  rotate: false
+  xy: 1858, 829
+  size: 182, 162
+  orig: 182, 162
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece7
+  rotate: false
+  xy: 1536, 1524
+  size: 209, 173
+  orig: 209, 173
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_3_Piece8
+  rotate: true
+  xy: 840, 665
+  size: 260, 200
+  orig: 260, 200
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4
+  rotate: true
+  xy: 2, 2
+  size: 435, 749
+  orig: 435, 749
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Broken
+  rotate: false
+  xy: 542, 1225
+  size: 346, 155
+  orig: 346, 155
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece1
+  rotate: true
+  xy: 1097, 1230
+  size: 153, 202
+  orig: 153, 202
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece2
+  rotate: false
+  xy: 1588, 679
+  size: 160, 155
+  orig: 160, 155
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece3
+  rotate: false
+  xy: 890, 1227
+  size: 205, 156
+  orig: 205, 156
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece4
+  rotate: false
+  xy: 1399, 1410
+  size: 150, 108
+  orig: 150, 108
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece5
+  rotate: false
+  xy: 990, 1694
+  size: 223, 289
+  orig: 223, 289
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece6
+  rotate: false
+  xy: 1747, 1362
+  size: 231, 178
+  orig: 231, 178
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece7
+  rotate: true
+  xy: 1042, 690
+  size: 235, 217
+  orig: 235, 217
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_4_Piece8
+  rotate: true
+  xy: 1047, 985
+  size: 240, 210
+  orig: 241, 210
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_Cracks1
+  rotate: true
+  xy: 1742, 1162
+  size: 198, 206
+  orig: 198, 206
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_Cracks2
+  rotate: true
+  xy: 811, 1385
+  size: 115, 234
+  orig: 115, 234
+  offset: 0, 0
+  index: -1
+images/PractiseStatue_Cracks3
+  rotate: false
+  xy: 1259, 998
+  size: 199, 230
+  orig: 199, 230
+  offset: 0, 0
+  index: -1

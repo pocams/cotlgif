@@ -1,0 +1,720 @@
+
+Spiders.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/DashSpiderBody_Big
+  rotate: false
+  xy: 392, 450
+  size: 293, 251
+  orig: 293, 251
+  offset: 0, 0
+  index: -1
+images/DashSpiderBody_Big_Eggs
+  rotate: true
+  xy: 551, 155
+  size: 293, 288
+  orig: 293, 288
+  offset: 0, 0
+  index: -1
+images/DashSpiderBody_Medium
+  rotate: true
+  xy: 1372, 262
+  size: 188, 177
+  orig: 188, 177
+  offset: 0, 0
+  index: -1
+images/DashSpiderBody_Small
+  rotate: true
+  xy: 1567, 902
+  size: 120, 112
+  orig: 120, 112
+  offset: 0, 0
+  index: -1
+images/DashSpider_Big_Eyes
+  rotate: false
+  xy: 80, 2
+  size: 184, 107
+  orig: 184, 107
+  offset: 0, 0
+  index: -1
+images/DashSpider_Big_Eyes_Closed
+  rotate: false
+  xy: 1524, 164
+  size: 183, 96
+  orig: 183, 96
+  offset: 0, 0
+  index: -1
+images/DashSpider_Big_Eyes_Squint
+  rotate: true
+  xy: 1371, 664
+  size: 176, 103
+  orig: 176, 103
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Big
+  rotate: true
+  xy: 1329, 452
+  size: 162, 78
+  orig: 162, 78
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Big2
+  rotate: true
+  xy: 1409, 454
+  size: 162, 78
+  orig: 162, 78
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Medium
+  rotate: true
+  xy: 1568, 505
+  size: 112, 62
+  orig: 112, 62
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Medium2
+  rotate: true
+  xy: 1668, 737
+  size: 112, 62
+  orig: 112, 62
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Small
+  rotate: true
+  xy: 1074, 159
+  size: 73, 47
+  orig: 73, 47
+  offset: 0, 0
+  index: -1
+images/DashSpider_Fangs_Small2
+  rotate: true
+  xy: 1123, 159
+  size: 73, 47
+  orig: 73, 47
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Big
+  rotate: true
+  xy: 890, 520
+  size: 222, 173
+  orig: 222, 173
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Big_Back
+  rotate: true
+  xy: 816, 800
+  size: 222, 178
+  orig: 222, 178
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Medium
+  rotate: true
+  xy: 1396, 847
+  size: 175, 129
+  orig: 175, 129
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Medium_Back
+  rotate: false
+  xy: 491, 8
+  size: 175, 130
+  orig: 175, 130
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Small
+  rotate: false
+  xy: 1321, 162
+  size: 117, 88
+  orig: 117, 88
+  offset: 0, 0
+  index: -1
+images/DashSpider_Head_Small_Back
+  rotate: true
+  xy: 1551, 357
+  size: 117, 88
+  orig: 117, 88
+  offset: 0, 0
+  index: -1
+images/DashSpider_Medium_Eyes
+  rotate: true
+  xy: 1489, 476
+  size: 141, 77
+  orig: 141, 77
+  offset: 0, 0
+  index: -1
+images/DashSpider_Medium_Eyes_Closed
+  rotate: false
+  xy: 687, 451
+  size: 138, 64
+  orig: 138, 64
+  offset: 0, 0
+  index: -1
+images/DashSpider_Medium_Eyes_Squint
+  rotate: false
+  xy: 935, 158
+  size: 137, 73
+  orig: 137, 73
+  offset: 0, 0
+  index: -1
+images/DashSpider_Small_Eyes
+  rotate: false
+  xy: 901, 746
+  size: 93, 52
+  orig: 93, 52
+  offset: 0, 0
+  index: -1
+images/DashSpider_Small_Eyes_Closed
+  rotate: false
+  xy: 482, 706
+  size: 86, 34
+  orig: 86, 34
+  offset: 0, 0
+  index: -1
+images/DashSpider_Small_Eyes_Squint
+  rotate: false
+  xy: 1558, 673
+  size: 85, 50
+  orig: 85, 50
+  offset: 0, 0
+  index: -1
+images/HornWeb
+  rotate: true
+  xy: 1709, 180
+  size: 85, 77
+  orig: 85, 77
+  offset: 0, 0
+  index: -1
+images/Horns
+  rotate: false
+  xy: 1575, 20
+  size: 137, 142
+  orig: 137, 142
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Big_Eyes
+  rotate: false
+  xy: 900, 452
+  size: 155, 66
+  orig: 155, 66
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Big_Eyes_Closed
+  rotate: true
+  xy: 1175, 8
+  size: 149, 61
+  orig: 149, 61
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Big
+  rotate: true
+  xy: 958, 234
+  size: 216, 206
+  orig: 216, 206
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Medium
+  rotate: true
+  xy: 1408, 15
+  size: 145, 165
+  orig: 145, 165
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Small
+  rotate: false
+  xy: 1766, 911
+  size: 103, 111
+  orig: 103, 111
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Stuck_Big
+  rotate: true
+  xy: 687, 517
+  size: 223, 201
+  orig: 223, 201
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Stuck_Medium
+  rotate: true
+  xy: 894, 3
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Body_Stuck_Small
+  rotate: true
+  xy: 266, 2
+  size: 107, 104
+  orig: 107, 104
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Fangs_Big
+  rotate: false
+  xy: 1641, 363
+  size: 85, 39
+  orig: 85, 39
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Fangs_Big2
+  rotate: true
+  xy: 1724, 276
+  size: 85, 39
+  orig: 85, 39
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Fangs_Medium
+  rotate: false
+  xy: 1713, 695
+  size: 67, 40
+  orig: 67, 44
+  offset: 0, 2
+  index: -1
+images/JumpSpider_Fangs_Medium2
+  rotate: false
+  xy: 1772, 869
+  size: 67, 40
+  orig: 67, 44
+  offset: 0, 2
+  index: -1
+images/JumpSpider_Fangs_Small
+  rotate: false
+  xy: 570, 711
+  size: 52, 29
+  orig: 52, 31
+  offset: 0, 1
+  index: -1
+images/JumpSpider_Fangs_Small2
+  rotate: false
+  xy: 624, 711
+  size: 52, 29
+  orig: 52, 31
+  offset: 0, 1
+  index: -1
+images/JumpSpider_Head_Big
+  rotate: true
+  xy: 1261, 252
+  size: 198, 109
+  orig: 198, 109
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Head_Big_Back
+  rotate: true
+  xy: 1220, 616
+  size: 198, 109
+  orig: 198, 109
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Head_Medium
+  rotate: true
+  xy: 668, 2
+  size: 151, 88
+  orig: 151, 88
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Head_Medium_Back
+  rotate: true
+  xy: 758, 2
+  size: 151, 88
+  orig: 151, 88
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Head_Small
+  rotate: false
+  xy: 1057, 452
+  size: 124, 66
+  orig: 124, 66
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Head_Small_Back
+  rotate: true
+  xy: 1558, 725
+  size: 124, 66
+  orig: 124, 66
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Horns_Medium
+  rotate: false
+  xy: 1551, 268
+  size: 102, 87
+  orig: 102, 87
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Horns_Small
+  rotate: false
+  xy: 1728, 363
+  size: 61, 39
+  orig: 61, 39
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Medium_Eyes
+  rotate: false
+  xy: 996, 750
+  size: 126, 51
+  orig: 126, 51
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Medium_Eyes_Closed
+  rotate: false
+  xy: 1475, 619
+  size: 121, 43
+  orig: 121, 43
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Small_Eyes
+  rotate: true
+  xy: 1172, 159
+  size: 73, 45
+  orig: 73, 45
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Small_Eyes_Closed
+  rotate: false
+  xy: 1645, 688
+  size: 66, 41
+  orig: 66, 41
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Spiker_Big
+  rotate: true
+  xy: 1219, 161
+  size: 71, 100
+  orig: 71, 100
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Spiker_Medium
+  rotate: true
+  xy: 816, 744
+  size: 54, 83
+  orig: 54, 83
+  offset: 0, 0
+  index: -1
+images/JumpSpider_Spiker_Small
+  rotate: true
+  xy: 418, 703
+  size: 37, 62
+  orig: 37, 62
+  offset: 0, 0
+  index: -1
+images/LegBtm_1
+  rotate: false
+  xy: 1331, 663
+  size: 38, 177
+  orig: 38, 177
+  offset: 0, 0
+  index: -1
+images/LegBtm_2
+  rotate: false
+  xy: 1527, 851
+  size: 38, 171
+  orig: 38, 171
+  offset: 0, 0
+  index: -1
+images/LegBtm_Jumper
+  rotate: false
+  xy: 1190, 816
+  size: 41, 206
+  orig: 41, 206
+  offset: 0, 0
+  index: -1
+images/LegBtm_PoisonSpider
+  rotate: false
+  xy: 1177, 542
+  size: 41, 206
+  orig: 41, 206
+  offset: 0, 0
+  index: -1
+images/LegTop_1
+  rotate: false
+  xy: 1688, 861
+  size: 82, 40
+  orig: 82, 40
+  offset: 0, 0
+  index: -1
+images/LegTop_2
+  rotate: false
+  xy: 1598, 622
+  size: 103, 49
+  orig: 103, 49
+  offset: 0, 0
+  index: -1
+images/LegTop_Jumper
+  rotate: false
+  xy: 1567, 851
+  size: 119, 49
+  orig: 119, 49
+  offset: 0, 0
+  index: -1
+images/LegTop_PoisonSpider
+  rotate: true
+  xy: 1626, 731
+  size: 118, 40
+  orig: 118, 40
+  offset: 0, 0
+  index: -1
+images/PoisonSpiderHead_Ball
+  rotate: false
+  xy: 827, 452
+  size: 71, 63
+  orig: 71, 63
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Ball1
+  rotate: false
+  xy: 1703, 625
+  size: 69, 61
+  orig: 69, 61
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Ball2
+  rotate: true
+  xy: 1283, 571
+  size: 43, 44
+  orig: 43, 44
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Ball3
+  rotate: true
+  xy: 1220, 543
+  size: 71, 61
+  orig: 71, 61
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Body
+  rotate: false
+  xy: 46, 427
+  size: 171, 263
+  orig: 171, 263
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_BodyBack
+  rotate: false
+  xy: 219, 438
+  size: 171, 263
+  orig: 171, 263
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_BodyMiddle
+  rotate: true
+  xy: 372, 5
+  size: 133, 117
+  orig: 133, 117
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Eyes
+  rotate: true
+  xy: 1655, 267
+  size: 94, 67
+  orig: 94, 67
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Eyes_Closed
+  rotate: false
+  xy: 1124, 750
+  size: 94, 51
+  orig: 94, 51
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Head
+  rotate: false
+  xy: 1238, 2
+  size: 124, 157
+  orig: 124, 157
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Head_Back
+  rotate: false
+  xy: 1049, 2
+  size: 124, 154
+  orig: 124, 154
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Shooter
+  rotate: true
+  xy: 1632, 513
+  size: 107, 100
+  orig: 107, 100
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Shooter_Back
+  rotate: true
+  xy: 1732, 752
+  size: 107, 100
+  orig: 107, 100
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_Shooter_Open
+  rotate: true
+  xy: 1641, 404
+  size: 107, 100
+  orig: 107, 100
+  offset: 0, 0
+  index: -1
+images/Scorpion_Fangs
+  rotate: true
+  xy: 1476, 672
+  size: 173, 80
+  orig: 173, 80
+  offset: 0, 0
+  index: -1
+images/SpiderBoss_Fleshball_1
+  rotate: false
+  xy: 841, 155
+  size: 92, 76
+  orig: 92, 76
+  offset: 0, 0
+  index: -1
+images/SpiderBoss_Fleshball_2
+  rotate: true
+  xy: 2, 3
+  size: 90, 76
+  orig: 90, 76
+  offset: 0, 0
+  index: -1
+images/SpiderBoss_Fleshball_3
+  rotate: true
+  xy: 1681, 903
+  size: 119, 83
+  orig: 119, 83
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Body
+  rotate: true
+  xy: 138, 703
+  size: 319, 278
+  orig: 319, 278
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Body_Stuck
+  rotate: true
+  xy: 51, 111
+  size: 314, 256
+  orig: 314, 256
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Drips
+  rotate: false
+  xy: 1233, 842
+  size: 161, 180
+  orig: 161, 180
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Eyes
+  rotate: true
+  xy: 841, 233
+  size: 217, 115
+  orig: 217, 115
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Eyes_Closed
+  rotate: true
+  xy: 1166, 234
+  size: 216, 93
+  orig: 216, 93
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Eyes_Squint
+  rotate: true
+  xy: 1065, 534
+  size: 214, 110
+  orig: 214, 110
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Fangs
+  rotate: true
+  xy: 996, 803
+  size: 219, 95
+  orig: 219, 112
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Fangs2
+  rotate: true
+  xy: 1440, 162
+  size: 98, 82
+  orig: 98, 82
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Fangs_3
+  rotate: true
+  xy: 1093, 803
+  size: 219, 95
+  orig: 219, 112
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Head
+  rotate: true
+  xy: 625, 742
+  size: 280, 189
+  orig: 280, 189
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Head_Back
+  rotate: true
+  xy: 418, 742
+  size: 280, 205
+  orig: 280, 205
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Horns
+  rotate: true
+  xy: 309, 140
+  size: 296, 240
+  orig: 296, 240
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Leg_1
+  rotate: false
+  xy: 46, 692
+  size: 45, 330
+  orig: 45, 330
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Leg_2
+  rotate: false
+  xy: 2, 95
+  size: 47, 330
+  orig: 47, 330
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Leg_3
+  rotate: false
+  xy: 93, 692
+  size: 43, 330
+  orig: 43, 330
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_Spiker
+  rotate: true
+  xy: 1183, 452
+  size: 88, 144
+  orig: 88, 144
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_TopLeg_1
+  rotate: false
+  xy: 1364, 13
+  size: 42, 147
+  orig: 42, 147
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_TopLeg_2
+  rotate: true
+  xy: 1331, 618
+  size: 43, 142
+  orig: 43, 142
+  offset: 0, 0
+  index: -1
+images/SpiderMiniboss_TopLeg_3
+  rotate: false
+  xy: 848, 2
+  size: 44, 151
+  orig: 44, 151
+  offset: 0, 0
+  index: -1
+images/Web
+  rotate: false
+  xy: 2, 427
+  size: 42, 595
+  orig: 42, 595
+  offset: 0, 0
+  index: -1

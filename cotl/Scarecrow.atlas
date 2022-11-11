@@ -1,0 +1,48 @@
+
+Scarecrow.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/Scarecrow_Bell
+  rotate: false
+  xy: 111, 300
+  size: 51, 47
+  orig: 51, 47
+  offset: 0, 0
+  index: -1
+images/Scarecrow_HeadBack
+  rotate: true
+  xy: 2, 80
+  size: 218, 155
+  orig: 218, 155
+  offset: 0, 0
+  index: -1
+images/Scarecrow_HeadFront
+  rotate: false
+  xy: 164, 225
+  size: 163, 122
+  orig: 163, 122
+  offset: 0, 0
+  index: -1
+images/Scarecrow_NeckRope
+  rotate: false
+  xy: 2, 311
+  size: 107, 36
+  orig: 107, 36
+  offset: 0, 0
+  index: -1
+images/Scarecrow_Pole
+  rotate: false
+  xy: 159, 2
+  size: 300, 203
+  orig: 300, 203
+  offset: 0, 0
+  index: -1
+images/Scarecrow_Tunic
+  rotate: true
+  xy: 329, 207
+  size: 140, 155
+  orig: 140, 155
+  offset: 0, 0
+  index: -1

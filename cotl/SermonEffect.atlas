@@ -1,0 +1,293 @@
+
+SermonEffect.png
+size: 4096,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/IconOuter_2
+  rotate: true
+  xy: 913, 337
+  size: 563, 555
+  orig: 581, 568
+  offset: 0, 13
+  index: -1
+images/IconOuter_3
+  rotate: true
+  xy: 1342, 1512
+  size: 530, 499
+  orig: 556, 518
+  offset: 13, 16
+  index: -1
+images/IconOuter_4
+  rotate: true
+  xy: 1230, 940
+  size: 530, 501
+  orig: 561, 537
+  offset: 13, 18
+  index: -1
+images/IconOuter_5
+  rotate: false
+  xy: 1470, 443
+  size: 473, 495
+  orig: 500, 524
+  offset: 14, 13
+  index: -1
+images/IconOuter_6
+  rotate: true
+  xy: 1877, 11
+  size: 430, 416
+  orig: 456, 442
+  offset: 13, 8
+  index: -1
+images/IconOuter_7
+  rotate: true
+  xy: 1733, 1016
+  size: 494, 457
+  orig: 526, 481
+  offset: 16, 7
+  index: -1
+images/Icon_2
+  rotate: false
+  xy: 2192, 1261
+  size: 252, 311
+  orig: 272, 327
+  offset: 10, 6
+  index: -1
+images/Icon_3
+  rotate: false
+  xy: 913, 2
+  size: 342, 333
+  orig: 366, 353
+  offset: 12, 13
+  index: -1
+images/Icon_4
+  rotate: false
+  xy: 1257, 9
+  size: 321, 326
+  orig: 335, 338
+  offset: 7, 6
+  index: -1
+images/Icon_5
+  rotate: true
+  xy: 2114, 1731
+  size: 311, 306
+  orig: 328, 334
+  offset: 8, 11
+  index: -1
+images/Icon_6
+  rotate: false
+  xy: 2266, 503
+  size: 262, 459
+  orig: 278, 478
+  offset: 8, 11
+  index: -1
+images/Icon_7
+  rotate: false
+  xy: 2295, 5
+  size: 340, 444
+  orig: 358, 464
+  offset: 9, 9
+  index: -1
+images/Icon_8
+  rotate: true
+  xy: 1843, 1723
+  size: 319, 269
+  orig: 341, 293
+  offset: 10, 11
+  index: -1
+images/RitualBack_1
+  rotate: true
+  xy: 2, 10
+  size: 887, 909
+  orig: 906, 933
+  offset: 11, 11
+  index: -1
+images/SermonRing_1
+  rotate: false
+  xy: 770, 1472
+  size: 570, 570
+  orig: 570, 570
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Dissenter_1
+  rotate: false
+  xy: 2105, 1574
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Dissenter_2
+  rotate: false
+  xy: 2241, 1582
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Enlightenment_1
+  rotate: false
+  xy: 2377, 1582
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Enlightenment_2
+  rotate: false
+  xy: 2192, 1112
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Fasting_1
+  rotate: false
+  xy: 2328, 1112
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Fasting_2
+  rotate: false
+  xy: 2422, 1895
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Love_1
+  rotate: false
+  xy: 2422, 1746
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Love_2
+  rotate: false
+  xy: 2446, 1433
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_NonBeliever_1
+  rotate: false
+  xy: 2513, 1597
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Sickness_1
+  rotate: false
+  xy: 2446, 1284
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/SermonSpeech_Sickness_2
+  rotate: false
+  xy: 2464, 1135
+  size: 134, 147
+  orig: 134, 147
+  offset: 0, 0
+  index: -1
+images/Sermon_Heal_1
+  rotate: false
+  xy: 1470, 348
+  size: 90, 93
+  orig: 91, 93
+  offset: 1, 0
+  index: -1
+images/Sermon_Heal_2
+  rotate: false
+  xy: 2558, 1758
+  size: 128, 138
+  orig: 128, 138
+  offset: 0, 0
+  index: -1
+images/Sermon_Heart_1
+  rotate: false
+  xy: 2282, 1022
+  size: 81, 88
+  orig: 81, 88
+  offset: 0, 0
+  index: -1
+images/Sermon_Heart_2
+  rotate: true
+  xy: 2425, 966
+  size: 144, 143
+  orig: 144, 143
+  offset: 0, 0
+  index: -1
+images/Sermon_IconOuter_1
+  rotate: true
+  xy: 1580, 4
+  size: 437, 295
+  orig: 463, 313
+  offset: 13, 8
+  index: -1
+images/Sermon_Icon_1
+  rotate: false
+  xy: 1945, 482
+  size: 319, 480
+  orig: 334, 494
+  offset: 8, 8
+  index: -1
+images/Sermon_Line_1
+  rotate: false
+  xy: 1733, 964
+  size: 374, 50
+  orig: 374, 50
+  offset: 0, 0
+  index: -1
+images/Sermon_Line_2
+  rotate: false
+  xy: 2109, 964
+  size: 314, 50
+  orig: 314, 50
+  offset: 0, 0
+  index: -1
+images/Sermon_Line_3
+  rotate: false
+  xy: 2266, 451
+  size: 274, 50
+  orig: 274, 50
+  offset: 0, 0
+  index: -1
+images/Sermon_Line_4
+  rotate: false
+  xy: 1843, 1512
+  size: 249, 50
+  orig: 249, 50
+  offset: 0, 0
+  index: -1
+images/Sermon_Skull_1
+  rotate: true
+  xy: 2192, 1018
+  size: 92, 88
+  orig: 92, 88
+  offset: 0, 0
+  index: -1
+images/Sermon_Spotlight
+  rotate: false
+  xy: 2, 899
+  size: 766, 1143
+  orig: 808, 1284
+  offset: 18, 141
+  index: -1
+images/Sermon_Star_1
+  rotate: false
+  xy: 2558, 1898
+  size: 96, 144
+  orig: 96, 144
+  offset: 0, 0
+  index: -1
+images/Sermon_Star_2
+  rotate: true
+  xy: 1843, 1564
+  size: 157, 260
+  orig: 157, 260
+  offset: 0, 0
+  index: -1
+images/sermon_01
+  rotate: false
+  xy: 770, 902
+  size: 458, 568
+  orig: 649, 689
+  offset: 96, 22
+  index: -1

@@ -1,0 +1,328 @@
+
+Scorpions.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/LegBtm_Scorpion
+  rotate: true
+  xy: 180, 78
+  size: 43, 204
+  orig: 43, 204
+  offset: 0, 0
+  index: -1
+images/LegTop_Scorpion
+  rotate: false
+  xy: 384, 140
+  size: 100, 36
+  orig: 100, 36
+  offset: 0, 0
+  index: -1
+images/PoisonSpider_BodyMiddle
+  rotate: false
+  xy: 1020, 448
+  size: 133, 117
+  orig: 133, 117
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Body
+  rotate: true
+  xy: 2, 699
+  size: 322, 286
+  orig: 322, 286
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Eyes
+  rotate: false
+  xy: 504, 69
+  size: 207, 107
+  orig: 207, 107
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Eyes_Closed
+  rotate: false
+  xy: 821, 444
+  size: 197, 105
+  orig: 197, 105
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Head
+  rotate: true
+  xy: 180, 123
+  size: 286, 202
+  orig: 286, 202
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_HeadTop
+  rotate: true
+  xy: 282, 412
+  size: 285, 202
+  orig: 285, 202
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Head_Back
+  rotate: true
+  xy: 2, 411
+  size: 286, 278
+  orig: 286, 278
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Mouth
+  rotate: true
+  xy: 637, 712
+  size: 86, 150
+  orig: 86, 150
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Pincer
+  rotate: true
+  xy: 655, 524
+  size: 186, 164
+  orig: 186, 164
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_PincerBack
+  rotate: false
+  xy: 971, 742
+  size: 159, 104
+  orig: 159, 104
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Pincer_Back
+  rotate: true
+  xy: 654, 805
+  size: 216, 163
+  orig: 216, 163
+  offset: 0, 0
+  index: -1
+images/ScorpionMiniboss_Tail
+  rotate: false
+  xy: 2, 68
+  size: 176, 341
+  orig: 176, 341
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body
+  rotate: true
+  xy: 384, 178
+  size: 232, 191
+  orig: 232, 191
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body_Back
+  rotate: true
+  xy: 290, 789
+  size: 232, 191
+  orig: 232, 191
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body_Small
+  rotate: true
+  xy: 1023, 287
+  size: 159, 148
+  orig: 159, 148
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body_Small_Back
+  rotate: true
+  xy: 1275, 862
+  size: 159, 150
+  orig: 159, 150
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body_Small_Back_Poison
+  rotate: true
+  xy: 1125, 581
+  size: 159, 150
+  orig: 159, 150
+  offset: 0, 0
+  index: -1
+images/Scorpion_Body_Small_Poison
+  rotate: true
+  xy: 1059, 126
+  size: 159, 148
+  orig: 159, 148
+  offset: 0, 0
+  index: -1
+images/Scorpion_Eyes
+  rotate: false
+  xy: 465, 706
+  size: 170, 81
+  orig: 170, 81
+  offset: 0, 0
+  index: -1
+images/Scorpion_Eyes_Closed
+  rotate: false
+  xy: 789, 726
+  size: 153, 77
+  orig: 153, 77
+  offset: 0, 0
+  index: -1
+images/Scorpion_Eyes_Small
+  rotate: false
+  xy: 386, 79
+  size: 116, 59
+  orig: 116, 59
+  offset: 0, 0
+  index: -1
+images/Scorpion_Eyes_Small_Closed
+  rotate: false
+  xy: 599, 11
+  size: 115, 56
+  orig: 115, 56
+  offset: 0, 0
+  index: -1
+images/Scorpion_Fangs
+  rotate: false
+  xy: 290, 707
+  size: 173, 80
+  orig: 173, 80
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head
+  rotate: true
+  xy: 483, 800
+  size: 221, 169
+  orig: 221, 169
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head_Back
+  rotate: true
+  xy: 486, 483
+  size: 221, 167
+  orig: 221, 167
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head_Small
+  rotate: false
+  xy: 713, 75
+  size: 171, 133
+  orig: 171, 133
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head_Small_Back
+  rotate: false
+  xy: 886, 75
+  size: 171, 133
+  orig: 171, 133
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head_Small_Back_Poison
+  rotate: false
+  xy: 850, 309
+  size: 171, 133
+  orig: 171, 133
+  offset: 0, 0
+  index: -1
+images/Scorpion_Head_Small_Poison
+  rotate: true
+  xy: 1173, 408
+  size: 171, 133
+  orig: 171, 133
+  offset: 0, 0
+  index: -1
+images/Scorpion_Horns
+  rotate: true
+  xy: 819, 824
+  size: 197, 150
+  orig: 197, 150
+  offset: 0, 0
+  index: -1
+images/Scorpion_Mouth
+  rotate: true
+  xy: 486, 427
+  size: 54, 96
+  orig: 54, 96
+  offset: 0, 0
+  index: -1
+images/Scorpion_Mouth_Closed
+  rotate: true
+  xy: 856, 12
+  size: 61, 57
+  orig: 61, 57
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter
+  rotate: false
+  xy: 821, 551
+  size: 150, 173
+  orig: 150, 173
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Back
+  rotate: false
+  xy: 971, 848
+  size: 150, 173
+  orig: 150, 173
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Back_Poison
+  rotate: false
+  xy: 1123, 848
+  size: 150, 173
+  orig: 150, 173
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Mouth
+  rotate: false
+  xy: 736, 447
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Mouth_Closed
+  rotate: true
+  xy: 716, 2
+  size: 71, 68
+  orig: 71, 68
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Mouth_Closed_Poison
+  rotate: true
+  xy: 786, 2
+  size: 71, 68
+  orig: 71, 68
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Mouth_Open
+  rotate: false
+  xy: 655, 441
+  size: 79, 81
+  orig: 79, 81
+  offset: 0, 0
+  index: -1
+images/Scorpion_Shooter_Poison
+  rotate: false
+  xy: 973, 567
+  size: 150, 173
+  orig: 150, 173
+  offset: 0, 0
+  index: -1
+images/Scorpion_Tail
+  rotate: true
+  xy: 577, 307
+  size: 118, 271
+  orig: 118, 271
+  offset: 0, 0
+  index: -1
+images/Scorpion_Tail_Small
+  rotate: true
+  xy: 801, 210
+  size: 95, 213
+  orig: 95, 213
+  offset: 0, 0
+  index: -1
+images/Scorpion_Tail_Small_Poison
+  rotate: true
+  xy: 577, 210
+  size: 95, 222
+  orig: 95, 222
+  offset: 0, 0
+  index: -1
+images/Web
+  rotate: true
+  xy: 2, 24
+  size: 42, 595
+  orig: 42, 595
+  offset: 0, 0
+  index: -1

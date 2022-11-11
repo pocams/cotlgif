@@ -1,0 +1,377 @@
+
+FrogMiniBossForest.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Forest Frog Mini Boss/images/BackLeg
+  rotate: false
+  xy: 1968, 590
+  size: 75, 181
+  orig: 75, 181
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Body
+  rotate: false
+  xy: 2, 498
+  size: 411, 241
+  orig: 411, 241
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Body-Top
+  rotate: false
+  xy: 1187, 711
+  size: 296, 116
+  orig: 296, 116
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Eye
+  rotate: true
+  xy: 1953, 406
+  size: 88, 93
+  orig: 88, 93
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Eye_Shut
+  rotate: false
+  xy: 741, 701
+  size: 100, 105
+  orig: 100, 105
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Eye_Wide
+  rotate: true
+  xy: 1953, 316
+  size: 88, 93
+  orig: 88, 93
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/FrontLeg_Left
+  rotate: false
+  xy: 1858, 223
+  size: 67, 65
+  orig: 67, 65
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/FrontLeg_Right
+  rotate: false
+  xy: 1931, 165
+  size: 67, 65
+  orig: 67, 65
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/HeadStick
+  rotate: true
+  xy: 1783, 478
+  size: 76, 111
+  orig: 76, 111
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/MonsterHeart_glow
+  rotate: true
+  xy: 1296, 496
+  size: 213, 186
+  orig: 219, 194
+  offset: 3, 4
+  index: -1
+Forest Frog Mini Boss/images/Mouth_Open
+  rotate: false
+  xy: 824, 282
+  size: 273, 138
+  orig: 273, 138
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Mouth_Roar
+  rotate: true
+  xy: 1108, 405
+  size: 275, 186
+  orig: 275, 186
+  offset: 0, 0
+  index: -1
+Forest Frog Mini Boss/images/Mouth_Shut
+  rotate: false
+  xy: 1484, 439
+  size: 273, 80
+  orig: 273, 80
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_BackLeg
+  rotate: false
+  xy: 1783, 556
+  size: 103, 212
+  orig: 103, 212
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Body
+  rotate: false
+  xy: 2, 741
+  size: 437, 281
+  orig: 437, 281
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Eye1
+  rotate: true
+  xy: 1959, 496
+  size: 92, 85
+  orig: 92, 85
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Eye1_Closed
+  rotate: true
+  xy: 1896, 513
+  size: 76, 61
+  orig: 76, 61
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Eye2
+  rotate: false
+  xy: 1858, 290
+  size: 92, 84
+  orig: 92, 84
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Eye2_Closed
+  rotate: true
+  xy: 1931, 89
+  size: 74, 50
+  orig: 74, 50
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Head
+  rotate: false
+  xy: 441, 666
+  size: 298, 140
+  orig: 298, 140
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Head2
+  rotate: false
+  xy: 852, 682
+  size: 295, 132
+  orig: 295, 132
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Mouth
+  rotate: true
+  xy: 1357, 3
+  size: 247, 104
+  orig: 247, 104
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_MouthGoop
+  rotate: false
+  xy: 1099, 249
+  size: 237, 154
+  orig: 237, 154
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Mouth_Roar
+  rotate: true
+  xy: 582, 247
+  size: 249, 240
+  orig: 249, 240
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Paw
+  rotate: false
+  xy: 1952, 232
+  size: 85, 82
+  orig: 85, 82
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Spawn
+  rotate: false
+  xy: 852, 816
+  size: 333, 206
+  orig: 333, 206
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_SpawnBack
+  rotate: true
+  xy: 595, 29
+  size: 216, 234
+  orig: 216, 234
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarBoss_Sticks
+  rotate: false
+  xy: 441, 808
+  size: 409, 214
+  orig: 409, 214
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_BackLeg
+  rotate: true
+  xy: 1668, 2
+  size: 60, 143
+  orig: 60, 143
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Body
+  rotate: false
+  xy: 415, 498
+  size: 258, 166
+  orig: 258, 166
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Eye
+  rotate: false
+  xy: 1983, 105
+  size: 63, 58
+  orig: 63, 58
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Head
+  rotate: true
+  xy: 744, 522
+  size: 177, 76
+  orig: 177, 76
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Head2
+  rotate: true
+  xy: 1888, 591
+  size: 180, 78
+  orig: 180, 78
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Mouth
+  rotate: true
+  xy: 675, 501
+  size: 163, 67
+  orig: 163, 67
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Paw
+  rotate: true
+  xy: 2000, 171
+  size: 59, 42
+  orig: 59, 42
+  offset: 0, 0
+  index: -1
+MortarFrog/images/MortarFrog_Spawn
+  rotate: true
+  xy: 1708, 219
+  size: 218, 148
+  orig: 218, 148
+  offset: 0, 0
+  index: -1
+effects/blood_explosion0001
+  rotate: false
+  xy: 1858, 376
+  size: 93, 100
+  orig: 323, 313
+  offset: 93, 132
+  index: -1
+effects/blood_explosion0002
+  rotate: false
+  xy: 1668, 64
+  size: 152, 153
+  orig: 323, 313
+  offset: 70, 120
+  index: -1
+effects/blood_explosion0003
+  rotate: false
+  xy: 1463, 22
+  size: 203, 195
+  orig: 323, 313
+  offset: 48, 106
+  index: -1
+effects/blood_explosion0004
+  rotate: false
+  xy: 1477, 219
+  size: 229, 218
+  orig: 323, 313
+  offset: 33, 95
+  index: -1
+effects/blood_explosion0005
+  rotate: true
+  xy: 1807, 773
+  size: 249, 233
+  orig: 323, 313
+  offset: 20, 73
+  index: -1
+effects/blood_explosion0006
+  rotate: false
+  xy: 1097, 7
+  size: 258, 240
+  orig: 323, 313
+  offset: 15, 66
+  index: -1
+effects/blood_explosion0007
+  rotate: false
+  xy: 831, 35
+  size: 264, 245
+  orig: 323, 313
+  offset: 9, 58
+  index: -1
+effects/blood_explosion0008
+  rotate: false
+  xy: 308, 243
+  size: 272, 253
+  orig: 323, 313
+  offset: 6, 47
+  index: -1
+effects/blood_explosion0009
+  rotate: false
+  xy: 824, 422
+  size: 282, 258
+  orig: 323, 313
+  offset: 3, 39
+  index: -1
+effects/blood_explosion0010
+  rotate: false
+  xy: 1485, 521
+  size: 296, 247
+  orig: 323, 313
+  offset: 3, 38
+  index: -1
+effects/blood_explosion0011
+  rotate: false
+  xy: 1508, 770
+  size: 297, 252
+  orig: 323, 313
+  offset: 4, 21
+  index: -1
+effects/blood_explosion0012
+  rotate: false
+  xy: 2, 243
+  size: 304, 253
+  orig: 323, 313
+  offset: 2, 4
+  index: -1
+effects/blood_explosion0013
+  rotate: false
+  xy: 2, 23
+  size: 310, 218
+  orig: 323, 313
+  offset: 1, 20
+  index: -1
+effects/blood_explosion0014
+  rotate: false
+  xy: 314, 53
+  size: 279, 188
+  orig: 323, 313
+  offset: 0, 30
+  index: -1
+effects/blood_explosion0015
+  rotate: false
+  xy: 1187, 829
+  size: 319, 193
+  orig: 323, 313
+  offset: 0, 5
+  index: -1
+effects/blood_explosion0016
+  rotate: true
+  xy: 1338, 252
+  size: 242, 137
+  orig: 323, 313
+  offset: 25, 34
+  index: -1
+effects/blood_explosion0017
+  rotate: true
+  xy: 1822, 72
+  size: 145, 107
+  orig: 323, 313
+  offset: 28, 18
+  index: -1

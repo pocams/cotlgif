@@ -1,0 +1,132 @@
+
+Chest.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/ChestBottom
+  rotate: false
+  xy: 274, 43
+  size: 269, 144
+  orig: 269, 144
+  offset: 0, 0
+  index: -1
+images/ChestBottom_Crappy
+  rotate: false
+  xy: 2, 42
+  size: 270, 145
+  orig: 285, 145
+  offset: 15, 0
+  index: -1
+images/ChestBottom_Silver
+  rotate: false
+  xy: 545, 43
+  size: 269, 144
+  orig: 285, 145
+  offset: 15, 0
+  index: -1
+images/ChestLid
+  rotate: true
+  xy: 2, 189
+  size: 321, 193
+  orig: 321, 193
+  offset: 0, 0
+  index: -1
+images/ChestLid_Crappy
+  rotate: true
+  xy: 197, 189
+  size: 321, 193
+  orig: 321, 193
+  offset: 0, 0
+  index: -1
+images/ChestLid_Open
+  rotate: false
+  xy: 209, 6
+  size: 202, 34
+  orig: 218, 62
+  offset: 8, 28
+  index: -1
+images/ChestLid_Open_Crappy
+  rotate: false
+  xy: 2, 4
+  size: 205, 36
+  orig: 218, 62
+  offset: 7, 26
+  index: -1
+images/ChestLid_Open_Silver
+  rotate: false
+  xy: 633, 7
+  size: 202, 34
+  orig: 218, 62
+  offset: 8, 28
+  index: -1
+images/ChestLid_Silver
+  rotate: true
+  xy: 392, 189
+  size: 321, 193
+  orig: 321, 193
+  offset: 0, 0
+  index: -1
+images/ChestShine
+  rotate: true
+  xy: 587, 245
+  size: 265, 130
+  orig: 265, 131
+  offset: 0, 1
+  index: -1
+images/dust1
+  rotate: false
+  xy: 930, 225
+  size: 156, 71
+  orig: 156, 71
+  offset: 0, 0
+  index: -1
+images/dust2
+  rotate: true
+  xy: 926, 298
+  size: 212, 77
+  orig: 212, 77
+  offset: 0, 0
+  index: -1
+images/slam_effect0001
+  rotate: false
+  xy: 719, 198
+  size: 209, 80
+  orig: 264, 133
+  offset: 16, 30
+  index: -1
+images/slam_effect0002
+  rotate: true
+  xy: 827, 292
+  size: 218, 97
+  orig: 264, 133
+  offset: 12, 23
+  index: -1
+images/slam_effect0003
+  rotate: true
+  xy: 719, 280
+  size: 230, 106
+  orig: 264, 133
+  offset: 10, 17
+  index: -1
+images/slam_effect0004
+  rotate: false
+  xy: 816, 99
+  size: 225, 97
+  orig: 264, 133
+  offset: 18, 19
+  index: -1
+images/slam_effect0005
+  rotate: false
+  xy: 837, 4
+  size: 227, 93
+  orig: 264, 133
+  offset: 17, 25
+  index: -1
+images/slam_effect0006
+  rotate: false
+  xy: 413, 2
+  size: 218, 39
+  orig: 264, 133
+  offset: 17, 82
+  index: -1

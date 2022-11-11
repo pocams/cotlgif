@@ -22,6 +22,16 @@ spoiler_animations = '^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotion
 has_slot_colours = true
 
 [[actors]]
+name = "Forneus"
+slug = "forneus"
+atlas = "cotl/catSeller.atlas"
+skeleton = "cotl/catSeller.skel"
+is_spoiler = true
+default_skins = ["default"]
+default_animation = "animation"
+default_scale = 0.3
+
+[[actors]]
 name = "Cat seller sheep"
 slug = "cat-seller-sheep"
 atlas = "cotl/catSellerSheep.atlas"
@@ -81,14 +91,6 @@ atlas = "cotl/Fisherman.atlas"
 skeleton = "cotl/Fisherman.skel"
 default_skins = ["default"]
 default_animation = "fishing"
-
-#[[actors]]
-#name = "Fishpond seller"
-#slug = "fishpond-seller"
-#atlas = "cotl/fishpondSeller.atlas"
-#skeleton = "cotl/fishpondSeller.skel"
-#default_skins = ["default"]
-#default_animation = "idle"
 
 [[actors]]
 name = "Leshy"
@@ -252,6 +254,16 @@ default_animation = "idle"
 default_scale = 0.5
 spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
 
+[[actors]]
+name = "Moth"
+slug = "moth"
+atlas = "cotl/FireCultMoth.atlas"
+skeleton = "cotl/FireCultMoth.skel"
+default_skins = ["Executioner"]
+default_animation = "idle"
+default_scale = 0.5
+spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
+
 # Have to fix this when I have more time to hammer out the spoilers
 [[actors]]
 name = "Cultist"
@@ -261,3 +273,339 @@ skeleton = "cotl/Human.skel"
 default_skins = ["Cult_Scamp"]
 default_animation = "idle"
 is_spoiler = true
+
+[[actors]]
+name = "Beholder"
+slug = "beholder"
+atlas = "cotl/Beholder.atlas"
+skeleton = "cotl/Beholder.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Burper"
+slug = "burper"
+atlas = "cotl/burper.atlas"
+skeleton = "cotl/burper.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Charger"
+slug = "charger"
+atlas = "cotl/Charger.atlas"
+skeleton = "cotl/Charger.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Chaser"
+slug = "chaser"
+atlas = "cotl/chaser.atlas"
+skeleton = "cotl/chaser.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Chest"
+slug = "chest"
+atlas = "cotl/Chest.atlas"
+skeleton = "cotl/Chest.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Chest"
+slug = "chest"
+atlas = "cotl/Chest.atlas"
+skeleton = "cotl/Chest.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Crab"
+slug = "crab"
+atlas = "cotl/Crab.atlas"
+skeleton = "cotl/Crab.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Crown"
+slug = "crown"
+atlas = "cotl/crown.atlas"
+skeleton = "cotl/crown.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Crown Big"
+slug = "crown-big"
+atlas = "cotl/CrownBig.atlas"
+skeleton = "cotl/CrownBig.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "TOWW - Boss"
+slug = "toww-boss"
+atlas = "cotl/DeathCat_Boss.atlas"
+skeleton = "cotl/DeathCat_Boss.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "TOWW - Eyeball"
+slug = "toww-eyeball"
+atlas = "cotl/DeathCat_Eyeball.atlas"
+skeleton = "cotl/DeathCat_Eyeball.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "TOWW - Spirit"
+slug = "toww-spirit"
+atlas = "cotl/DeathCat_Spirit.atlas"
+skeleton = "cotl/DeathCat_Spirit.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Demon"
+slug = "demon"
+atlas = "cotl/Demon.atlas"
+skeleton = "cotl/Demon.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Bat"
+slug = "bat"
+atlas = "cotl/Enemies_Bat.atlas"
+skeleton = "cotl/Enemies_Bat.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Moth"
+slug = "moth"
+atlas = "cotl/FireCultMoth.atlas"
+skeleton = "cotl/FireCultMoth.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Floater"
+slug = "floater"
+atlas = "cotl/Floater.atlas"
+skeleton = "cotl/Floater.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "ForestFlyingFrogMiniboss"
+slug = "fffm"
+atlas = "cotl/ForestFlyingFrogMiniboss.atlas"
+skeleton = "cotl/ForestFlyingFrogMiniboss.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "ForestWormMiniboss"
+slug = "fwm"
+atlas = "cotl/ForestWormMiniboss.atlas"
+skeleton = "cotl/ForestWormMiniboss.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "FrogBoss"
+slug = "frog-boss"
+atlas = "cotl/FrogBoss.atlas"
+skeleton = "cotl/FrogBoss.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "FrogMiniBossForest"
+slug = "fmf"
+atlas = "cotl/FrogMiniBossForest.atlas"
+skeleton = "cotl/FrogMiniBossForest.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Goop"
+slug = "goop"
+atlas = "cotl/Goop.atlas"
+skeleton = "cotl/Goop.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Heart guy"
+slug = "heart-guy"
+atlas = "cotl/heartGuy.atlas"
+skeleton = "cotl/heartGuy.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Hopper"
+slug = "hopper"
+atlas = "cotl/Hopper.atlas"
+skeleton = "cotl/Hopper.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "JellyBombTrap"
+slug = "jelly-bomb-trap"
+atlas = "cotl/JellyBombTrap.atlas"
+skeleton = "cotl/JellyBombTrap.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "JellyfishMiniboss"
+slug = "jellyfish-miniboss"
+atlas = "cotl/JellyfishMiniboss.atlas"
+skeleton = "cotl/JellyfishMiniboss.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "MainMenu"
+slug = "main-menu"
+atlas = "cotl/MainMenu.atlas"
+skeleton = "cotl/MainMenu.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Millipede"
+slug = "millipede"
+atlas = "cotl/Millipede.atlas"
+skeleton = "cotl/Millipede.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "MiniBossWorm"
+slug = "mbw"
+atlas = "cotl/MiniBossWorm.atlas"
+skeleton = "cotl/MiniBossWorm.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Mortar fly"
+slug = "mortar-fly"
+atlas = "cotl/MortarFly.atlas"
+skeleton = "cotl/MortarFly.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Patroller"
+slug = "patroller"
+atlas = "cotl/patroller.atlas"
+skeleton = "cotl/patroller.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Practise statues"
+slug = "practise-statues"
+atlas = "cotl/PractiseStatues.atlas"
+skeleton = "cotl/PractiseStatues.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Propaganda speakers"
+slug = "propaganda-speakers"
+atlas = "cotl/PropagandaSpeakers.atlas"
+skeleton = "cotl/PropagandaSpeakers.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Restaurant worms"
+slug = "restaurant-worms"
+atlas = "cotl/RestaurantWorms.atlas"
+skeleton = "cotl/RestaurantWorms.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Scarecrow"
+slug = "scarecrow"
+atlas = "cotl/Scarecrow.atlas"
+skeleton = "cotl/Scarecrow.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Scorpions"
+slug = "scorpions"
+atlas = "cotl/Scorpions.atlas"
+skeleton = "cotl/Scorpions.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Sermon effect"
+slug = "sermon-effect"
+atlas = "cotl/SermonEffect.atlas"
+skeleton = "cotl/SermonEffect.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Snail seller"
+slug = "snail-seller"
+atlas = "cotl/snailSeller.atlas"
+skeleton = "cotl/snailSeller.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Sorcerer"
+slug = "sorcerer"
+atlas = "cotl/Sorcerer.atlas"
+skeleton = "cotl/Sorcerer.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Spiders"
+slug = "spiders"
+atlas = "cotl/Spiders.atlas"
+skeleton = "cotl/Spiders.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Squirrel"
+slug = "squirrel"
+atlas = "cotl/Squirrel.atlas"
+skeleton = "cotl/Squirrel.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Turret"
+slug = "turret"
+atlas = "cotl/Turret.atlas"
+skeleton = "cotl/Turret.skel"
+default_skins = ["default"]
+default_animation = "idle"
+
+[[actors]]
+name = "Weapon card"
+slug = "weapon-card"
+atlas = "cotl/WeaponCard.atlas"
+skeleton = "cotl/WeaponCard.skel"
+default_skins = ["default"]
+default_animation = "idle"

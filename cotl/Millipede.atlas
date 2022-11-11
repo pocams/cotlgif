@@ -1,0 +1,321 @@
+
+Millipede.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/MillipedeBoss_Ball1
+  rotate: false
+  xy: 292, 2
+  size: 45, 40
+  orig: 45, 40
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Ball2
+  rotate: true
+  xy: 1038, 41
+  size: 47, 44
+  orig: 47, 44
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Ball3
+  rotate: true
+  xy: 981, 24
+  size: 64, 55
+  orig: 64, 55
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Ball4
+  rotate: true
+  xy: 918, 19
+  size: 69, 61
+  orig: 69, 61
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Ball5
+  rotate: false
+  xy: 828, 11
+  size: 88, 77
+  orig: 88, 77
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Body_0
+  rotate: true
+  xy: 742, 680
+  size: 342, 208
+  orig: 342, 208
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Body_1
+  rotate: true
+  xy: 742, 378
+  size: 300, 193
+  orig: 300, 193
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Body_2
+  rotate: true
+  xy: 937, 378
+  size: 300, 193
+  orig: 300, 193
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Body_3
+  rotate: false
+  xy: 1263, 84
+  size: 300, 193
+  orig: 300, 193
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Body_4
+  rotate: true
+  xy: 952, 722
+  size: 300, 193
+  orig: 300, 193
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Eyes
+  rotate: false
+  xy: 282, 77
+  size: 290, 169
+  orig: 290, 169
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Eyes_Closed
+  rotate: false
+  xy: 574, 90
+  size: 282, 156
+  orig: 282, 156
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Head
+  rotate: true
+  xy: 2, 549
+  size: 473, 278
+  orig: 473, 278
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Head_Back
+  rotate: true
+  xy: 2, 74
+  size: 473, 278
+  orig: 473, 278
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Leg
+  rotate: true
+  xy: 149, 12
+  size: 60, 141
+  orig: 60, 141
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Mouth
+  rotate: false
+  xy: 858, 90
+  size: 158, 157
+  orig: 158, 157
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Shooter1
+  rotate: true
+  xy: 1631, 667
+  size: 119, 102
+  orig: 119, 102
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Shooter1_Open
+  rotate: true
+  xy: 1631, 546
+  size: 119, 102
+  orig: 119, 102
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Shooter2
+  rotate: true
+  xy: 1303, 380
+  size: 152, 139
+  orig: 152, 139
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Shooter2_Open
+  rotate: true
+  xy: 1479, 870
+  size: 152, 139
+  orig: 152, 139
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_SideEyes
+  rotate: false
+  xy: 292, 44
+  size: 233, 31
+  orig: 233, 31
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Spike1
+  rotate: true
+  xy: 1113, 279
+  size: 97, 192
+  orig: 97, 192
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Spike2
+  rotate: true
+  xy: 634, 12
+  size: 76, 192
+  orig: 76, 192
+  offset: 0, 0
+  index: -1
+images/MillipedeBoss_Spike_Hole
+  rotate: false
+  xy: 339, 16
+  size: 64, 26
+  orig: 64, 26
+  offset: 0, 0
+  index: -1
+images/Millipede_Spike_Hole
+  rotate: false
+  xy: 339, 16
+  size: 64, 26
+  orig: 64, 26
+  offset: 0, 0
+  index: -1
+images/Millipede_Body
+  rotate: true
+  xy: 1303, 534
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_1
+  rotate: true
+  xy: 1444, 289
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_1_Poison
+  rotate: false
+  xy: 1018, 90
+  size: 243, 168
+  orig: 243, 168
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_2
+  rotate: true
+  xy: 1565, 44
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_2_Poison
+  rotate: true
+  xy: 1315, 779
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_3
+  rotate: true
+  xy: 1467, 534
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_3_Poison
+  rotate: true
+  xy: 1608, 289
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_4
+  rotate: true
+  xy: 1729, 44
+  size: 243, 162
+  orig: 243, 162
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_4_Poison
+  rotate: true
+  xy: 1132, 477
+  size: 243, 169
+  orig: 243, 169
+  offset: 0, 0
+  index: -1
+images/Millipede_Body_Poison
+  rotate: true
+  xy: 1147, 779
+  size: 243, 166
+  orig: 243, 166
+  offset: 0, 0
+  index: -1
+images/Millipede_Eyes
+  rotate: false
+  xy: 742, 249
+  size: 190, 127
+  orig: 190, 127
+  offset: 0, 0
+  index: -1
+images/Millipede_Eyes_Closed
+  rotate: false
+  xy: 934, 260
+  size: 177, 116
+  orig: 177, 116
+  offset: 0, 0
+  index: -1
+images/Millipede_Head
+  rotate: true
+  xy: 282, 636
+  size: 386, 229
+  orig: 386, 229
+  offset: 0, 0
+  index: -1
+images/Millipede_Head_Back
+  rotate: true
+  xy: 513, 636
+  size: 386, 227
+  orig: 386, 227
+  offset: 0, 0
+  index: -1
+images/Millipede_Head_Back_Poison
+  rotate: true
+  xy: 513, 248
+  size: 386, 227
+  orig: 386, 227
+  offset: 0, 0
+  index: -1
+images/Millipede_Head_Poison
+  rotate: true
+  xy: 282, 248
+  size: 386, 229
+  orig: 386, 229
+  offset: 0, 0
+  index: -1
+images/Millipede_Leg
+  rotate: true
+  xy: 527, 24
+  size: 51, 105
+  orig: 51, 105
+  offset: 0, 0
+  index: -1
+images/Millipede_Mouth
+  rotate: true
+  xy: 1620, 906
+  size: 116, 115
+  orig: 116, 115
+  offset: 0, 0
+  index: -1
+images/Millipede_Mouth_Poison
+  rotate: true
+  xy: 1620, 788
+  size: 116, 115
+  orig: 116, 115
+  offset: 0, 0
+  index: -1
+images/Millipede_Spike
+  rotate: true
+  xy: 2, 8
+  size: 64, 145
+  orig: 64, 145
+  offset: 0, 0
+  index: -1
