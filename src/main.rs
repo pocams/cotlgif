@@ -16,7 +16,7 @@ use color_eyre::Report;
 use css_color_parser2::Color as CssColor;
 use regex::Regex;
 use rusty_spine::Color;
-use serde::{Deserialize, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::Error;
 use serde_json::json;
 use tokio::task::spawn_blocking;
@@ -50,12 +50,32 @@ struct Args {
     public: bool
 }
 
+#[derive(Deserialize, Serialize, Debug, Clone)]
+enum Category {
+    None,
+    NPCs,
+    Bosses,
+    Minibosses,
+    Enemies,
+    Others,
+    Objects,
+    Unused,
+}
+
+impl Default for Category {
+    fn default() -> Self {
+        Category::None
+    }
+}
+
 #[derive(Deserialize, Debug, Clone)]
 pub struct ActorConfig {
     name: String,
     slug: String,
     atlas: String,
     skeleton: String,
+    #[serde(default)]
+    category: Category,
     #[serde(default)]
     order: i32,
     #[serde(default)]
@@ -115,6 +135,7 @@ impl Actor {
                         "name": self.config.name,
                         "slug": self.config.slug,
                         "order": self.config.order,
+                        "category": self.config.category,
                         "skins": skins,
                         "animations": animations,
                     })
@@ -125,6 +146,7 @@ impl Actor {
                 "name": self.config.name,
                 "slug": self.config.slug,
                 "order": self.config.order,
+                "category": self.config.category,
                 "skins": self.spine.skins,
                 "animations": self.spine.animations,
             }))
@@ -337,6 +359,7 @@ async fn get_v1(
             json!({
                 "name": actor.config.name,
                 "slug": actor.config.slug,
+                "category": actor.config.category,
                 "default_skins": actor.config.default_skins,
                 "default_animation": actor.config.default_animation,
                 "default_scale": actor.config.default_scale,

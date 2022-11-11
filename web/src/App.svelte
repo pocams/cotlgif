@@ -58,6 +58,7 @@
   let allSkins = [];
   let allColours = {};
 
+  $: allCategories = Array.from(new Set(allSkeletons.map(s => s.category).filter(s => s != "None")).values())
   $: filteredAnimations = allAnimations.filter(a => a.name.toLowerCase().includes(animation_filter.toLowerCase()))
   $: filteredSkins = allSkins.filter(a => a.name.toLowerCase().includes(skin_filter.toLowerCase()))
   $: filteredColours = () => {
@@ -134,6 +135,7 @@
   onMount(async () => {
     axios.get("/v1/").then(resp => {
       allSkeletons = resp.data.actors
+      allSkeletons.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
       setSkeleton(allSkeletons.find(s => s.slug === "follower"))
     })
     axios.get("/v1/follower/colours").then(resp => allColours = resp.data)
@@ -149,9 +151,27 @@
         </a>
         <div class="navbar-dropdown">
           {#each allSkeletons as skel}
-            <a class="navbar-item" class:is-primary={selectedSkeleton.slug === skel.slug} on:click={()=> setSkeleton(skel)}>
-              {skel.name}
-            </a>
+            {#if skel.category === "None"}
+            <a class="navbar-item" class:is-primary={selectedSkeleton.slug === skel.slug} on:click={()=> setSkeleton(skel)}>{skel.name}</a>
+            {/if}
+          {/each}
+
+          {#each allCategories as category}
+            <div class="nested dropdown">
+              <a class="navbar-item">
+                {category} &rsaquo;
+              </a>
+
+              <div class="dropdown-menu">
+                <div class="dropdown-content">
+                  {#each allSkeletons as skel}
+                    {#if skel.category === category}
+                      <a class="navbar-item" class:is-primary={selectedSkeleton.slug === skel.slug} on:click={()=> setSkeleton(skel)}>{skel.name}</a>
+                    {/if}
+                  {/each}
+                </div>
+              </div>
+            </div>
           {/each}
         </div>
       </div>

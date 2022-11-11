@@ -30,6 +30,7 @@ is_spoiler = true
 default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.3
+category = "NPCs"
 
 [[actors]]
 name = "Cat seller sheep"
@@ -40,6 +41,7 @@ is_spoiler = true
 default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.3
+category = "Unused"
 
 [[actors]]
 name = "Rakshasa"
@@ -48,6 +50,7 @@ atlas = "cotl/chefSeller.atlas"
 skeleton = "cotl/chefSeller.skel"
 default_skins = ["default"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "TOWW"
@@ -57,6 +60,7 @@ skeleton = "cotl/DeathBig.skel"
 default_skins = ["default", "NoChains"]
 default_animation = "idle-crouched"
 default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Death cat"
@@ -66,6 +70,7 @@ skeleton = "cotl/DeathCat.skel"
 is_spoiler = true
 default_skins = ["default"]
 default_animation = "animation"
+category = "Unused"
 
 [[actors]]
 name = "Plimbo"
@@ -74,6 +79,7 @@ atlas = "cotl/DecorationShopGuy.atlas"
 skeleton = "cotl/DecorationShopGuy.skel"
 default_skins = ["default"]
 default_animation = "idle"
+category = "NPCs"
 
 [[actors]]
 name = "Plimbo's fish"
@@ -83,6 +89,7 @@ skeleton = "cotl/DecorationShopGuyFish.skel"
 default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.3
+category = "NPCs"
 
 [[actors]]
 name = "Fisherman"
@@ -91,6 +98,7 @@ atlas = "cotl/Fisherman.atlas"
 skeleton = "cotl/Fisherman.skel"
 default_skins = ["default"]
 default_animation = "fishing"
+category = "NPCs"
 
 [[actors]]
 name = "Leshy"
@@ -100,6 +108,7 @@ skeleton = "cotl/ForestCultLeader.skel"
 default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Fox"
@@ -108,6 +117,7 @@ atlas = "cotl/Fox.atlas"
 skeleton = "cotl/Fox.skel"
 default_skins = ["default"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Heket"
@@ -117,6 +127,7 @@ skeleton = "cotl/FrogCultLeader.skel"
 default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Haro"
@@ -126,6 +137,7 @@ skeleton = "cotl/Haro.skel"
 default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
+category = "NPCs"
 
 [[actors]]
 name = "Kallamar"
@@ -135,6 +147,7 @@ skeleton = "cotl/JellyBoss.skel"
 default_skins = ["default"]
 default_animation = "leader/idle"
 default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Flinky"
@@ -143,6 +156,7 @@ atlas = "cotl/KnucklebonesPlayer_0_Flinky.atlas"
 skeleton = "cotl/KnucklebonesPlayer_0_Flinky.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Klunko and Bop"
@@ -151,6 +165,7 @@ atlas = "cotl/KnucklebonesPlayer_1_KlunkoAndBop.atlas"
 skeleton = "cotl/KnucklebonesPlayer_1_KlunkoAndBop.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Shrumy"
@@ -159,6 +174,7 @@ atlas = "cotl/KnucklebonesPlayer_2_Shrumy.atlas"
 skeleton = "cotl/KnucklebonesPlayer_2_Shrumy.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Lighthouse Follower"
@@ -167,6 +183,7 @@ atlas = "cotl/LighthouseFollower.atlas"
 skeleton = "cotl/LighthouseFollower.skel"
 default_skins = ["default"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Lighthouse Keeper"
@@ -175,6 +192,7 @@ atlas = "cotl/LighthouseKeeper.atlas"
 skeleton = "cotl/LighthouseKeeper.skel"
 default_skins = ["Axolotl"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Sozo"
@@ -183,6 +201,7 @@ atlas = "cotl/mushroomNPC.atlas"
 skeleton = "cotl/mushroomNPC.skel"
 default_skins = ["default"]
 default_animation = "animation2"
+category = "NPCs"
 
 [[actors]]
 name = "Ratau"
@@ -191,6 +210,7 @@ atlas = "cotl/RatNPC.atlas"
 skeleton = "cotl/RatNPC.skel"
 default_skins = ["normal"]
 default_animation = "idle"
+category = "NPCs"
 
 [[actors]]
 name = "Ratoo"
@@ -199,6 +219,7 @@ atlas = "cotl/Ratoo.atlas"
 skeleton = "cotl/Ratoo.skel"
 default_skins = ["normal"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Shamura"
@@ -208,6 +229,7 @@ skeleton = "cotl/Spider.skel"
 default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Helob"
@@ -216,6 +238,7 @@ atlas = "cotl/SpiderFollowerSeller.atlas"
 skeleton = "cotl/SpiderFollowerSeller.skel"
 default_skins = ["default"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Clauneck"
@@ -224,6 +247,7 @@ atlas = "cotl/TarotSeller.atlas"
 skeleton = "cotl/TarotSeller.skel"
 default_skins = ["red"]
 default_animation = "idle"
+category = "NPCs"
 
 [[actors]]
 name = "Midas"
@@ -232,6 +256,7 @@ atlas = "cotl/MidasNPC.atlas"
 skeleton = "cotl/MidasNPC.skel"
 default_skins = ["default"]
 default_animation = "animation"
+category = "NPCs"
 
 [[actors]]
 name = "Baal & Aym"
@@ -243,6 +268,7 @@ default_animation = "idle"
 # Hide the skins/animations that duplicate Death Cat
 spoiler_skins = '^default$'
 spoiler_animations = '^(animation|snarling-cat|oldbits.*|.*OLD|.*heart.*|sneakyboirunlol)$'
+category = "Minibosses"
 
 [[actors]]
 name = "Executioner"
@@ -253,18 +279,8 @@ default_skins = ["Executioner"]
 default_animation = "idle"
 default_scale = 0.5
 spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
+category = "Enemies"
 
-[[actors]]
-name = "Moth"
-slug = "moth"
-atlas = "cotl/FireCultMoth.atlas"
-skeleton = "cotl/FireCultMoth.skel"
-default_skins = ["Executioner"]
-default_animation = "idle"
-default_scale = 0.5
-spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
-
-# Have to fix this when I have more time to hammer out the spoilers
 [[actors]]
 name = "Cultist"
 slug = "cultist"
@@ -272,55 +288,62 @@ atlas = "cotl/Human.atlas"
 skeleton = "cotl/Human.skel"
 default_skins = ["Cult_Scamp"]
 default_animation = "idle"
-is_spoiler = true
+category = "Enemies"
 
 [[actors]]
-name = "Beholder"
-slug = "beholder"
-atlas = "cotl/Beholder.atlas"
-skeleton = "cotl/Beholder.skel"
+name = "Moth"
+slug = "moth"
+atlas = "cotl/FireCultMoth.atlas"
+skeleton = "cotl/FireCultMoth.skel"
 default_skins = ["default"]
 default_animation = "idle"
+category = "NPCs"
+
+[[actors]]
+name = "Witnesses"
+slug = "witnesses"
+atlas = "cotl/Beholder.atlas"
+skeleton = "cotl/Beholder.skel"
+default_skins = ["Dungeon1"]
+default_animation = "animation"
+default_scale = 0.5
+category = "Minibosses"
 
 [[actors]]
 name = "Burper"
 slug = "burper"
 atlas = "cotl/burper.atlas"
 skeleton = "cotl/burper.skel"
-default_skins = ["default"]
+default_skins = ["burper-front"]
 default_animation = "idle"
+category = "Enemies"
 
 [[actors]]
 name = "Charger"
 slug = "charger"
 atlas = "cotl/Charger.atlas"
 skeleton = "cotl/Charger.skel"
-default_skins = ["default"]
+default_skins = ["Normal"]
 default_animation = "idle"
+category = "Enemies"
 
-[[actors]]
-name = "Chaser"
-slug = "chaser"
-atlas = "cotl/chaser.atlas"
-skeleton = "cotl/chaser.skel"
-default_skins = ["default"]
-default_animation = "idle"
-
-[[actors]]
-name = "Chest"
-slug = "chest"
-atlas = "cotl/Chest.atlas"
-skeleton = "cotl/Chest.skel"
-default_skins = ["default"]
-default_animation = "idle"
+# Seems broken
+#[[actors]]
+#name = "Chaser"
+#slug = "chaser"
+#atlas = "cotl/chaser.atlas"
+#skeleton = "cotl/chaser.json"
+#default_skins = ["default"]
+#default_animation = "idle"
 
 [[actors]]
 name = "Chest"
 slug = "chest"
 atlas = "cotl/Chest.atlas"
 skeleton = "cotl/Chest.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["Wooden"]
+default_animation = "open"
+category = "Objects"
 
 [[actors]]
 name = "Crab"
@@ -328,39 +351,47 @@ slug = "crab"
 atlas = "cotl/Crab.atlas"
 skeleton = "cotl/Crab.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Others"
 
 [[actors]]
 name = "Crown"
 slug = "crown"
 atlas = "cotl/crown.atlas"
 skeleton = "cotl/crown.skel"
-default_skins = ["default"]
+default_skins = ["Lamb"]
 default_animation = "idle"
+spoiler_skins = "^(Goat|Snake|defaut)$"
+spoiler_animations = "^PlayerAnimationBackups.*"
+category = "Objects"
 
 [[actors]]
-name = "Crown Big"
+name = "Crown (Big)"
 slug = "crown-big"
 atlas = "cotl/CrownBig.atlas"
 skeleton = "cotl/CrownBig.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Objects"
 
 [[actors]]
 name = "TOWW - Boss"
 slug = "toww-boss"
 atlas = "cotl/DeathCat_Boss.atlas"
 skeleton = "cotl/DeathCat_Boss.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["all"]
+default_animation = "animation"
+default_scale = 0.3
+category = "Bosses"
 
 [[actors]]
 name = "TOWW - Eyeball"
 slug = "toww-eyeball"
 atlas = "cotl/DeathCat_Eyeball.atlas"
 skeleton = "cotl/DeathCat_Eyeball.skel"
-default_skins = ["default"]
+default_skins = ["Normal"]
 default_animation = "idle"
+category = "Bosses"
 
 [[actors]]
 name = "TOWW - Spirit"
@@ -369,70 +400,73 @@ atlas = "cotl/DeathCat_Spirit.atlas"
 skeleton = "cotl/DeathCat_Spirit.skel"
 default_skins = ["default"]
 default_animation = "idle"
+default_scale = 0.5
+category = "Bosses"
 
 [[actors]]
 name = "Demon"
 slug = "demon"
 atlas = "cotl/Demon.atlas"
 skeleton = "cotl/Demon.skel"
-default_skins = ["default"]
+default_skins = ["Heart"]
 default_animation = "idle"
+category = "Others"
 
 [[actors]]
 name = "Bat"
 slug = "bat"
 atlas = "cotl/Enemies_Bat.atlas"
 skeleton = "cotl/Enemies_Bat.skel"
-default_skins = ["default"]
-default_animation = "idle"
-
-[[actors]]
-name = "Moth"
-slug = "moth"
-atlas = "cotl/FireCultMoth.atlas"
-skeleton = "cotl/FireCultMoth.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["Forest"]
+default_animation = "Fly"
+category = "Enemies"
 
 [[actors]]
 name = "Floater"
 slug = "floater"
 atlas = "cotl/Floater.atlas"
 skeleton = "cotl/Floater.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["Spiker"]
+default_animation = "animation"
+category = "Enemies"
 
 [[actors]]
-name = "ForestFlyingFrogMiniboss"
-slug = "fffm"
+name = "Eligos"
+slug = "eligos"
 atlas = "cotl/ForestFlyingFrogMiniboss.atlas"
 skeleton = "cotl/ForestFlyingFrogMiniboss.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "Fly"
+category = "Minibosses"
 
 [[actors]]
-name = "ForestWormMiniboss"
-slug = "fwm"
-atlas = "cotl/ForestWormMiniboss.atlas"
-skeleton = "cotl/ForestWormMiniboss.skel"
+name = "Leshy (Boss)"
+slug = "leshy-boss"
+atlas = "cotl/ForestWormBoss.atlas"
+skeleton = "cotl/ForestWormBoss.skel"
 default_skins = ["default"]
 default_animation = "idle"
+default_scale = 0.3
+category = "Bosses"
 
 [[actors]]
-name = "FrogBoss"
-slug = "frog-boss"
+name = "Heket (Boss)"
+slug = "heket-boss"
 atlas = "cotl/FrogBoss.atlas"
 skeleton = "cotl/FrogBoss.skel"
 default_skins = ["default"]
 default_animation = "idle"
+default_scale = 0.3
+category = "Bosses"
 
 [[actors]]
-name = "FrogMiniBossForest"
-slug = "fmf"
+name = "Gusion & Zepar"
+slug = "gusion-zepar"
 atlas = "cotl/FrogMiniBossForest.atlas"
 skeleton = "cotl/FrogMiniBossForest.skel"
-default_skins = ["default"]
+default_skins = ["MortarMiniboss"]
 default_animation = "idle"
+category = "Minibosses"
 
 [[actors]]
 name = "Goop"
@@ -440,7 +474,8 @@ slug = "goop"
 atlas = "cotl/Goop.atlas"
 skeleton = "cotl/Goop.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "Goop_0"
+category = "Objects"
 
 [[actors]]
 name = "Heart guy"
@@ -448,55 +483,66 @@ slug = "heart-guy"
 atlas = "cotl/heartGuy.atlas"
 skeleton = "cotl/heartGuy.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Others"
 
 [[actors]]
 name = "Hopper"
 slug = "hopper"
 atlas = "cotl/Hopper.atlas"
 skeleton = "cotl/Hopper.skel"
-default_skins = ["default"]
+default_skins = ["hopper-front"]
 default_animation = "idle"
+category = "Enemies"
 
 [[actors]]
-name = "JellyBombTrap"
-slug = "jelly-bomb-trap"
+name = "Jelly Bomb"
+slug = "jelly-bomb"
 atlas = "cotl/JellyBombTrap.atlas"
 skeleton = "cotl/JellyBombTrap.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Enemies"
 
 [[actors]]
-name = "JellyfishMiniboss"
-slug = "jellyfish-miniboss"
+name = "Anchordeep minibosses"
+slug = "jellyfish"
 atlas = "cotl/JellyfishMiniboss.atlas"
 skeleton = "cotl/JellyfishMiniboss.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["Spiker"]
+default_animation = "animation"
+default_scale = 0.5
+category = "Minibosses"
 
 [[actors]]
-name = "MainMenu"
+name = "Main menu"
 slug = "main-menu"
 atlas = "cotl/MainMenu.atlas"
 skeleton = "cotl/MainMenu.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Others"
+default_scale = 0.5
 
 [[actors]]
-name = "Millipede"
+name = "Millipede & Vephar"
 slug = "millipede"
 atlas = "cotl/Millipede.atlas"
 skeleton = "cotl/Millipede.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+default_scale = 0.3
+category = "Enemies"
 
 [[actors]]
 name = "MiniBossWorm"
-slug = "mbw"
+slug = "mini-boss-worm"
 atlas = "cotl/MiniBossWorm.atlas"
 skeleton = "cotl/MiniBossWorm.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["HEAD"]
+default_animation = "animation"
+category = "Enemies"
+is_spoiler = true
 
 [[actors]]
 name = "Mortar fly"
@@ -504,31 +550,36 @@ slug = "mortar-fly"
 atlas = "cotl/MortarFly.atlas"
 skeleton = "cotl/MortarFly.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Enemies"
 
 [[actors]]
-name = "Patroller"
+name = "Patroller & Amdusias & Valefar"
 slug = "patroller"
 atlas = "cotl/patroller.atlas"
 skeleton = "cotl/patroller.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["BABY_BODY_0"]
+default_animation = "animation"
+category = "Enemies"
 
 [[actors]]
 name = "Practise statues"
 slug = "practise-statues"
 atlas = "cotl/PractiseStatues.atlas"
 skeleton = "cotl/PractiseStatues.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["1"]
+default_animation = "reform"
+default_scale = 0.5
+category = "Objects"
 
 [[actors]]
 name = "Propaganda speakers"
 slug = "propaganda-speakers"
 atlas = "cotl/PropagandaSpeakers.atlas"
-skeleton = "cotl/PropagandaSpeakers.skel"
+skeleton = "cotl/PropagandaSpeakers.json"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "on"
+category = "Objects"
 
 [[actors]]
 name = "Restaurant worms"
@@ -536,7 +587,8 @@ slug = "restaurant-worms"
 atlas = "cotl/RestaurantWorms.atlas"
 skeleton = "cotl/RestaurantWorms.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "idle1"
+category = "NPCs"
 
 [[actors]]
 name = "Scarecrow"
@@ -544,15 +596,17 @@ slug = "scarecrow"
 atlas = "cotl/Scarecrow.atlas"
 skeleton = "cotl/Scarecrow.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Objects"
 
 [[actors]]
-name = "Scorpions"
+name = "Scorpions & Hauras"
 slug = "scorpions"
 atlas = "cotl/Scorpions.atlas"
 skeleton = "cotl/Scorpions.skel"
-default_skins = ["default"]
+default_skins = ["Scorpion"]
 default_animation = "idle"
+category = "Enemies"
 
 [[actors]]
 name = "Sermon effect"
@@ -560,31 +614,38 @@ slug = "sermon-effect"
 atlas = "cotl/SermonEffect.atlas"
 skeleton = "cotl/SermonEffect.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "1-loop"
+default_scale = 0.3
+category = "Objects"
 
 [[actors]]
-name = "Snail seller"
+name = "Rakshasa's wife"
 slug = "snail-seller"
 atlas = "cotl/snailSeller.atlas"
 skeleton = "cotl/snailSeller.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+default_scale = 0.5
+category = "NPCs"
 
 [[actors]]
 name = "Sorcerer"
 slug = "sorcerer"
 atlas = "cotl/Sorcerer.atlas"
 skeleton = "cotl/Sorcerer.skel"
-default_skins = ["default"]
+default_skins = ["Cult"]
 default_animation = "idle"
+category = "Enemies"
+spoiler_skins = ".*OLD.*"
 
 [[actors]]
-name = "Spiders"
+name = "Spiders & Focalor"
 slug = "spiders"
 atlas = "cotl/Spiders.atlas"
 skeleton = "cotl/Spiders.skel"
-default_skins = ["default"]
+default_skins = ["DashSpider_Big"]
 default_animation = "idle"
+category = "Enemies"
 
 [[actors]]
 name = "Squirrel"
@@ -592,20 +653,23 @@ slug = "squirrel"
 atlas = "cotl/Squirrel.atlas"
 skeleton = "cotl/Squirrel.skel"
 default_skins = ["default"]
-default_animation = "idle"
+default_animation = "animation"
+category = "Others"
 
 [[actors]]
 name = "Turret"
 slug = "turret"
 atlas = "cotl/Turret.atlas"
 skeleton = "cotl/Turret.skel"
-default_skins = ["default"]
+default_skins = ["Forest Turret"]
 default_animation = "idle"
+category = "Enemies"
 
 [[actors]]
 name = "Weapon card"
 slug = "weapon-card"
 atlas = "cotl/WeaponCard.atlas"
 skeleton = "cotl/WeaponCard.skel"
-default_skins = ["default"]
-default_animation = "idle"
+default_skins = ["None"]
+default_animation = "fly"
+category = "Objects"
