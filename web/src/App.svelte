@@ -51,7 +51,9 @@
   let colours = {}
   let onlyHead = false
   let singleFrame = false
+  let petpet = false
   let singleFrameTimestamp = 0.0
+  let activeCategoryMenu = ""
 
   let allSkeletons = [];
   let allAnimations = [];
@@ -99,7 +101,9 @@
     for (const additionalSkin of selectedSkins.slice(1)) {
       params.push(`add_skin=${encodeURIComponent(additionalSkin.name)}`)
     }
-    params.push(`scale=${scale}`)
+    if (scale !== 1) {
+      params.push(`scale=${scale}`)
+    }
     params.push(`animation=${selectedAnimation.name}`)
     if (selectedSkeleton.slug === "follower") {
       for (const [key, value] of Object.entries(colours)){
@@ -109,8 +113,15 @@
           params.push(`${key}=${encodeURIComponent(value)}`)
         }
       }
-      params.push(`only_head=${encodeURIComponent(onlyHead)}`)
+      if (onlyHead) {
+        params.push("only_head=true")
+      }
     }
+
+    if (petpet) {
+      params.push("petpet=true")
+    }
+
     if (singleFrame) {
       params.push("format=png")
       params.push(`start_time=${singleFrameTimestamp}`)
@@ -157,8 +168,8 @@
           {/each}
 
           {#each allCategories as category}
-            <div class="nested dropdown">
-              <a class="navbar-item">
+            <div class="nested dropdown" class:is-active={activeCategoryMenu === category}>
+              <a class="dropdown-item" on:click={() => activeCategoryMenu = category}>
                 {category} &rsaquo;
               </a>
 
@@ -166,7 +177,10 @@
                 <div class="dropdown-content">
                   {#each allSkeletons as skel}
                     {#if skel.category === category}
-                      <a class="navbar-item" class:is-primary={selectedSkeleton.slug === skel.slug} on:click={()=> setSkeleton(skel)}>{skel.name}</a>
+                      <a class="dropdown-item"
+                         class:is-primary={selectedSkeleton.slug === skel.slug}
+                         on:click={() => { activeCategoryMenu = ""; setSkeleton(skel); }}
+                         >{skel.name}</a>
                     {/if}
                   {/each}
                 </div>
@@ -252,6 +266,11 @@
               bind:enabled={singleFrame}
               bind:timestamp={singleFrameTimestamp}
               duration={selectedAnimation ? selectedAnimation.duration : 0}></SingleFrame>
+
+      <label class="checkbox">
+        <input type="checkbox" bind:checked={petpet}>
+        Petpet (<a href="https://benisland.neocities.org/petpet/">original site</a>)
+      </label>
     </div>
   </div>
 </section>
