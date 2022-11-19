@@ -2,8 +2,9 @@ use std::{io, thread};
 use std::collections::HashMap;
 use std::default::Default;
 use std::io::{BufRead, BufReader, Write};
+use std::ops::{Deref, DerefMut};
 use std::process::{abort, Command, Stdio};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicI64, Ordering};
 
 use color_eyre::eyre::{ErrReport, eyre};
@@ -15,7 +16,7 @@ use once_cell::sync::OnceCell;
 use png::{BitDepth, ColorType};
 use regex::Regex;
 use rgb::FromSlice;
-use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson};
+use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson, SkeletonRenderable};
 use rusty_spine::BlendMode as SpineBlendMode;
 use serde::Serialize;
 use sfml::graphics::{Color as SfmlColor, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
@@ -67,6 +68,42 @@ const BLEND_SCREEN: SfmlBlendMode = SfmlBlendMode {
 static SKIN_NUMBER: AtomicI64 = AtomicI64::new(0);
 const PETPET_TIMESCALE: f32 = 3.0;
 const PETPET_NATIVE_WIDTH: f32 = 100.0;
+
+struct ProtectedSkeletonController {
+    controller: SkeletonController,
+    mutex: Arc<Mutex<()>>
+}
+
+impl Deref for ProtectedSkeletonController {
+    type Target = SkeletonController;
+
+    fn deref(&self) -> &Self::Target {
+        &self.controller
+    }
+}
+
+impl DerefMut for ProtectedSkeletonController {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.controller
+    }
+}
+
+impl ProtectedSkeletonController {
+    fn new(skeleton_data: Arc<SkeletonData>, animation_state_data: Arc<AnimationStateData>, mutex: Arc<Mutex<()>>) -> ProtectedSkeletonController {
+        let controller = SkeletonController::new(skeleton_data, animation_state_data);
+        ProtectedSkeletonController { controller, mutex }
+    }
+
+    fn update(&mut self, delta_seconds: f32) {
+        let _guard = self.mutex.lock().unwrap();
+        self.controller.update(delta_seconds);
+    }
+
+    fn renderables(&mut self) -> Vec<SkeletonRenderable> {
+        let _guard = self.mutex.lock().unwrap();
+        self.controller.renderables()
+    }
+}
 
 fn only_head_includes(slot_name: &str) -> bool {
     static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
@@ -172,7 +209,7 @@ pub struct SpineActor {
     atlas: Arc<Atlas>,
     skeleton_data: Arc<SkeletonData>,
     animation_state_data: Arc<AnimationStateData>,
-    mutex: std::sync::Mutex<()>
+    mutex: Arc<Mutex<()>>
 }
 
 #[derive(Debug)]
@@ -284,14 +321,16 @@ impl SpineActor {
             atlas,
             skeleton_data,
             animation_state_data,
-            mutex: std::sync::Mutex::new(())
+            mutex: Arc::new(Mutex::new(()))
         })
     }
 
-    fn prepare_render(&self, parameters: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
-        let _guard = self.mutex.lock().unwrap();
+    fn new_skeleton_controller(&self) -> ProtectedSkeletonController {
+        ProtectedSkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone(), self.mutex.clone())
+    }
 
-        let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
+    fn prepare_render(&self, parameters: RenderParameters) -> color_eyre::Result<PreparedRenderParameters> {
+        let mut controller = self.new_skeleton_controller();
         let render_scale = parameters.render_scale();
         let aa_factor = if parameters.antialiasing == 0 { 1 } else { parameters.antialiasing };
 
@@ -334,17 +373,14 @@ impl SpineActor {
         controller.animation_state.set_animation_by_name(0, &parameters.animation, true).unwrap();
         controllers.push(controller);
 
-        let petpet_guard = if parameters.petpet {
+        if parameters.petpet {
             let petpet = get_petpet_actor();
-            let mut petpet_controller = SkeletonController::new(petpet.skeleton_data.clone(), petpet.animation_state_data.clone());
+            let mut petpet_controller = petpet.new_skeleton_controller();
             petpet_controller.skeleton.set_skin_by_name("default").unwrap();
             petpet_controller.animation_state.set_animation_by_name(0, "petpet", true).unwrap();
             petpet_controller.animation_state.set_timescale(PETPET_TIMESCALE);
             controllers.push(petpet_controller);
-            Some(petpet.mutex.lock().unwrap())
-        } else {
-            None
-        };
+        }
 
         for controller in &mut controllers {
             controller.update(parameters.start_time);
@@ -379,6 +415,7 @@ impl SpineActor {
         }
         debug!("Final scale is {}x{}, render will be {}x{}", final_width, final_height, render_width, render_height);
 
+        let petpet = parameters.petpet;
         Ok(PreparedRenderParameters {
             parameters,
             skin,
@@ -389,14 +426,12 @@ impl SpineActor {
             final_height,
             x_offset: -min_x,
             y_offset: -min_y,
-            petpet: petpet_guard.is_some(),
+            petpet
         })
     }
 
     fn render(&self, prepared_params: PreparedRenderParameters, mut frame_callback: impl FnMut(&Frame) -> Result<(), ErrReport>) {
-        let _guard = self.mutex.lock().unwrap();
-
-        let mut controller = SkeletonController::new(self.skeleton_data.clone(), self.animation_state_data.clone());
+        let mut controller = self.new_skeleton_controller();
 
         let params = prepared_params.parameters;
         let render_scale = params.render_scale();
@@ -445,9 +480,9 @@ impl SpineActor {
 
         let mut controllers = vec![controller];
 
-        let _petpet_guard = if prepared_params.petpet {
+        if prepared_params.petpet {
             let petpet = get_petpet_actor();
-            let mut petpet_controller = SkeletonController::new(petpet.skeleton_data.clone(), petpet.animation_state_data.clone());
+            let mut petpet_controller = petpet.new_skeleton_controller();
             petpet_controller.skeleton.set_skin_by_name("default").unwrap();
             petpet_controller.animation_state.set_animation_by_name(0, "petpet", true).unwrap();
             petpet_controller.animation_state.set_timescale(PETPET_TIMESCALE);
@@ -461,9 +496,6 @@ impl SpineActor {
             petpet_controller.skeleton.set_y(prepared_params.render_height as f32 - (35.0 * petpet_scale));
 
             controllers.push(petpet_controller);
-            Some(petpet.mutex.lock().unwrap())
-        } else {
-            None
         };
 
         for controller in &mut controllers {
