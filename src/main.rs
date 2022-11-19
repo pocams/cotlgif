@@ -7,7 +7,7 @@ use std::sync::Arc;
 use axum::{Extension, Json, Router};
 use axum::body::StreamBody;
 use axum::extract::{Host, Path, Query};
-use axum::http::StatusCode;
+use axum::http::{header, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, get_service};
 use clap::Parser;
@@ -169,6 +169,7 @@ impl Actor {
     }
 }
 
+
 #[derive(Debug, Default)]
 struct SkinParameters {
     output_type: Option<OutputType>,
@@ -185,6 +186,7 @@ struct SkinParameters {
     only_head: Option<bool>,
     download: Option<bool>,
     petpet: Option<bool>,
+    text_parameters: Option<TextParameters>
 }
 
 // Convert a list of HTTP GET query parameters to SkinParameters
@@ -334,18 +336,21 @@ async fn get_index(Host(host): Host) -> impl IntoResponse {
         Ok(f) => {
             (
                 StatusCode::OK,
-                Response::builder()
-                    .header("Content-Type", "text/html")
-                    .body(String::from_utf8(f).unwrap())
-                    .unwrap()
+                [
+                    (header::CACHE_CONTROL, CACHE_CONTROL_SHORT),
+                    (header::CONTENT_TYPE, "text/html")
+                ],
+                String::from_utf8(f).unwrap()
             )
         }
         Err(e) => {
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Response::builder()
-                    .body(format!("{:?}", e))
-                    .unwrap()
+                [
+                    (header::CACHE_CONTROL, CACHE_CONTROL_SHORT),
+                    (header::CONTENT_TYPE, "text/plain")
+                ],
+                format!("{:?}", e)
             )
         }
     }
@@ -358,10 +363,13 @@ async fn get_spoiler_js(Host(host): Host, Extension(args): Extension<Arc<Args>>)
         "\n"
     };
 
-    Response::builder()
-        .header("Content-Type", "text/javascript")
-        .body(body.to_owned())
-        .unwrap()
+    (
+        [
+            (header::CONTENT_TYPE, "text/javascript"),
+            (header::CACHE_CONTROL, CACHE_CONTROL_SHORT)
+        ],
+        body
+    )
 }
 
 async fn get_v1(
@@ -385,9 +393,10 @@ async fn get_v1(
         }
     ).collect();
 
-    Json(json!({
-        "actors": actor_json
-    }))
+    (
+        [(header::CACHE_CONTROL, CACHE_CONTROL_SHORT)],
+        Json(json!({"actors": actor_json}))
+    )
 }
 
 async fn get_v1_actor(
@@ -404,10 +413,14 @@ async fn get_v1_actor(
         debug!("found actor: {:?}", actor);
         // as_json() will return None if we're not showing spoilers and the whole actor is a spoiler
         if let Some(json) = actor.as_json(show_spoilers) {
-            return (StatusCode::OK, Json(json));
+            return (
+                StatusCode::OK,
+                [(header::CACHE_CONTROL, CACHE_CONTROL_SHORT)],
+                Json(json)
+            )
         }
     }
-    (StatusCode::NOT_FOUND, Json(json!({"error": "no such actor"})))
+    (StatusCode::NOT_FOUND, [(header::CACHE_CONTROL, CACHE_CONTROL_SHORT)], Json(json!({"error": "no such actor"})))
 }
 
 async fn get_v1_colours(
@@ -415,12 +428,17 @@ async fn get_v1_colours(
     Path(actor_name): Path<String>,
     Host(_host): Host
 ) -> impl IntoResponse {
-    if actor_name != "follower" {
+    let json = if actor_name == "follower" {
         // Only followers have colour sets
-        return (StatusCode::NOT_FOUND, Json(json!({"error": "no colours available for actor"})))
-    }
+        serde_json::to_value(skin_colours.deref()).unwrap()
+    } else {
+        json!([])
+    };
 
-    (StatusCode::OK, Json(serde_json::to_value(skin_colours.deref()).unwrap()))
+    (
+        [(header::CACHE_CONTROL, CACHE_CONTROL_SHORT)],
+        Json(json)
+    )
 }
 
 async fn get_v1_skin(
