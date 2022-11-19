@@ -35,6 +35,8 @@ mod colours;
 mod util;
 mod resize;
 
+const CACHE_CONTROL_SHORT: &str = "max-age=60";
+
 #[derive(Parser)]
 struct Args {
     /// Host and port to listen on
