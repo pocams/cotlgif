@@ -446,6 +446,7 @@ default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.3
 category = "Bosses"
+spoiler_animations = '^(transform2)$'
 
 [[actors]]
 name = "Heket (Boss)"
