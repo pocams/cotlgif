@@ -341,14 +341,18 @@ impl SpineActor {
         // Make sure we don't duplicate skin names - not sure if this is crucial but I was getting
         // some mysterious crashes before.
         let skin_name = format!("{}", SKIN_NUMBER.fetch_add(1, Ordering::SeqCst));
-        let mut skin = rusty_spine::Skin::new(&skin_name);
-        for skin_name in &parameters.skins {
-            skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
-        }
+        let skin = {
+            let _guard = self.mutex.lock().unwrap();
+            let mut skin = rusty_spine::Skin::new(&skin_name);
+            for skin_name in &parameters.skins {
+                skin.add_skin(controller.skeleton.data().skins().find(|s| s.name() == skin_name).unwrap().as_ref());
+            }
+            skin
+        };
 
         controller.skeleton.set_skin(&skin);
         controller.skeleton.set_scale([render_scale, render_scale]);
-        controller.skeleton.set_to_setup_pose();
+        // controller.skeleton.set_to_setup_pose();
 
         if parameters.only_head {
             for mut slot in controller.skeleton.slots_mut() {
@@ -433,14 +437,13 @@ impl SpineActor {
     fn render(&self, prepared_params: PreparedRenderParameters, mut frame_callback: impl FnMut(&Frame) -> Result<(), ErrReport>) {
         let mut controller = self.new_skeleton_controller();
 
-        let params = prepared_params.parameters;
-        let render_scale = params.render_scale();
+        let render_scale = prepared_params.parameters.render_scale();
 
         let background_colour = SfmlColor::rgba(
-            (params.background_colour.r * 255.0).round() as u8,
-            (params.background_colour.g * 255.0).round() as u8,
-            (params.background_colour.b * 255.0).round() as u8,
-            (params.background_colour.a * 255.0).round() as u8,
+            (prepared_params.parameters.background_colour.r * 255.0).round() as u8,
+            (prepared_params.parameters.background_colour.g * 255.0).round() as u8,
+            (prepared_params.parameters.background_colour.b * 255.0).round() as u8,
+            (prepared_params.parameters.background_colour.a * 255.0).round() as u8,
         );
 
         controller.skeleton.set_skin(&prepared_params.skin);
@@ -450,10 +453,10 @@ impl SpineActor {
         // Only follower supports slot colours and only_head
         if self.has_slot_colours {
             for mut slot in controller.skeleton.slots_mut() {
-                if params.only_head && !only_head_includes(slot.data().name()) {
+                if prepared_params.parameters.only_head && !only_head_includes(slot.data().name()) {
                     // Make the slot transparent
                     slot.color_mut().set_a(0.0);
-                } else if let Some(colour) = &params.slot_colours.get(slot.data().name()) {
+                } else if let Some(colour) = &prepared_params.parameters.slot_colours.get(slot.data().name()) {
                     let c = slot.color_mut();
                     c.set_r(colour.r);
                     c.set_g(colour.g);
@@ -476,7 +479,7 @@ impl SpineActor {
         );
 
         controller.animation_state.clear_tracks();
-        controller.animation_state.set_animation_by_name(0, &params.animation, true).unwrap();
+        controller.animation_state.set_animation_by_name(0, &prepared_params.parameters.animation, true).unwrap();
 
         let mut controllers = vec![controller];
 
@@ -499,14 +502,14 @@ impl SpineActor {
         };
 
         for controller in &mut controllers {
-            controller.update(params.start_time);
+            controller.update(prepared_params.parameters.start_time);
         }
 
-        let mut time = params.start_time;
+        let mut time = prepared_params.parameters.start_time;
         let mut elapsed_time = 0.0;
         let mut frame = 0;
-        while time <= params.end_time {
-            if params.petpet {
+        while time <= prepared_params.parameters.end_time {
+            if prepared_params.parameters.petpet {
                 // Work around a bit of borrow checker nonsense - we can't pass controllers[0] as mutable
                 // if we're holding a borrow from controllers[1], so just copy the string :<
                 let petpet_state = controllers[1].skeleton.slot_at_index(0).unwrap().attachment().unwrap().name().to_owned();
@@ -551,14 +554,14 @@ impl SpineActor {
                     target.draw_primitives(vertexes.as_slice(), PrimitiveType::TRIANGLES, &render_states);
                 }
 
-                controller.update(params.frame_delay);
+                controller.update(prepared_params.parameters.frame_delay);
             }
 
             // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to
             // give us ownership of the pixel data.
             let image = target.texture().copy_to_image().unwrap().pixel_data().to_vec();
 
-            let raw_image = if params.antialiasing <= 1 {
+            let raw_image = if prepared_params.parameters.antialiasing <= 1 {
                 // debug!("Skipping antialiasing");
                 // No antialiasing, so just use the image as-is
                 image
@@ -581,10 +584,16 @@ impl SpineActor {
             }
 
             frame += 1;
-            time += params.frame_delay;
-            elapsed_time += params.frame_delay as f64;
+            time += prepared_params.parameters.frame_delay;
+            elapsed_time += prepared_params.parameters.frame_delay as f64;
         }
         info!("Finished rendering");
+        {
+            // Hold the mutex while we drop the skins, since we're getting double frees with skin refcounts
+            let _guard = self.mutex.lock().unwrap();
+            drop(controllers);
+            drop(prepared_params);
+        }
     }
 
     pub fn render_gif(&self, params: RenderParameters, response_sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, Report>>) -> Result<(), Report> {
