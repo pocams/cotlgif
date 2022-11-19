@@ -134,6 +134,7 @@ skeleton = "cotl/Haro.skel"
 default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
+spoiler_animations = '^(enter.*|exit.*|transform.*)$'
 category = "NPCs"
 
 [[actors]]
