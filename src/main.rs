@@ -29,11 +29,15 @@ use util::{JsonError, OutputType, Slug};
 
 use crate::actors::{RenderParameters, SpineActor};
 use crate::colours::SkinColours;
+use crate::text::TextParameters;
 
 mod actors;
 mod colours;
-mod util;
 mod resize;
+mod text;
+mod util;
+
+const CACHE_CONTROL_SHORT: &str = "max-age=60";
 
 const CACHE_CONTROL_SHORT: &str = "max-age=60";
 
@@ -216,6 +220,9 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                     sp.slot_colours.insert(key.clone(), color_from_string(value.as_str()).map_err(|e| util::json_400(format!("{}: {}", key, e)))?);
                 }
                 "petpet" => sp.petpet = Some(value.parse().map_err(|e| util::json_400(format!("petpet: {e:?}")))?),
+                "top_text" | "bottom_text" | "font" | "font_size" => {
+                    sp.text_parameters.get_or_insert_with(|| Default::default()).set_from_params(key, value)?;
+                }
                 _ => return Err(util::json_400(Cow::from(format!("Invalid parameter {:?}", key))))
             }
         }
@@ -253,6 +260,7 @@ impl SkinParameters {
             slot_colours: final_colours,
             only_head: self.only_head.unwrap_or(false),
             petpet: self.petpet.unwrap_or(false),
+            text_parameters: self.text_parameters
         })
     }
 }

@@ -19,7 +19,7 @@ use rgb::FromSlice;
 use rusty_spine::{AnimationStateData, Atlas, Color, SkeletonBinary, SkeletonController, SkeletonData, SkeletonJson, SkeletonRenderable};
 use rusty_spine::BlendMode as SpineBlendMode;
 use serde::Serialize;
-use sfml::graphics::{Color as SfmlColor, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
+use sfml::graphics::{Color as SfmlColor, FloatRect, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture, Transform, Vertex};
 use sfml::graphics::blend_mode::{Equation as BlendEquation, Factor as BlendFactor};
 use sfml::graphics::BlendMode as SfmlBlendMode;
 use sfml::SfBox;
@@ -27,6 +27,7 @@ use sfml::system::Vector2f;
 use tracing::{debug, info, warn};
 
 use crate::{ActorConfig, resize};
+use crate::text::TextParameters;
 use crate::util::{ChannelWriter, Slug};
 
 const BLEND_NORMAL: SfmlBlendMode = SfmlBlendMode {
@@ -225,6 +226,7 @@ pub struct RenderParameters {
     pub slot_colours: HashMap<String, Color>,
     pub only_head: bool,
     pub petpet: bool,
+    pub text_parameters: Option<TextParameters>
 }
 
 impl RenderParameters {
@@ -252,6 +254,24 @@ impl RenderParameters {
         if self.frame_delay < 1.0 / 120.0 {
             debug!("LIMITS: frame_delay increasing from {} to 1/120", self.frame_delay);
             self.frame_delay = 1.0 / 120.0;
+        }
+        if let Some(t) = self.text_parameters.as_mut() {
+            if t.font_size > 200 {
+                debug!("LIMITS: font_size decreasing from {} to 200", t.font_size);
+                t.font_size = 200;
+            }
+            if let Some(top_text) = t.top_text.as_mut() {
+                if top_text.len() > 100 {
+                    debug!("LIMITS: top_text length decreasing from {} to 100", top_text.len());
+                    top_text.truncate(100);
+                }
+            }
+            if let Some(bottom_text) = t.bottom_text.as_mut() {
+                if bottom_text.len() > 100 {
+                    debug!("LIMITS: bottom_text length decreasing from {} to 100", bottom_text.len());
+                    bottom_text.truncate(100);
+                }
+            }
         }
     }
 
@@ -386,6 +406,34 @@ impl SpineActor {
             controllers.push(petpet_controller);
         }
 
+        if let Some(text_params) = parameters.text_parameters.as_ref() {
+            let mut text_bounds = FloatRect::new(0.0, 0.0, 0.0, 0.0);
+            if text_params.top_text.is_some() || text_params.bottom_text.is_some() {
+                let font = text_params.font.load_sfml();
+                if let Some(top_text) = text_params.top_text.as_ref() {
+                    let t = text_params.get_text(&font, top_text.as_str());
+                    let bounds = t.local_bounds();
+                    text_bounds.width = bounds.width;
+                    text_bounds.height = bounds.height;
+                }
+
+                if let Some(bottom_text) = text_params.bottom_text.as_ref() {
+                    let t = text_params.get_text(&font, bottom_text.as_str());
+                    let bounds = t.local_bounds();
+                    // If we have two strings to draw, the total width is the wider of the two
+                    text_bounds.width = bounds.width.max(text_bounds.width);
+                    // If we have two strings to draw, the total height is the total of the two
+                    text_bounds.height = text_bounds.height + bounds.height;
+                }
+            }
+
+            text_bounds.left = -(text_bounds.width / 2.0);
+            // X will be centered, but Y won't
+            min_x = min_x.min(text_bounds.left);
+            max_x = max_x.max(text_bounds.left + text_bounds.width);
+            max_y = max_y.max(text_bounds.height);
+        }
+
         for controller in &mut controllers {
             controller.update(parameters.start_time);
         };
@@ -501,6 +549,26 @@ impl SpineActor {
             controllers.push(petpet_controller);
         };
 
+        let mut font_sfbox = None;
+        let mut top_text = None;
+        let mut bottom_text = None;
+
+        if let Some(text_params) = prepared_params.parameters.text_parameters.as_ref() {
+            if text_params.top_text.is_some() || text_params.bottom_text.is_some() {
+                let font = text_params.font.load_sfml();
+
+                if let Some(top_text_str) = text_params.top_text.as_ref() {
+                    top_text = Some(text_params.get_text(&font, top_text_str.as_str()));
+                }
+
+                if let Some(bottom_text_str) = text_params.bottom_text.as_ref() {
+                    bottom_text = Some(text_params.get_text(&font, bottom_text_str.as_str()));
+                }
+
+                font_sfbox = Some(font);
+            }
+        }
+
         for controller in &mut controllers {
             controller.update(prepared_params.parameters.start_time);
         }
@@ -555,6 +623,14 @@ impl SpineActor {
                 }
 
                 controller.update(prepared_params.parameters.frame_delay);
+            }
+
+            if let Some(tt) = top_text.as_ref() {
+                target.draw_text(tt, &render_states);
+            }
+
+            if let Some(bt) = bottom_text.as_ref() {
+                target.draw_text(bt, &render_states);
             }
 
             // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to
