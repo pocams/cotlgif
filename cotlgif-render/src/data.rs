@@ -71,14 +71,6 @@ pub enum LoadError {
     AtlasLoadError(String),
 }
 
-pub struct Frame {
-    pub frame_number: u32,
-    pub pixel_data: Vec<u8>,
-    pub width: u32,
-    pub height: u32,
-    pub timestamp: f64,
-}
-
 #[derive(Debug)]
 pub struct SpineSkin {
     pub name: String,

@@ -5,7 +5,8 @@ lto = true
 
 members = [
     "cotlgif",
+    "cotlgif-common",
     "cotlgif-render",
-    "cotlgif-formats",
+    "cotlgif-imgproc",
     "cotlgif-http"
 ]

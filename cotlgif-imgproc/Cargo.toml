@@ -1,0 +1,15 @@
+[package]
+name = "cotlgif-formats"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+imgref = "1.9.4"
+gifski = "1.7.2"
+png = "0.17"
+rgb = "0.8.34"
+tracing = "0.1.37"
+cotlgif-common = { path = "../cotlgif-common" }
+thiserror = "=1.0.34"
