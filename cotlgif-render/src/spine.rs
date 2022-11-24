@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use std::process::abort;
 use std::sync::Arc;
 
@@ -16,11 +17,9 @@ use sfml::system::Vector2f;
 use sfml::SfBox;
 use tracing::{debug, info, warn};
 
-use crate::data::{
-    spine_to_sfml, LoadError, SpineAnimation, SpineSkin, BLEND_ADDITIVE, BLEND_MULTIPLY,
-    BLEND_NORMAL, BLEND_SCREEN,
-};
-use crate::{Frame, FrameCallbackError, RenderError, RenderRequest};
+use crate::data::{spine_to_sfml, LoadError, BLEND_ADDITIVE, BLEND_MULTIPLY, BLEND_NORMAL, BLEND_SCREEN, RenderMetadata, common_to_sfml, common_to_spine};
+use crate::{Frame, FrameHandler, HandleFrameError, RenderError};
+use cotlgif_common::{SpineSkin, SpineAnimation, RenderRequest};
 
 use crate::petpet::{apply_petpet_squish, get_petpet_frame, petpet_controller};
 
@@ -151,7 +150,7 @@ fn get_bounding_box(
     FloatRect::new(min_x, min_y, max_x - min_x, max_y - min_y)
 }
 
-fn render(actor: &SpineActor, request: RenderRequest) -> Result<(), RenderError> {
+pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler: Box<dyn FrameHandler>) -> Result<(), RenderError> {
     let mut controller = actor.new_skeleton_controller();
 
     // Keep the custom skin around until the end of the function if we create one
@@ -188,7 +187,7 @@ fn render(actor: &SpineActor, request: RenderRequest) -> Result<(), RenderError>
         if !request.should_draw_slot(slot_name) {
             slot.color_mut().set_a(0.0);
         } else if let Some(color) = request.slot_colours.get(slot_name) {
-            *slot.color_mut() = *color;
+            *slot.color_mut() = common_to_spine(color);
         }
     }
 
@@ -239,11 +238,17 @@ fn render(actor: &SpineActor, request: RenderRequest) -> Result<(), RenderError>
 
     let mut render_states = RenderStates::new(BLEND_NORMAL, Transform::IDENTITY, None, None);
 
-    let background_color = spine_to_sfml(&request.background_colour);
+    let background_color = common_to_sfml(&request.background_colour);
     let mut time = request.start_time;
     let mut elapsed_time = 0.0;
     let mut frame = 0;
     let mut vertex_buffer = Vec::with_capacity(256);
+
+    frame_handler.set_metadata(RenderMetadata {
+        frame_count: request.frame_count(),
+        frame_width: target_width as usize,
+        frame_height: target_height as usize
+    });
 
     while frame < request.frame_count() {
         target.clear(background_color);
@@ -333,12 +338,12 @@ fn render(actor: &SpineActor, request: RenderRequest) -> Result<(), RenderError>
             timestamp: elapsed_time,
         };
 
-        match (request.frame_callback)(&f) {
+        match frame_handler.handle_frame(f) {
             Ok(_) => {}
-            Err(FrameCallbackError::TemporaryError) => {
+            Err(HandleFrameError::TemporaryError) => {
                 warn!("Frame callback returned a temporary error")
             }
-            Err(FrameCallbackError::PermanentError) => {
+            Err(HandleFrameError::PermanentError) => {
                 warn!("Frame callback failed, aborting render");
                 break;
             }

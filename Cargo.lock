@@ -263,19 +263,54 @@ name = "cotlgif"
 version = "0.1.0"
 dependencies = [
  "clap 4.0.26",
+ "color-eyre",
+ "cotlgif-common",
+ "cotlgif-http",
+ "cotlgif-imgproc",
+ "cotlgif-render",
+ "serde",
+ "tokio",
  "toml",
+ "tracing",
  "tracing-subscriber",
 ]
 
 [[package]]
 name = "cotlgif-common"
 version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
-name = "cotlgif-formats"
+name = "cotlgif-http"
 version = "0.1.0"
 dependencies = [
+ "axum",
+ "color-eyre",
  "cotlgif-common",
+ "cotlgif-render",
+ "css-color-parser2",
+ "futures-channel",
+ "futures-util",
+ "once_cell",
+ "regex",
+ "rgb",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower-http",
+ "tracing",
+]
+
+[[package]]
+name = "cotlgif-imgproc"
+version = "0.1.0"
+dependencies = [
+ "cotlgif-render",
  "gifski",
  "imgref",
  "png",
@@ -285,27 +320,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "cotlgif-http"
-version = "0.1.0"
-dependencies = [
- "axum",
- "color-eyre",
- "css-color-parser2",
- "futures-channel",
- "futures-util",
- "once_cell",
- "regex",
- "serde",
- "serde_json",
- "tokio",
- "tower-http",
- "tracing",
-]
-
-[[package]]
 name = "cotlgif-render"
 version = "0.1.0"
 dependencies = [
+ "cotlgif-common",
  "fast_image_resize",
  "once_cell",
  "regex",
@@ -1166,6 +1184,7 @@ name = "rusty_spine"
 version = "0.3.1"
 source = "git+https://github.com/pocams/rusty_spine#b5723b786c5448f46c8e9f6e21aa1aa9fb2fa14e"
 dependencies = [
+ "libc",
  "mint",
 ]
 

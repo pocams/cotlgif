@@ -4,51 +4,33 @@ use sfml::graphics::blend_mode::{BlendMode, Equation, Factor};
 use std::collections::HashMap;
 use std::num::NonZeroU32;
 use thiserror::Error;
+use cotlgif_common::CommonColour;
 
-pub struct RenderRequest {
-    pub actor: String,
-    pub skins: Vec<String>,
-    pub animation: String,
-    pub scale: f32,
-    pub antialiasing: NonZeroU32,
-    pub start_time: f32,
-    pub end_time: f32,
-    pub fps: NonZeroU32,
-    pub background_colour: rusty_spine::Color,
-    pub slot_colours: HashMap<String, rusty_spine::Color>,
-    pub only_head: bool,
-    pub petpet: bool,
-    pub frame_callback: Box<FrameCallback>,
-    // pub text_parameters: Option<TextParameters>
+pub struct RenderMetadata {
+    pub frame_count: u32,
+    pub frame_width: usize,
+    pub frame_height: usize,
 }
 
-impl RenderRequest {
-    pub(crate) fn frame_delay(&self) -> f32 {
-        1.0 / self.fps.get() as f32
-    }
-
-    pub(crate) fn frame_count(&self) -> u32 {
-        ((self.end_time - self.start_time) / self.frame_delay()).ceil() as u32
-    }
-
-    pub(crate) fn should_draw_slot(&self, slot_name: &str) -> bool {
-        static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
-        let only_head = ONLY_HEAD.get_or_init(|| Regex::new(
-            r"^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d)$"
-        ).unwrap());
-
-        !self.only_head || only_head.is_match(slot_name)
-    }
+pub struct Frame {
+    pub frame_number: u32,
+    pub pixel_data: Vec<u8>,
+    pub width: u32,
+    pub height: u32,
+    pub timestamp: f64,
 }
-
-pub type FrameCallback = dyn Fn(&Frame) -> Result<(), FrameCallbackError>;
 
 #[derive(Error, Debug)]
-pub enum FrameCallbackError {
+pub enum HandleFrameError {
     #[error("temporary failure, keep sending frames")]
     TemporaryError,
     #[error("permanent failure, no more frames can be handled")]
     PermanentError,
+}
+
+pub trait FrameHandler {
+    fn set_metadata(&mut self, metadata: crate::RenderMetadata);
+    fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError>;
 }
 
 #[derive(Error, Debug)]
@@ -71,17 +53,6 @@ pub enum LoadError {
     AtlasLoadError(String),
 }
 
-#[derive(Debug)]
-pub struct SpineSkin {
-    pub name: String,
-}
-
-#[derive(Debug)]
-pub struct SpineAnimation {
-    pub name: String,
-    pub duration: f32,
-}
-
 pub(crate) fn spine_to_sfml(spine_color: &rusty_spine::Color) -> sfml::graphics::Color {
     sfml::graphics::Color::rgba(
         (spine_color.r * 255.0).round() as u8,
@@ -89,6 +60,19 @@ pub(crate) fn spine_to_sfml(spine_color: &rusty_spine::Color) -> sfml::graphics:
         (spine_color.b * 255.0).round() as u8,
         (spine_color.a * 255.0).round() as u8,
     )
+}
+
+pub(crate) fn common_to_sfml(common_colour: &CommonColour) -> sfml::graphics::Color {
+    sfml::graphics::Color::rgba(
+        (common_colour.r * 255.0).round() as u8,
+        (common_colour.g * 255.0).round() as u8,
+        (common_colour.b * 255.0).round() as u8,
+        (common_colour.a * 255.0).round() as u8,
+    )
+}
+
+pub(crate) fn common_to_spine(common_colour: &CommonColour) -> rusty_spine::Color {
+    rusty_spine::Color::new_rgba(common_colour.r, common_colour.g, common_colour.b, common_colour.a)
 }
 
 pub(crate) const BLEND_NORMAL: BlendMode = BlendMode {

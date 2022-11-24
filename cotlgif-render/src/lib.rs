@@ -1,8 +1,12 @@
 mod data;
 mod petpet;
-mod resize;
 mod spine;
 
 pub use crate::data::{
-    Frame, FrameCallbackError, RenderError, RenderRequest, SpineAnimation, SpineSkin,
+    Frame, FrameHandler, HandleFrameError, RenderError, RenderMetadata
+};
+
+pub use crate::spine::{
+    SpineActor,
+    render
 };

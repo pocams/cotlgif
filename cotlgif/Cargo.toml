@@ -4,6 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
 clap = { version = "4.0.18", features = ["derive"] }
 toml = "0.5.9"
+cotlgif-render = { path = "../cotlgif-render" }
+cotlgif-imgproc = { path = "../cotlgif-imgproc" }
+cotlgif-http = { path = "../cotlgif-http" }
+cotlgif-common = { path = "../cotlgif-common" }
+color-eyre = "0.6.2"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0.147", features = ["derive"] }

@@ -1,5 +1,5 @@
 [package]
-name = "cotlgif-formats"
+name = "cotlgif-imgproc"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,5 +11,5 @@ gifski = "1.7.2"
 png = "0.17"
 rgb = "0.8.34"
 tracing = "0.1.37"
-cotlgif-common = { path = "../cotlgif-common" }
+cotlgif-render = { path = "../cotlgif-render" }
 thiserror = "=1.0.34"
