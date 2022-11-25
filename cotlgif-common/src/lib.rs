@@ -1,16 +1,11 @@
 mod colours;
 mod config;
-mod slugify;
 mod data;
+mod slugify;
 
-pub use config::{
-    ActorConfig,
-    ActorCategory,
-    SpineAnimation,
-    SpineSkin
-};
+pub use config::{ActorCategory, ActorConfig, SpineAnimation, SpineSkin};
 
-pub use colours::{SkinColours, CommonColour};
+pub use colours::{CommonColour, SkinColours};
 
 pub use slugify::slugify_string;
 

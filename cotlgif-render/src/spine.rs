@@ -1,4 +1,3 @@
-
 use std::process::abort;
 use std::sync::Arc;
 
@@ -17,9 +16,12 @@ use sfml::system::Vector2f;
 use sfml::SfBox;
 use tracing::{debug, info, warn};
 
-use crate::data::{spine_to_sfml, LoadError, BLEND_ADDITIVE, BLEND_MULTIPLY, BLEND_NORMAL, BLEND_SCREEN, RenderMetadata, common_to_sfml, common_to_spine};
+use crate::data::{
+    common_to_sfml, common_to_spine, spine_to_sfml, LoadError, RenderMetadata, BLEND_ADDITIVE,
+    BLEND_MULTIPLY, BLEND_NORMAL, BLEND_SCREEN,
+};
 use crate::{Frame, FrameHandler, HandleFrameError, RenderError};
-use cotlgif_common::{SpineSkin, SpineAnimation, RenderRequest};
+use cotlgif_common::{RenderRequest, SpineAnimation, SpineSkin};
 
 use crate::petpet::{apply_petpet_squish, get_petpet_frame, petpet_controller};
 
@@ -150,7 +152,11 @@ fn get_bounding_box(
     FloatRect::new(min_x, min_y, max_x - min_x, max_y - min_y)
 }
 
-pub fn render(actor: &SpineActor, request: RenderRequest, mut frame_handler: Box<dyn FrameHandler>) -> Result<(), RenderError> {
+pub fn render(
+    actor: &SpineActor,
+    request: RenderRequest,
+    mut frame_handler: Box<dyn FrameHandler>,
+) -> Result<(), RenderError> {
     let mut controller = actor.new_skeleton_controller();
 
     // Keep the custom skin around until the end of the function if we create one
@@ -251,7 +257,7 @@ pub fn render(actor: &SpineActor, request: RenderRequest, mut frame_handler: Box
         frame_count: request.frame_count(),
         frame_delay: request.frame_delay(),
         frame_width: target_width as usize,
-        frame_height: target_height as usize
+        frame_height: target_height as usize,
     });
 
     while frame < request.frame_count() {
@@ -267,7 +273,7 @@ pub fn render(actor: &SpineActor, request: RenderRequest, mut frame_handler: Box
                     .name(),
             )
             .unwrap();
-                apply_petpet_squish(
+            apply_petpet_squish(
                 &mut controller.skeleton,
                 petpet_frame,
                 (x_offset, y_offset),

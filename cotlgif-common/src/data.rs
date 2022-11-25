@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-use std::num::NonZeroU32;
+use crate::CommonColour;
 use once_cell::sync::OnceCell;
 use regex::Regex;
-use crate::CommonColour;
+use std::collections::HashMap;
+use std::num::NonZeroU32;
 
 #[derive(Debug)]
 pub struct RenderRequest {

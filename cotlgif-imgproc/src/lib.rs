@@ -1,29 +1,33 @@
-
-
-use std::{io, thread};
 use gifski::progress::NoProgress;
 use gifski::Settings;
 use imgref::ImgVec;
 use png::{BitDepth, ColorType};
-use tracing::{debug, warn, error};
 use rgb::FromSlice;
+use std::{io, thread};
 use thiserror::Error;
+use tracing::{debug, error, warn};
 
 use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata};
 
 #[derive(Error, Debug)]
 pub enum RenderError {
     #[error("encoder failure: {0}")]
-    EncodeError(String)
+    EncodeError(String),
 }
 
 pub struct GifRenderer {
-    collector: gifski::Collector
+    collector: gifski::Collector,
 }
 
 impl GifRenderer {
-    pub fn new<W: io::Write + Send + 'static>(output: W) -> GifRenderer where W: io::Write + Send + 'static {
-        let settings = Settings { quality: 75, ..Default::default() };
+    pub fn new<W: io::Write + Send + 'static>(output: W) -> GifRenderer
+    where
+        W: io::Write + Send + 'static,
+    {
+        let settings = Settings {
+            quality: 75,
+            ..Default::default()
+        };
         let (gs_collector, gs_writer) = gifski::new(settings).unwrap();
 
         // Start a thread to send output to `output` as it's generated
@@ -35,7 +39,7 @@ impl GifRenderer {
         });
 
         GifRenderer {
-            collector: gs_collector
+            collector: gs_collector,
         }
     }
 }
@@ -46,8 +50,13 @@ impl FrameHandler for GifRenderer {
     }
 
     fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError> {
-        let img = ImgVec::new(Vec::from(frame.pixel_data.as_rgba()), frame.width as usize, frame.height as usize);
-        self.collector.add_frame_rgba(frame.frame_number as usize, img, frame.timestamp)
+        let img = ImgVec::new(
+            Vec::from(frame.pixel_data.as_rgba()),
+            frame.width as usize,
+            frame.height as usize,
+        );
+        self.collector
+            .add_frame_rgba(frame.frame_number as usize, img, frame.timestamp)
             .map_err(|e| {
                 error!("add_frame_rgba: {:?}", e);
                 HandleFrameError::PermanentError
@@ -61,11 +70,14 @@ impl Drop for GifRenderer {
     }
 }
 
-pub struct ApngRenderer<'a, W> where W: io::Write + Send + 'static {
+pub struct ApngRenderer<'a, W>
+where
+    W: io::Write + Send + 'static,
+{
     encoder: Option<png::Encoder<'a, W>>,
     writer: Option<png::Writer<W>>,
     last_timestamp: f64,
-    output: Option<W>
+    output: Option<W>,
 }
 
 impl<'a, W: io::Write + Send + 'static> ApngRenderer<'a, W> {
@@ -74,7 +86,7 @@ impl<'a, W: io::Write + Send + 'static> ApngRenderer<'a, W> {
             encoder: None,
             writer: None,
             last_timestamp: 0.0,
-            output: Some(output)
+            output: Some(output),
         }
     }
 }
@@ -82,14 +94,18 @@ impl<'a, W: io::Write + Send + 'static> ApngRenderer<'a, W> {
 impl<W: io::Write + Send + 'static> FrameHandler for ApngRenderer<'_, W> {
     fn set_metadata(&mut self, metadata: RenderMetadata) {
         debug!("ApngRenderer metadata {:?}", metadata);
-        let mut encoder = png::Encoder::new(self.output.take().unwrap(), metadata.frame_width as u32, metadata.frame_height as u32);
+        let mut encoder = png::Encoder::new(
+            self.output.take().unwrap(),
+            metadata.frame_width as u32,
+            metadata.frame_height as u32,
+        );
         encoder.set_color(ColorType::Rgba);
         encoder.set_depth(BitDepth::Eight);
 
         if let Err(e) = encoder.set_animated(metadata.frame_count, 0) {
             error!("set_animated: {:?}", e);
             // Leave self.writer unset - we will abort on the first handle_frame() call
-            return
+            return;
         }
 
         if let Ok(mut writer) = encoder.write_header() {
@@ -111,22 +127,23 @@ impl<W: io::Write + Send + 'static> FrameHandler for ApngRenderer<'_, W> {
                 if frame.frame_number != 0 {
                     // Only set the frame delay if we aren't on the first frame - if this is frame 0,
                     // the delay was set in set_metadata()
-                    let frame_delay = (1000.0 * (frame.timestamp - self.last_timestamp)).round() as u16;
+                    let frame_delay =
+                        (1000.0 * (frame.timestamp - self.last_timestamp)).round() as u16;
                     // debug!("frame delay: {:?}", frame_delay);
-                    writer.set_frame_delay(frame_delay, 1000)
-                        .map_err(|e| {
-                            error!("set_frame_delay(): {:?}", e);
-                            HandleFrameError::PermanentError
-                        })?;
+                    writer.set_frame_delay(frame_delay, 1000).map_err(|e| {
+                        error!("set_frame_delay(): {:?}", e);
+                        HandleFrameError::PermanentError
+                    })?;
                 }
-                writer.write_image_data(frame.pixel_data.as_slice())
+                writer
+                    .write_image_data(frame.pixel_data.as_slice())
                     .map_err(|e| {
                         error!("write_image_data(): {:?}", e);
                         HandleFrameError::PermanentError
                     })?;
                 self.last_timestamp = frame.timestamp;
                 Ok(())
-            },
+            }
             None => {
                 error!("handle_frame(): no writer!");
                 Err(HandleFrameError::PermanentError)
@@ -141,10 +158,13 @@ impl<W: io::Write + Send + 'static> Drop for ApngRenderer<'_, W> {
     }
 }
 
-pub struct PngRenderer<'a, W> where W: io::Write + Send + 'static {
+pub struct PngRenderer<'a, W>
+where
+    W: io::Write + Send + 'static,
+{
     encoder: Option<png::Encoder<'a, W>>,
     writer: Option<png::Writer<W>>,
-    output: Option<W>
+    output: Option<W>,
 }
 
 impl<'a, W: io::Write + Send + 'static> PngRenderer<'a, W> {
@@ -152,7 +172,7 @@ impl<'a, W: io::Write + Send + 'static> PngRenderer<'a, W> {
         PngRenderer {
             encoder: None,
             writer: None,
-            output: Some(output)
+            output: Some(output),
         }
     }
 }
@@ -160,7 +180,11 @@ impl<'a, W: io::Write + Send + 'static> PngRenderer<'a, W> {
 impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<'_, W> {
     fn set_metadata(&mut self, metadata: RenderMetadata) {
         debug!("PngRenderer metadata {:?}", metadata);
-        let mut encoder = png::Encoder::new(self.output.take().unwrap(), metadata.frame_width as u32, metadata.frame_height as u32);
+        let mut encoder = png::Encoder::new(
+            self.output.take().unwrap(),
+            metadata.frame_width as u32,
+            metadata.frame_height as u32,
+        );
         encoder.set_color(ColorType::Rgba);
         encoder.set_depth(BitDepth::Eight);
 
@@ -172,13 +196,14 @@ impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<'_, W> {
     fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError> {
         match self.writer.as_mut() {
             Some(writer) => {
-                writer.write_image_data(frame.pixel_data.as_slice())
+                writer
+                    .write_image_data(frame.pixel_data.as_slice())
                     .map_err(|e| {
                         error!("write_image_data(): {:?}", e);
                         HandleFrameError::PermanentError
                     })?;
                 Ok(())
-            },
+            }
             None => {
                 error!("handle_frame(): no writer!");
                 Err(HandleFrameError::PermanentError)

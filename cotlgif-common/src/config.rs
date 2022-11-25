@@ -1,15 +1,22 @@
 use regex::Regex;
-use serde::{Serialize, Deserialize, Deserializer};
 use serde::de::Error;
+use serde::{Deserialize, Deserializer, Serialize};
 
-fn deserialize_regex<'de, D>(deserializer: D) -> Result<Option<Regex>, D::Error> where D: Deserializer<'de> {
+fn deserialize_regex<'de, D>(deserializer: D) -> Result<Option<Regex>, D::Error>
+where
+    D: Deserializer<'de>,
+{
     // There must be some way to just borrow the &str and compile the regex, but this gets called
     // so seldom it's not a huge deal
     let s = String::deserialize(deserializer)?;
-    Ok(Some(Regex::new(&s).map_err(|e| D::Error::custom(format!("{:?}", e)))?))
+    Ok(Some(
+        Regex::new(&s).map_err(|e| D::Error::custom(format!("{:?}", e)))?,
+    ))
 }
 
-fn default_scale() -> f32 { 1.0 }
+fn default_scale() -> f32 {
+    1.0
+}
 
 #[derive(Deserialize, Serialize, Debug, Copy, Clone)]
 pub enum ActorCategory {
@@ -41,11 +48,11 @@ pub struct ActorConfig {
     pub is_spoiler: bool,
     pub default_skins: Vec<String>,
     pub default_animation: String,
-    #[serde(default="default_scale")]
+    #[serde(default = "default_scale")]
     pub default_scale: f32,
-    #[serde(deserialize_with="deserialize_regex", default)]
+    #[serde(deserialize_with = "deserialize_regex", default)]
     pub spoiler_skins: Option<Regex>,
-    #[serde(deserialize_with="deserialize_regex", default)]
+    #[serde(deserialize_with = "deserialize_regex", default)]
     pub spoiler_animations: Option<Regex>,
     #[serde(default)]
     pub has_slot_colours: bool,
@@ -63,4 +70,3 @@ pub struct SpineAnimation {
     pub name: String,
     pub duration: f32,
 }
-

@@ -15,7 +15,7 @@ pub fn resize(from: (usize, usize), to: (usize, usize), image: Vec<u8>) -> Vec<u
         image.to_vec(),
         PixelType::U8x4,
     )
-        .unwrap();
+    .unwrap();
 
     // According to the docs this is required
     let alpha_mul_div = fast_image_resize::MulDiv::default();

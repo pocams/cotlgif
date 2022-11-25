@@ -1,16 +1,16 @@
+use clap::Parser;
+use color_eyre::eyre::eyre;
+use cotlgif_http::{HttpActor, HttpOptions, OutputType};
+use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata, SpineActor};
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::thread;
+use tracing::{debug, error, info};
 use tracing_subscriber::EnvFilter;
-use cotlgif_http::{HttpActor, HttpOptions, OutputType};
-use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata, SpineActor};
-use clap::Parser;
-use tracing::{debug, info, error};
-use color_eyre::eyre::eyre;
 
-use serde::Deserialize;
 use cotlgif_common::{ActorConfig, SkinColours};
+use serde::Deserialize;
 
 #[derive(Parser)]
 struct Args {
@@ -37,14 +37,14 @@ impl Args {
             listen: self.listen.clone(),
             spoilers_host: self.spoilers_host.clone(),
             public: self.public,
-            dev: self.dev
+            dev: self.dev,
         }
     }
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
-    pub actors: Vec<ActorConfig>
+    pub actors: Vec<ActorConfig>,
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -55,8 +55,9 @@ fn main() -> color_eyre::Result<()> {
     }
 
     let config: Config = toml::from_slice(
-        &std::fs::read("config.toml").map_err(|e| eyre!("Reading config.toml: {:?}", e))?
-    ).map_err(|e| eyre!("Parsing config.toml: {}", e))?;
+        &std::fs::read("config.toml").map_err(|e| eyre!("Reading config.toml: {:?}", e))?,
+    )
+    .map_err(|e| eyre!("Parsing config.toml: {}", e))?;
 
     tracing_subscriber::fmt::fmt()
         .with_env_filter(EnvFilter::from_default_env())
@@ -71,7 +72,11 @@ fn main() -> color_eyre::Result<()> {
     for actor in &config.actors {
         debug!(actor=?actor, "Loading actor");
         let spine_actor = SpineActor::load(&actor.atlas, &actor.skeleton)?;
-        http_actors.push(HttpActor::new(actor, &spine_actor.skins, &spine_actor.animations));
+        http_actors.push(HttpActor::new(
+            actor,
+            &spine_actor.skins,
+            &spine_actor.animations,
+        ));
         spine_actors.insert(actor.slug.clone(), spine_actor);
         actors.push(actor);
     }
@@ -79,29 +84,43 @@ fn main() -> color_eyre::Result<()> {
     let (render_request_sender, mut render_request_receiver) = tokio::sync::mpsc::channel(16);
 
     let runtime = Arc::new(tokio::runtime::Runtime::new()?);
-    thread::spawn(move || runtime.block_on(
-        cotlgif_http::serve(
+    thread::spawn(move || {
+        runtime.block_on(cotlgif_http::serve(
             args.get_http_options(),
             http_actors,
             SkinColours::load(),
-            render_request_sender
-        )
-    ));
+            render_request_sender,
+        ))
+    });
 
     while let Some(http_render_request) = render_request_receiver.blocking_recv() {
-        debug!("Render request received: {:?}", http_render_request.render_request);
+        debug!(
+            "Render request received: {:?}",
+            http_render_request.render_request
+        );
         // The slug has to be correct, since the http service checked it - if not we want to know, so crash
-        let spine_actor = spine_actors.get(&http_render_request.render_request.actor_slug).unwrap();
+        let spine_actor = spine_actors
+            .get(&http_render_request.render_request.actor_slug)
+            .unwrap();
         let buf_renderer = match http_render_request.output_type {
-            OutputType::Gif => RenderBufferer::new(cotlgif_imgproc::GifRenderer::new(http_render_request.writer), 1000),
-            OutputType::Apng => RenderBufferer::new(cotlgif_imgproc::ApngRenderer::new(http_render_request.writer), 1000),
-            OutputType::Png => RenderBufferer::new(cotlgif_imgproc::PngRenderer::new(http_render_request.writer), 1000),
+            OutputType::Gif => RenderBufferer::new(
+                cotlgif_imgproc::GifRenderer::new(http_render_request.writer),
+                1000,
+            ),
+            OutputType::Apng => RenderBufferer::new(
+                cotlgif_imgproc::ApngRenderer::new(http_render_request.writer),
+                1000,
+            ),
+            OutputType::Png => RenderBufferer::new(
+                cotlgif_imgproc::PngRenderer::new(http_render_request.writer),
+                1000,
+            ),
         };
 
         match cotlgif_render::render(
             spine_actor,
             http_render_request.render_request,
-            Box::new(buf_renderer)
+            Box::new(buf_renderer),
         ) {
             Ok(_) => info!("Render finished"),
             Err(e) => error!("Render error: {:?}", e),
@@ -111,14 +130,13 @@ fn main() -> color_eyre::Result<()> {
     Ok(())
 }
 
-
 enum BufferMessage {
     Metadata(RenderMetadata),
     Frame(Frame),
 }
 
 pub struct RenderBufferer {
-    sender: crossbeam_channel::Sender<BufferMessage>
+    sender: crossbeam_channel::Sender<BufferMessage>,
 }
 
 impl FrameHandler for RenderBufferer {
@@ -129,7 +147,8 @@ impl FrameHandler for RenderBufferer {
     }
 
     fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError> {
-        self.sender.send(BufferMessage::Frame(frame))
+        self.sender
+            .send(BufferMessage::Frame(frame))
             .map_err(|_| HandleFrameError::PermanentError)
     }
 }
@@ -141,31 +160,30 @@ impl Drop for RenderBufferer {
 }
 
 impl RenderBufferer {
-    pub fn new<FH: FrameHandler + Send + 'static>(mut inner: FH, buffer_size: usize) -> RenderBufferer {
+    pub fn new<FH: FrameHandler + Send + 'static>(
+        mut inner: FH,
+        buffer_size: usize,
+    ) -> RenderBufferer {
         let (sender, receiver) = crossbeam_channel::bounded(buffer_size);
 
         thread::spawn(move || {
             loop {
                 match receiver.recv() {
-                    Ok(BufferMessage::Frame(f)) => {
-                        match inner.handle_frame(f) {
-                            Ok(_) => {}
-                            Err(HandleFrameError::TemporaryError) => {}
-                            Err(HandleFrameError::PermanentError) => {
-                                error!("RenderBufferer: permanent receiver error");
-                                break;
-                            }
+                    Ok(BufferMessage::Frame(f)) => match inner.handle_frame(f) {
+                        Ok(_) => {}
+                        Err(HandleFrameError::TemporaryError) => {}
+                        Err(HandleFrameError::PermanentError) => {
+                            error!("RenderBufferer: permanent receiver error");
+                            break;
                         }
                     },
                     Ok(BufferMessage::Metadata(m)) => inner.set_metadata(m),
                     // This means the sender went away
-                    Err(_) => break
+                    Err(_) => break,
                 }
             }
         });
 
-        RenderBufferer {
-            sender
-        }
+        RenderBufferer { sender }
     }
 }

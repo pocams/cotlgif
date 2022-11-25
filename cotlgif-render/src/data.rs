@@ -1,10 +1,7 @@
-
-
 use sfml::graphics::blend_mode::{BlendMode, Equation, Factor};
 
-
-use thiserror::Error;
 use cotlgif_common::CommonColour;
+use thiserror::Error;
 
 #[derive(Debug)]
 pub struct RenderMetadata {
@@ -75,7 +72,12 @@ pub(crate) fn common_to_sfml(common_colour: &CommonColour) -> sfml::graphics::Co
 }
 
 pub(crate) fn common_to_spine(common_colour: &CommonColour) -> rusty_spine::Color {
-    rusty_spine::Color::new_rgba(common_colour.r, common_colour.g, common_colour.b, common_colour.a)
+    rusty_spine::Color::new_rgba(
+        common_colour.r,
+        common_colour.g,
+        common_colour.b,
+        common_colour.a,
+    )
 }
 
 pub(crate) const BLEND_NORMAL: BlendMode = BlendMode {

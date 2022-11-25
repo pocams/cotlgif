@@ -9,22 +9,28 @@ pub struct CommonColour {
     pub r: f32,
     pub g: f32,
     pub b: f32,
-    pub a: f32
+    pub a: f32,
 }
 
 impl Serialize for CommonColour {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
         if self.a > 0.9999 {
-            serializer.serialize_str(&format!("#{:02x}{:02x}{:02x}",
-                                              (self.r * 255.0).round() as u32,
-                                              (self.g * 255.0).round() as u32,
-                                              (self.b * 255.0).round() as u32))
+            serializer.serialize_str(&format!(
+                "#{:02x}{:02x}{:02x}",
+                (self.r * 255.0).round() as u32,
+                (self.g * 255.0).round() as u32,
+                (self.b * 255.0).round() as u32
+            ))
         } else {
-            serializer.serialize_str(&format!("#{:02x}{:02x}{:02x}{:02x}",
-                                              (self.r * 255.0).round() as u32,
-                                              (self.g * 255.0).round() as u32,
-                                              (self.b * 255.0).round() as u32,
-                                              (self.a * 255.0).round() as u32,
+            serializer.serialize_str(&format!(
+                "#{:02x}{:02x}{:02x}{:02x}",
+                (self.r * 255.0).round() as u32,
+                (self.g * 255.0).round() as u32,
+                (self.b * 255.0).round() as u32,
+                (self.a * 255.0).round() as u32,
             ))
         }
     }
@@ -34,13 +40,13 @@ impl Serialize for CommonColour {
 pub struct FollowerSkins {
     name: String,
     skins: Vec<String>,
-    sets: Vec<HashMap<String, CommonColour>>
+    sets: Vec<HashMap<String, CommonColour>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SkinColours {
     global: Vec<HashMap<String, CommonColour>>,
-    skins: Vec<FollowerSkins>
+    skins: Vec<FollowerSkins>,
 }
 
 impl SkinColours {
@@ -48,12 +54,16 @@ impl SkinColours {
         serde_json::from_str(COLOUR_DATA).unwrap()
     }
 
-    pub fn colour_set_from_index(&self, skin_name: &str, index: usize) -> Option<HashMap<String, CommonColour>> {
+    pub fn colour_set_from_index(
+        &self,
+        skin_name: &str,
+        index: usize,
+    ) -> Option<HashMap<String, CommonColour>> {
         let mut index = index;
         for follower_skin_set in &self.skins {
             if follower_skin_set.skins.iter().any(|s| s == skin_name) {
                 if index < follower_skin_set.sets.len() {
-                    return Some(follower_skin_set.sets[index].clone())
+                    return Some(follower_skin_set.sets[index].clone());
                 } else {
                     // Reduce index by the number of custom sets available for this follower
                     index -= follower_skin_set.sets.len();
