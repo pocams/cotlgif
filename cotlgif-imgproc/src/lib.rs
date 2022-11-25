@@ -1,11 +1,11 @@
-use std::io::BufReader;
-use std::process::{Command, Stdio};
+
+
 use std::{io, thread};
 use gifski::progress::NoProgress;
 use gifski::Settings;
 use imgref::ImgVec;
 use png::{BitDepth, ColorType};
-use tracing::{debug, info, warn, error};
+use tracing::{debug, warn, error};
 use rgb::FromSlice;
 use thiserror::Error;
 
@@ -164,7 +164,7 @@ impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<'_, W> {
         encoder.set_color(ColorType::Rgba);
         encoder.set_depth(BitDepth::Eight);
 
-        if let Ok(mut writer) = encoder.write_header() {
+        if let Ok(writer) = encoder.write_header() {
             self.writer = Some(writer);
         }
     }

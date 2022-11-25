@@ -1,4 +1,4 @@
-use std::ops::Deref;
+
 use std::process::abort;
 use std::sync::Arc;
 
@@ -150,7 +150,7 @@ fn get_bounding_box(
     FloatRect::new(min_x, min_y, max_x - min_x, max_y - min_y)
 }
 
-pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler: Box<dyn FrameHandler>) -> Result<(), RenderError> {
+pub fn render(actor: &SpineActor, request: RenderRequest, mut frame_handler: Box<dyn FrameHandler>) -> Result<(), RenderError> {
     let mut controller = actor.new_skeleton_controller();
 
     // Keep the custom skin around until the end of the function if we create one

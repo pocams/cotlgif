@@ -3,12 +3,12 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::thread;
 use tracing_subscriber::EnvFilter;
-use cotlgif_http::{HttpActor, HttpOptions, HttpRenderRequest, OutputType};
-use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderError, RenderMetadata, SpineActor};
+use cotlgif_http::{HttpActor, HttpOptions, OutputType};
+use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata, SpineActor};
 use clap::Parser;
-use tracing::{debug, info, warn, error};
+use tracing::{debug, info, error};
 use color_eyre::eyre::eyre;
-use crossbeam_channel::RecvError;
+
 use serde::Deserialize;
 use cotlgif_common::{ActorConfig, SkinColours};
 

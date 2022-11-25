@@ -2,9 +2,9 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::num::NonZeroU32;
 use css_color_parser2::{Color, ColorParseError};
-use tracing::{debug, warn};
-use cotlgif_common::{ActorConfig, CommonColour, RenderRequest, SkinColours};
-use crate::{HttpActor, util};
+use tracing::{warn};
+use cotlgif_common::{CommonColour, RenderRequest, SkinColours};
+use crate::{HttpActor};
 use crate::util::{json_400, JsonError, OutputType};
 
 
