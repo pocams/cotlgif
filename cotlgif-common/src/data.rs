@@ -26,7 +26,11 @@ impl RenderRequest {
     }
 
     pub fn frame_count(&self) -> u32 {
-        ((self.end_time - self.start_time) / self.frame_delay()).ceil() as u32
+        if self.end_time == self.start_time {
+            1
+        } else {
+            ((self.end_time - self.start_time) / self.frame_delay()).ceil() as u32
+        }
     }
 
     pub fn should_draw_slot(&self, slot_name: &str) -> bool {

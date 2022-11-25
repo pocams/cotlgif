@@ -6,12 +6,15 @@ use std::num::NonZeroU32;
 use thiserror::Error;
 use cotlgif_common::CommonColour;
 
+#[derive(Debug)]
 pub struct RenderMetadata {
     pub frame_count: u32,
+    pub frame_delay: f32,
     pub frame_width: usize,
     pub frame_height: usize,
 }
 
+#[derive(Debug)]
 pub struct Frame {
     pub frame_number: u32,
     pub pixel_data: Vec<u8>,

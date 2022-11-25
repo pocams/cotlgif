@@ -20,12 +20,12 @@ use tower_http::trace::TraceLayer;
 use tracing::{debug, info, warn};
 use cotlgif_common::{ActorCategory, ActorConfig, RenderRequest, SkinColours, slugify_string, SpineAnimation, SpineSkin};
 use crate::params::SkinParameters;
-use crate::util::{ChannelWriter, json_500, JsonError, OutputType};
+use crate::util::{ChannelWriter, json_500, JsonError};
 
 mod params;
 mod util;
 
-pub use util::HttpRenderRequest;
+pub use util::{HttpRenderRequest, OutputType};
 
 const CACHE_CONTROL_SHORT: &str = "max-age=60";
 
@@ -42,6 +42,7 @@ pub struct HttpOptions {
 
 impl HttpOptions {
     fn should_enable_spoilers(&self, host: &str) -> bool {
+        debug!("enable spoilers? {} == {}", host, self.spoilers_host);
         host == self.spoilers_host
     }
 }
@@ -282,9 +283,9 @@ async fn get_v1_skin(
     let mut params = SkinParameters::try_from(params)?;
     if options.public { params.apply_reasonable_limits(); }
 
-    let render_request = params.render_request(&actor, &skin_name, enable_spoilers)?;
-
     let output_type = params.output_type.unwrap_or_default();
+    let render_request = params.render_request(&actor, &skin_name, enable_spoilers, &skin_colours)?;
+
     let mut builder = Response::builder()
         .header("Content-Type", output_type.mime_type());
 

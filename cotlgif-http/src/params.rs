@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::num::NonZeroU32;
 use css_color_parser2::{Color, ColorParseError};
 use tracing::{debug, warn};
-use cotlgif_common::{ActorConfig, CommonColour, RenderRequest};
+use cotlgif_common::{ActorConfig, CommonColour, RenderRequest, SkinColours};
 use crate::{HttpActor, util};
 use crate::util::{json_400, JsonError, OutputType};
 
@@ -27,11 +27,12 @@ pub(crate) struct SkinParameters {
 }
 
 impl SkinParameters {
-    pub fn render_request(&self, actor: &HttpActor, skin_name: &str, enable_spoilers: bool) -> Result<RenderRequest, JsonError> {
+    // Don't love the weird coupling here tbh
+    pub fn render_request(&self, actor: &HttpActor, skin_name: &str, enable_spoilers: bool, skin_colours: &SkinColours) -> Result<RenderRequest, JsonError> {
         let mut skins = vec![skin_name.to_owned()];
         skins.extend(self.add_skin.iter().cloned());
         let antialiasing = self.antialiasing.and_then(NonZeroU32::new).unwrap_or_else(|| NonZeroU32::new(1).unwrap());
-        let fps = self.fps.and_then(NonZeroU32::new).unwrap_or_else(|| NonZeroU32::new(1).unwrap());
+        let fps = self.fps.and_then(NonZeroU32::new).unwrap_or_else(|| NonZeroU32::new(50).unwrap());
 
         if skins.iter().any(|s| !actor.is_valid_skin(s, enable_spoilers)) {
             return Err(json_400("invalid skin for actor".to_owned()))
@@ -43,6 +44,15 @@ impl SkinParameters {
 
         if !actor.is_valid_animation(animation, enable_spoilers) {
             return Err(json_400("Invalid animation"))
+        }
+
+        let mut slot_colours = self.slot_colours.clone();
+        if let Some(colour_set) = self.colour_set {
+            if let Some(colour_set_map) = skin_colours.colour_set_from_index(skin_name, colour_set as usize) {
+                for (slot, colour) in colour_set_map.into_iter() {
+                    slot_colours.insert(slot, colour);
+                }
+            }
         }
 
         Ok(RenderRequest {
@@ -61,10 +71,10 @@ impl SkinParameters {
                     .unwrap()
             ),
             fps,
-            background_colour: Default::default(),
-            slot_colours: Default::default(),
-            only_head: false,
-            petpet: false,
+            background_colour: self.background_colour.unwrap_or_default(),
+            slot_colours: self.slot_colours.clone(),
+            only_head: self.only_head.unwrap_or_default(),
+            petpet: self.petpet.unwrap_or_default(),
         })
     }
 

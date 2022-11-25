@@ -207,6 +207,7 @@ pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler:
 
     // Bail out early if we didn't render anything at all
     if bounding_box.width < 1.0 || bounding_box.height < 1.0 {
+        debug!("Nothing rendered, bailing out");
         return Err(RenderError::NothingRendered);
     };
 
@@ -228,7 +229,9 @@ pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler:
     controller.update(request.start_time);
 
     let mut petpet_controller = if request.petpet {
-        Some(petpet_controller(bounding_box.width, bounding_box.height))
+        let mut pc = petpet_controller(bounding_box.width, bounding_box.height);
+        pc.update(request.start_time);
+        Some(pc)
     } else {
         None
     };
@@ -246,6 +249,7 @@ pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler:
 
     frame_handler.set_metadata(RenderMetadata {
         frame_count: request.frame_count(),
+        frame_delay: request.frame_delay(),
         frame_width: target_width as usize,
         frame_height: target_height as usize
     });
@@ -263,7 +267,7 @@ pub fn render(actor: &SpineActor, mut request: RenderRequest, mut frame_handler:
                     .name(),
             )
             .unwrap();
-            apply_petpet_squish(
+                apply_petpet_squish(
                 &mut controller.skeleton,
                 petpet_frame,
                 (x_offset, y_offset),

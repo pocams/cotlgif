@@ -34,7 +34,7 @@ pub enum OutputType {
     Gif,
     Apng,
     Png,
-    Mp4,
+    // Mp4,
 }
 
 impl OutputType {
@@ -42,7 +42,7 @@ impl OutputType {
         match self {
             OutputType::Gif => "image/gif",
             OutputType::Apng | OutputType::Png => "image/png",
-            OutputType::Mp4 => "video/mp4",
+            // OutputType::Mp4 => "video/mp4",
         }
     }
 
@@ -50,7 +50,7 @@ impl OutputType {
         match self {
             OutputType::Gif => "gif",
             OutputType::Apng | OutputType::Png => "png",
-            OutputType::Mp4 => "mp4",
+            // OutputType::Mp4 => "mp4",
         }
     }
 }
@@ -69,8 +69,8 @@ impl FromStr for OutputType {
             "gif" => Ok(OutputType::Gif),
             "png" => Ok(OutputType::Png),
             "apng"  => Ok(OutputType::Apng),
-            "mp4" => Ok(OutputType::Mp4),
-            _ => Err(json_400("Invalid format, expected gif, png, apng, mp4"))
+            // "mp4" => Ok(OutputType::Mp4),
+            _ => Err(json_400("Invalid format, expected gif, png, apng"))
         }
     }
 }
