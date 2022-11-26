@@ -16,6 +16,18 @@ impl Default for Flip {
     }
 }
 
+#[derive(Debug, Copy, Clone)]
+pub enum CustomSize {
+    DefaultSize,
+    Discord128x128,
+}
+
+impl Default for CustomSize {
+    fn default() -> Self {
+        CustomSize::DefaultSize
+    }
+}
+
 #[derive(Debug)]
 pub struct RenderRequest {
     pub actor_slug: String,
@@ -31,6 +43,7 @@ pub struct RenderRequest {
     pub only_head: bool,
     pub petpet: bool,
     pub flip: Flip,
+    pub custom_size: CustomSize
 }
 
 impl RenderRequest {
@@ -55,10 +68,10 @@ impl RenderRequest {
         !self.only_head || only_head.is_match(slot_name)
     }
 
-    pub fn get_scale(&self) -> (f32, f32) {
+    pub fn get_scale(&self, rescale: f32) -> (f32, f32) {
         match self.flip {
-            Flip::NoFlip => (self.scale, self.scale),
-            Flip::Horizontal => (-self.scale, self.scale),
+            Flip::NoFlip => (self.scale * rescale, self.scale * rescale),
+            Flip::Horizontal => (-self.scale * rescale, self.scale * rescale),
         }
     }
 }

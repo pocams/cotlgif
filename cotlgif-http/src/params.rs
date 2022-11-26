@@ -1,6 +1,6 @@
 use crate::util::{json_400, JsonError, OutputType};
 use crate::HttpActor;
-use cotlgif_common::{CommonColour, Flip, RenderRequest, SkinColours};
+use cotlgif_common::{CommonColour, CustomSize, Flip, RenderRequest, SkinColours};
 use css_color_parser2::{Color, ColorParseError};
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -24,6 +24,7 @@ pub(crate) struct SkinParameters {
     pub download: Option<bool>,
     pub petpet: Option<bool>,
     pub flip: Flip,
+    pub custom_size: CustomSize
 }
 
 impl SkinParameters {
@@ -94,6 +95,7 @@ impl SkinParameters {
             only_head: self.only_head.unwrap_or_default(),
             petpet: self.petpet.unwrap_or_default(),
             flip: self.flip,
+            custom_size: self.custom_size,
         })
     }
 
@@ -257,6 +259,13 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "horizontal" => Flip::Horizontal,
                         "none" => Flip::NoFlip,
                         _ => return Err(json_400(format!("flip: expected 'horizontal' or 'none'"))),
+                    }
+                }
+                "custom_size" => {
+                    sp.custom_size = match value.as_str() {
+                        "discord128x128" => CustomSize::Discord128x128,
+                        "none" => CustomSize::DefaultSize,
+                        _ => return Err(json_400(format!("custom_size: expected 'discord128x128' or 'none'"))),
                     }
                 }
                 // "top_text" | "bottom_text" | "font" | "font_size" => {

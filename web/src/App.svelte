@@ -103,7 +103,11 @@
       params.push(`add_skin=${encodeURIComponent(additionalSkin.name)}`)
     }
     if (scale !== 1) {
-      params.push(`scale=${scale}`)
+      if (scale === "128x128") {
+        params.push("custom_size=discord128x128")
+      } else {
+        params.push(`scale=${scale}`)
+      }
     }
     params.push(`animation=${selectedAnimation.name}`)
     if (selectedSkeleton.slug === "follower") {

@@ -6,6 +6,7 @@
         {"display": "1.5x", "value": 1.5},
         {"display": "2.0x", "value": 2},
         {"display": "3.0x", "value": 3},
+        {"display": "128x128", "value": "128x128"}
     ]
 
     export let value = 1;

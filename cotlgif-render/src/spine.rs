@@ -21,7 +21,7 @@ use crate::data::{
     BLEND_MULTIPLY, BLEND_NORMAL, BLEND_SCREEN,
 };
 use crate::{Frame, FrameHandler, HandleFrameError, RenderError};
-use cotlgif_common::{RenderRequest, SpineAnimation, SpineSkin};
+use cotlgif_common::{CustomSize, RenderRequest, SpineAnimation, SpineSkin};
 
 use crate::petpet::{apply_petpet_squish, get_petpet_frame, petpet_controller};
 
@@ -182,7 +182,7 @@ pub fn render(
         Some(skin)
     };
 
-    let (x_scale, y_scale) = request.get_scale();
+    let (mut x_scale, mut y_scale) = request.get_scale(1.0);
     controller
         .skeleton
         .set_scale([x_scale, y_scale]);
@@ -218,10 +218,41 @@ pub fn render(
         return Err(RenderError::NothingRendered);
     };
 
-    let x_offset = -bounding_box.left;
-    let y_offset = -bounding_box.top;
-    let target_width = bounding_box.width.ceil() as u32;
-    let target_height = bounding_box.height.ceil() as u32;
+    let mut x_offset = -bounding_box.left;
+    let mut y_offset = -bounding_box.top;
+
+    let target_width;
+    let target_height;
+    match request.custom_size {
+        CustomSize::DefaultSize => {
+            target_width = bounding_box.width.ceil() as u32;
+            target_height = bounding_box.height.ceil() as u32;
+        }
+
+        CustomSize::Discord128x128 => {
+            let rescale;
+            if bounding_box.width > bounding_box.height {
+                rescale = 128.0 / bounding_box.width;
+                x_offset *= rescale;
+                y_offset *= rescale;
+                y_offset += (128.0 - (bounding_box.height * rescale)) / 2.0;
+            } else {
+                rescale = 128.0 / bounding_box.height;
+                x_offset *= rescale;
+                y_offset *= rescale;
+                x_offset += (128.0 - (bounding_box.width * rescale)) / 2.0;
+            }
+
+            x_scale *= rescale;
+            y_scale *= rescale;
+            target_width = 128;
+            target_height = 128;
+        }
+    }
+
+    controller
+        .skeleton
+        .set_scale([x_scale, y_scale]);
 
     // Move the skeleton into the center of the bounding box
     controller.skeleton.set_x(x_offset);
@@ -277,7 +308,7 @@ pub fn render(
                 &mut controller.skeleton,
                 petpet_frame,
                 (x_offset, y_offset),
-                request.get_scale(),
+                (x_scale, y_scale),
             );
         }
 
