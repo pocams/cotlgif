@@ -248,7 +248,6 @@ pub fn render(
     let mut render_states = RenderStates::new(BLEND_NORMAL, Transform::IDENTITY, None, None);
 
     let background_color = common_to_sfml(&request.background_colour);
-    let mut time = request.start_time;
     let mut elapsed_time = 0.0;
     let mut frame = 0;
     let mut vertex_buffer = Vec::with_capacity(256);
@@ -360,7 +359,6 @@ pub fn render(
         }
 
         frame += 1;
-        time += request.frame_delay();
         elapsed_time += request.frame_delay() as f64;
     }
 
