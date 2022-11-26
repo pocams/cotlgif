@@ -52,6 +52,7 @@
   let onlyHead = false
   let singleFrame = false
   let petpet = false
+  let flip = false
   let singleFrameTimestamp = 0.0
   let activeCategoryMenu = ""
 
@@ -120,6 +121,10 @@
 
     if (petpet) {
       params.push("petpet=true")
+    }
+
+    if (flip) {
+      params.push("flip=horizontal")
     }
 
     if (singleFrame) {
@@ -267,10 +272,19 @@
               bind:timestamp={singleFrameTimestamp}
               duration={selectedAnimation ? selectedAnimation.duration : 0}></SingleFrame>
 
-      <label class="checkbox">
-        <input type="checkbox" bind:checked={petpet}>
-        Petpet (<a href="https://benisland.neocities.org/petpet/">original site</a>)
-      </label>
+      <div>
+        <label class="checkbox">
+          <input type="checkbox" bind:checked={flip}>
+          Flip horizontally
+        </label>
+      </div>
+
+      <div>
+        <label class="checkbox">
+          <input type="checkbox" bind:checked={petpet}>
+          Petpet (<a href="https://benisland.neocities.org/petpet/">original site</a>)
+        </label>
+      </div>
     </div>
   </div>
 </section>

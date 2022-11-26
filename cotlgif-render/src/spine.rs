@@ -182,9 +182,10 @@ pub fn render(
         Some(skin)
     };
 
+    let (x_scale, y_scale) = request.get_scale();
     controller
         .skeleton
-        .set_scale([request.scale, request.scale]);
+        .set_scale([x_scale, y_scale]);
 
     // If there are slots we shouldn't draw, make them transparent (set alpha=0)
     for mut slot in controller.skeleton.slots_mut() {
@@ -276,7 +277,7 @@ pub fn render(
                 &mut controller.skeleton,
                 petpet_frame,
                 (x_offset, y_offset),
-                request.scale,
+                request.get_scale(),
             );
         }
 

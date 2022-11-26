@@ -58,7 +58,7 @@ pub(crate) fn apply_petpet_squish(
     target: &mut Skeleton,
     petpet_frame: i32,
     original_offset: (f32, f32),
-    original_scale: f32,
+    original_scale: (f32, f32),
 ) {
     /*
        https://benisland.neocities.org/petpet/main.js
@@ -79,8 +79,8 @@ pub(crate) fn apply_petpet_squish(
     };
 
     target.set_scale([
-        (1.0 + (scale.0 * squish_factor)) * original_scale,
-        (1.0 + (scale.1 * squish_factor)) * original_scale,
+        (1.0 + (scale.0 * squish_factor)) * original_scale.0,
+        (1.0 + (scale.1 * squish_factor)) * original_scale.1,
     ]);
     target.set_position([
         original_offset.0 + position.0,

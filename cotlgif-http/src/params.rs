@@ -1,6 +1,6 @@
 use crate::util::{json_400, JsonError, OutputType};
 use crate::HttpActor;
-use cotlgif_common::{CommonColour, RenderRequest, SkinColours};
+use cotlgif_common::{CommonColour, Flip, RenderRequest, SkinColours};
 use css_color_parser2::{Color, ColorParseError};
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -23,6 +23,7 @@ pub(crate) struct SkinParameters {
     pub only_head: Option<bool>,
     pub download: Option<bool>,
     pub petpet: Option<bool>,
+    pub flip: Flip,
 }
 
 impl SkinParameters {
@@ -92,6 +93,7 @@ impl SkinParameters {
             slot_colours,
             only_head: self.only_head.unwrap_or_default(),
             petpet: self.petpet.unwrap_or_default(),
+            flip: self.flip,
         })
     }
 
@@ -249,6 +251,13 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                             .parse()
                             .map_err(|e| json_400(format!("petpet: {e:?}")))?,
                     )
+                }
+                "flip" => {
+                    sp.flip = match value.as_str() {
+                        "horizontal" => Flip::Horizontal,
+                        "none" => Flip::NoFlip,
+                        _ => return Err(json_400(format!("flip: expected 'horizontal' or 'none'"))),
+                    }
                 }
                 // "top_text" | "bottom_text" | "font" | "font_size" => {
                 //     sp.text_parameters.get_or_insert_with(|| Default::default()).set_from_params(key, value)?;

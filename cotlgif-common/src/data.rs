@@ -4,6 +4,18 @@ use regex::Regex;
 use std::collections::HashMap;
 use std::num::NonZeroU32;
 
+#[derive(Debug, Copy, Clone)]
+pub enum Flip {
+    NoFlip,
+    Horizontal,
+}
+
+impl Default for Flip {
+    fn default() -> Self {
+        Flip::NoFlip
+    }
+}
+
 #[derive(Debug)]
 pub struct RenderRequest {
     pub actor_slug: String,
@@ -18,6 +30,7 @@ pub struct RenderRequest {
     pub slot_colours: HashMap<String, CommonColour>,
     pub only_head: bool,
     pub petpet: bool,
+    pub flip: Flip,
 }
 
 impl RenderRequest {
@@ -40,5 +53,12 @@ impl RenderRequest {
         ).unwrap());
 
         !self.only_head || only_head.is_match(slot_name)
+    }
+
+    pub fn get_scale(&self) -> (f32, f32) {
+        match self.flip {
+            Flip::NoFlip => (self.scale, self.scale),
+            Flip::Horizontal => (-self.scale, self.scale),
+        }
     }
 }
