@@ -89,7 +89,7 @@ impl SkinParameters {
             }),
             fps,
             background_colour: self.background_colour.unwrap_or_default(),
-            slot_colours: self.slot_colours.clone(),
+            slot_colours,
             only_head: self.only_head.unwrap_or_default(),
             petpet: self.petpet.unwrap_or_default(),
         })
