@@ -9,4 +9,4 @@ pub use colours::{CommonColour, SkinColours};
 
 pub use slugify::slugify_string;
 
-pub use data::{RenderRequest, Flip, CustomSize};
+pub use data::{CustomSize, Flip, Font, RenderRequest, SomeIfValid, TextParameters};

@@ -1,6 +1,8 @@
 use crate::util::{json_400, JsonError, OutputType};
 use crate::HttpActor;
-use cotlgif_common::{CommonColour, CustomSize, Flip, RenderRequest, SkinColours};
+use cotlgif_common::{
+    CommonColour, CustomSize, Flip, RenderRequest, SkinColours, SomeIfValid, TextParameters,
+};
 use css_color_parser2::{Color, ColorParseError};
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -24,7 +26,9 @@ pub(crate) struct SkinParameters {
     pub download: Option<bool>,
     pub petpet: Option<bool>,
     pub flip: Flip,
-    pub custom_size: CustomSize
+    pub custom_size: CustomSize,
+    pub top_text: Option<TextParameters>,
+    pub bottom_text: Option<TextParameters>,
 }
 
 impl SkinParameters {
@@ -96,6 +100,8 @@ impl SkinParameters {
             petpet: self.petpet.unwrap_or_default(),
             flip: self.flip,
             custom_size: self.custom_size,
+            top_text: self.top_text.clone().some_if_valid(),
+            bottom_text: self.bottom_text.clone().some_if_valid(),
         })
     }
 
@@ -143,23 +149,35 @@ impl SkinParameters {
             }
         }
 
-        // if let Some(t) = self.text_parameters.as_mut() {
-        //     if t.font_size > 200 {
-        //         debug!("LIMITS: font_size decreasing from {} to 200", t.font_size);
-        //         t.font_size = 200;
-        //     }
-        //     if let Some(top_text) = t.top_text.as_mut() {
-        //         if top_text.len() > 100 {
-        //             debug!("LIMITS: top_text length decreasing from {} to 100", top_text.len());
-        //             top_text.truncate(100);
-        //         }
-        //     }
-        //     if let Some(bottom_text) = t.bottom_text.as_mut() {
-        //         if bottom_text.len() > 100 {
-        //             debug!("LIMITS: bottom_text length decreasing from {} to 100", bottom_text.len());
-        //             bottom_text.truncate(100);
-        //         }
-        //     }
+        if let Some(t) = self.top_text.as_mut() {
+            if t.size > 200 {
+                warn!("LIMITS: top_text size decreasing from {} to 200", t.size);
+                t.size = 200;
+            }
+
+            if t.text.len() > 100 {
+                warn!(
+                    "LIMITS: top_text length truncating from {} to 100",
+                    t.text.len()
+                );
+                t.text.truncate(100);
+            }
+        }
+
+        if let Some(t) = self.bottom_text.as_mut() {
+            if t.size > 200 {
+                warn!("LIMITS: bottom size decreasing from {} to 200", t.size);
+                t.size = 200;
+            }
+
+            if t.text.len() > 100 {
+                warn!(
+                    "LIMITS: bottom length truncating from {} to 100",
+                    t.text.len()
+                );
+                t.text.truncate(100);
+            }
+        }
     }
 }
 
@@ -258,19 +276,56 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                     sp.flip = match value.as_str() {
                         "horizontal" => Flip::Horizontal,
                         "none" => Flip::NoFlip,
-                        _ => return Err(json_400(format!("flip: expected 'horizontal' or 'none'"))),
+                        _ => {
+                            return Err(json_400(format!("flip: expected 'horizontal' or 'none'")))
+                        }
                     }
                 }
                 "custom_size" => {
                     sp.custom_size = match value.as_str() {
                         "discord128x128" => CustomSize::Discord128x128,
                         "none" => CustomSize::DefaultSize,
-                        _ => return Err(json_400(format!("custom_size: expected 'discord128x128' or 'none'"))),
+                        _ => {
+                            return Err(json_400(format!(
+                                "custom_size: expected 'discord128x128' or 'none'"
+                            )))
+                        }
                     }
                 }
-                // "top_text" | "bottom_text" | "font" | "font_size" => {
-                //     sp.text_parameters.get_or_insert_with(|| Default::default()).set_from_params(key, value)?;
-                // }
+                "top_text" | "top_text_font" | "top_text_size" => {
+                    let mut t = sp.top_text.get_or_insert_with(Default::default);
+                    match key.as_str() {
+                        "top_text" => t.text = value,
+                        "top_text_font" => {
+                            t.font = value
+                                .parse()
+                                .map_err(|_| json_400(format!("top_text_font: unknown font")))?
+                        }
+                        "top_text_size" => {
+                            t.size = value
+                                .parse()
+                                .map_err(|e| json_400(format!("top_text_size: {}", e)))?
+                        }
+                        _ => unreachable!(),
+                    }
+                }
+                "bottom_text" | "bottom_text_font" | "bottom_text_size" => {
+                    let mut t = sp.bottom_text.get_or_insert_with(Default::default);
+                    match key.as_str() {
+                        "bottom_text" => t.text = value,
+                        "bottom_text_font" => {
+                            t.font = value
+                                .parse()
+                                .map_err(|_| json_400(format!("bottom_text_font: unknown font")))?
+                        }
+                        "bottom_text_size" => {
+                            t.size = value
+                                .parse()
+                                .map_err(|e| json_400(format!("bottom_text_size: {}", e)))?
+                        }
+                        _ => unreachable!(),
+                    }
+                }
                 _ => return Err(json_400(Cow::from(format!("Invalid parameter {:?}", key)))),
             }
         }

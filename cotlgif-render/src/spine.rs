@@ -1,4 +1,5 @@
 use std::process::abort;
+
 use std::sync::Arc;
 
 use once_cell::sync::OnceCell;
@@ -9,11 +10,12 @@ use rusty_spine::{
 };
 use sfml::graphics::{
     FloatRect, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture, Texture,
-    Transform, Vertex,
+    Transform, Transformable, Vertex,
 };
 
 use sfml::system::Vector2f;
 use sfml::SfBox;
+
 use tracing::{debug, info, warn};
 
 use crate::data::{
@@ -21,9 +23,25 @@ use crate::data::{
     BLEND_MULTIPLY, BLEND_NORMAL, BLEND_SCREEN,
 };
 use crate::{Frame, FrameHandler, HandleFrameError, RenderError};
-use cotlgif_common::{CustomSize, RenderRequest, SpineAnimation, SpineSkin};
+use cotlgif_common::{CustomSize, Font, RenderRequest, SpineAnimation, SpineSkin};
 
 use crate::petpet::{apply_petpet_squish, get_petpet_frame, petpet_controller};
+
+fn get_font(font: &Font) -> &'static SfBox<sfml::graphics::Font> {
+    match font {
+        Font::Impact => {
+            static mut FONT: OnceCell<&'static SfBox<sfml::graphics::Font>> = OnceCell::new();
+            // SAFETY: spine and sfml have to be run on one thread - the same rules apply here
+            unsafe {
+                FONT.get_or_init(|| {
+                    Box::leak(Box::new(
+                        sfml::graphics::Font::from_file("assets/impact.ttf").unwrap(),
+                    ))
+                })
+            }
+        }
+    }
+}
 
 fn spine_init() {
     static SPINE_STATE: OnceCell<()> = OnceCell::new();
@@ -182,11 +200,6 @@ pub fn render(
         Some(skin)
     };
 
-    let (mut x_scale, mut y_scale) = request.get_scale(1.0);
-    controller
-        .skeleton
-        .set_scale([x_scale, y_scale]);
-
     // If there are slots we shouldn't draw, make them transparent (set alpha=0)
     for mut slot in controller.skeleton.slots_mut() {
         let slot_data = slot.data();
@@ -203,6 +216,8 @@ pub fn render(
         .animation_state
         .set_animation_by_name(0, &request.animation, true)
         .map_err(|_| RenderError::AnimationNotFound(request.animation.to_owned()))?;
+    let (x_scale, y_scale) = request.get_scale(1.0);
+    controller.skeleton.set_scale([x_scale, y_scale]);
     controller.update(request.start_time);
 
     let bounding_box = get_bounding_box(
@@ -221,7 +236,7 @@ pub fn render(
     let mut x_offset = -bounding_box.left;
     let mut y_offset = -bounding_box.top;
 
-    let target_width;
+    let mut target_width;
     let target_height;
     match request.custom_size {
         CustomSize::DefaultSize => {
@@ -230,33 +245,17 @@ pub fn render(
         }
 
         CustomSize::Discord128x128 => {
-            let rescale;
             if bounding_box.width > bounding_box.height {
-                rescale = 128.0 / bounding_box.width;
-                x_offset *= rescale;
-                y_offset *= rescale;
-                y_offset += (128.0 - (bounding_box.height * rescale)) / 2.0;
+                target_width = bounding_box.width.ceil() as u32;
+                target_height = target_width;
+                y_offset += (bounding_box.width - bounding_box.height) / 2.0;
             } else {
-                rescale = 128.0 / bounding_box.height;
-                x_offset *= rescale;
-                y_offset *= rescale;
-                x_offset += (128.0 - (bounding_box.width * rescale)) / 2.0;
+                target_height = bounding_box.height.ceil() as u32;
+                target_width = target_height;
+                x_offset += (bounding_box.height - bounding_box.width) / 2.0;
             }
-
-            x_scale *= rescale;
-            y_scale *= rescale;
-            target_width = 128;
-            target_height = 128;
         }
     }
-
-    controller
-        .skeleton
-        .set_scale([x_scale, y_scale]);
-
-    // Move the skeleton into the center of the bounding box
-    controller.skeleton.set_x(x_offset);
-    controller.skeleton.set_y(y_offset);
 
     // Reset the animation after we rendered it to calculate the bounding box
     controller.animation_state.clear_tracks();
@@ -264,7 +263,6 @@ pub fn render(
         .animation_state
         .set_animation_by_name(0, &request.animation, true)
         .map_err(|_| RenderError::AnimationNotFound(request.animation.to_owned()))?;
-    controller.update(request.start_time);
 
     let mut petpet_controller = if request.petpet {
         let mut pc = petpet_controller(bounding_box.width, bounding_box.height);
@@ -274,10 +272,76 @@ pub fn render(
         None
     };
 
+    let mut total_width = bounding_box.width;
+
+    let mut top_text = request.top_text.as_ref().map(|tp| {
+        let sfml_font = get_font(&tp.font);
+        let mut text = sfml::graphics::Text::new(&tp.text, &sfml_font, tp.size);
+        text.set_fill_color(sfml::graphics::Color::WHITE);
+        text.set_outline_color(sfml::graphics::Color::BLACK);
+        text.set_outline_thickness(2.0);
+        let bounds = text.local_bounds();
+        let x_pos;
+        if bounds.width < bounding_box.width {
+            x_pos = (bounding_box.width - bounds.width) / 2.0;
+        } else {
+            x_offset += (bounds.width - bounding_box.width) / 2.0;
+            total_width = bounds.width;
+            x_pos = 0.0;
+        };
+        // y_pos is inverted because we're using an inverse transform to draw the text
+        // We don't add a margin here because it seems to be built into the text height and looks okay already
+        let y_pos = -bounding_box.height;
+        text.set_position((x_pos, y_pos));
+        text
+    });
+
+    let bottom_text = request.bottom_text.as_ref().map(|tp| {
+        let sfml_font = get_font(&tp.font);
+        let mut text = sfml::graphics::Text::new(&tp.text, &sfml_font, tp.size);
+        text.set_fill_color(sfml::graphics::Color::WHITE);
+        text.set_outline_color(sfml::graphics::Color::BLACK);
+        text.set_outline_thickness(2.0);
+        let bounds = text.local_bounds();
+        let x_pos;
+        if bounds.width < total_width {
+            x_pos = (total_width - bounds.width) / 2.0;
+        } else {
+            x_offset += (bounds.width - total_width) / 2.0;
+            total_width = bounds.width;
+
+            // Readjust the top text to still be centered if necessary
+            if let Some(tt) = top_text.as_mut() {
+                tt.set_position((
+                    (total_width - tt.local_bounds().width) / 2.0,
+                    tt.position().y,
+                ));
+            }
+
+            x_pos = 0.0;
+        }
+        // y_pos is inverted because we're using an inverse transform to draw the text
+        // Add a margin to offset it slightly from the bottom edge
+        let y_pos = -(bounds.height + (bounding_box.height * 0.05));
+        text.set_position((x_pos, y_pos));
+        text
+    });
+
+    target_width = total_width.ceil() as u32;
+
+    // Move the skeleton into the center of the bounding box
+    controller.skeleton.set_x(dbg!(x_offset));
+    controller.skeleton.set_y(y_offset);
+    controller.update(request.start_time);
+
     let mut target = RenderTexture::new(target_width, target_height)
         .ok_or_else(|| RenderError::TextureFailed)?;
 
     let mut render_states = RenderStates::new(BLEND_NORMAL, Transform::IDENTITY, None, None);
+    // This transform is used to render text - otherwise it ends up inverted on the Y axis for some reason
+    let mut inverse_transform = Transform::IDENTITY;
+    inverse_transform.scale(1.0, -1.0);
+    let render_states_inverted = RenderStates::new(BLEND_NORMAL, inverse_transform, None, None);
 
     let background_color = common_to_sfml(&request.background_colour);
     let mut elapsed_time = 0.0;
@@ -360,6 +424,13 @@ pub fn render(
 
                 rc.update(request.frame_delay());
             }
+        }
+
+        if let Some(tt) = top_text.as_ref() {
+            target.draw_text(tt, &render_states_inverted);
+        }
+        if let Some(bt) = bottom_text.as_ref() {
+            target.draw_text(bt, &render_states_inverted);
         }
 
         // Sucks a bit to have to copy the image twice, but sfml Image doesn't have a way to

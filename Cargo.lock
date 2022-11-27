@@ -55,6 +55,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "atomic_refcell"
+version = "0.1.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73b5e5f48b927f04e952dedc932f31995a65a0bf65ec971c74436e51bf6e970d"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -312,6 +318,7 @@ name = "cotlgif-imgproc"
 version = "0.1.0"
 dependencies = [
  "cotlgif-render",
+ "fast_image_resize",
  "gifski",
  "imgref",
  "png",
@@ -325,11 +332,11 @@ name = "cotlgif-render"
 version = "0.1.0"
 dependencies = [
  "cotlgif-common",
- "fast_image_resize",
  "once_cell",
  "regex",
  "rusty_spine",
  "sfml",
+ "singlyton",
  "thiserror",
  "tracing",
 ]
@@ -428,9 +435,9 @@ dependencies = [
 
 [[package]]
 name = "fast_image_resize"
-version = "1.0.0"
+version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "64168ddba40c03a3d329bbdd2aee194eb2c4076dddd5e52f5cc882ea6ff58901"
+checksum = "2eac341c4758cd07e018fe068757a31fcf25e8eb6338d8a6cd9bdb71467c2052"
 dependencies = [
  "num-traits",
  "thiserror",
@@ -1277,6 +1284,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "singlyton"
+version = "4.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d920bedcb124f2e219f9e8401e252f3ed013370d9c19fd7ae9c6fe2266db35ec"
+dependencies = [
+ "atomic_refcell",
+]
+
+[[package]]
 name = "slab"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1341,18 +1357,18 @@ checksum = "222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d"
 
 [[package]]
 name = "thiserror"
-version = "1.0.34"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c1b05ca9d106ba7d2e31a9dab4a64e7be2cce415321966ea3132c49a656e252"
+checksum = "10deb33631e3c9018b9baf9dcbbc4f737320d2b576bac10f6aefa048fa407e3e"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.34"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8f2591983642de85c921015f3f070c665a197ed69e417af436115e3a1407487"
+checksum = "982d17546b47146b28f7c22e3d08465f6b8903d0ea13c1660d9d84a6e7adcdbb"
 dependencies = [
  "proc-macro2",
  "quote",

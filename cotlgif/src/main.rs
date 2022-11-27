@@ -9,7 +9,7 @@ use std::thread;
 use tracing::{debug, error, info};
 use tracing_subscriber::EnvFilter;
 
-use cotlgif_common::{ActorConfig, SkinColours};
+use cotlgif_common::{ActorConfig, CustomSize, SkinColours};
 use serde::Deserialize;
 
 #[derive(Parser)]
@@ -102,19 +102,54 @@ fn main() -> color_eyre::Result<()> {
         let spine_actor = spine_actors
             .get(&http_render_request.render_request.actor_slug)
             .unwrap();
-        let buf_renderer = match http_render_request.output_type {
-            OutputType::Gif => RenderBufferer::new(
-                cotlgif_imgproc::GifRenderer::new(http_render_request.writer),
-                1000,
-            ),
-            OutputType::Apng => RenderBufferer::new(
-                cotlgif_imgproc::ApngRenderer::new(http_render_request.writer),
-                1000,
-            ),
-            OutputType::Png => RenderBufferer::new(
-                cotlgif_imgproc::PngRenderer::new(http_render_request.writer),
-                1000,
-            ),
+
+        // I tried to use Box<dyn> to prevent this insane situation, but I couldn't make it out of
+        // the dark forest of type errors
+        let buf_renderer = match http_render_request.render_request.custom_size {
+            CustomSize::DefaultSize => match http_render_request.output_type {
+                OutputType::Gif => RenderBufferer::new(
+                    cotlgif_imgproc::GifRenderer::new(http_render_request.writer),
+                    1000,
+                ),
+                OutputType::Apng => RenderBufferer::new(
+                    cotlgif_imgproc::ApngRenderer::new(http_render_request.writer),
+                    1000,
+                ),
+                OutputType::Png => RenderBufferer::new(
+                    cotlgif_imgproc::PngRenderer::new(http_render_request.writer),
+                    1000,
+                ),
+            },
+
+            CustomSize::Discord128x128 => match http_render_request.output_type {
+                OutputType::Gif => RenderBufferer::new(
+                    cotlgif_imgproc::ResizeWrapper::new(
+                        128,
+                        128,
+                        cotlgif_imgproc::GifRenderer::new(http_render_request.writer),
+                    )
+                    .unwrap(),
+                    1000,
+                ),
+                OutputType::Apng => RenderBufferer::new(
+                    cotlgif_imgproc::ResizeWrapper::new(
+                        128,
+                        128,
+                        cotlgif_imgproc::ApngRenderer::new(http_render_request.writer),
+                    )
+                    .unwrap(),
+                    1000,
+                ),
+                OutputType::Png => RenderBufferer::new(
+                    cotlgif_imgproc::ResizeWrapper::new(
+                        128,
+                        128,
+                        cotlgif_imgproc::PngRenderer::new(http_render_request.writer),
+                    )
+                    .unwrap(),
+                    1000,
+                ),
+            },
         };
 
         match cotlgif_render::render(

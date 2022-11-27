@@ -1,3 +1,5 @@
+mod resize;
+
 use gifski::progress::NoProgress;
 use gifski::Settings;
 use imgref::ImgVec;
@@ -8,6 +10,8 @@ use thiserror::Error;
 use tracing::{debug, error, warn};
 
 use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata};
+
+pub use crate::resize::ResizeWrapper;
 
 #[derive(Error, Debug)]
 pub enum RenderError {

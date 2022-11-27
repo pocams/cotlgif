@@ -3,6 +3,7 @@ use once_cell::sync::OnceCell;
 use regex::Regex;
 use std::collections::HashMap;
 use std::num::NonZeroU32;
+use std::str::FromStr;
 
 #[derive(Debug, Copy, Clone)]
 pub enum Flip {
@@ -29,6 +30,68 @@ impl Default for CustomSize {
 }
 
 #[derive(Debug)]
+pub struct InvalidFont;
+
+#[derive(Debug, Copy, Clone)]
+pub enum Font {
+    Impact,
+}
+
+impl Font {
+    pub fn filename(&self) -> &'static str {
+        match self {
+            Font::Impact => "assets/impact.ttf",
+        }
+    }
+}
+
+impl FromStr for Font {
+    type Err = InvalidFont;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_ascii_lowercase().as_str() {
+            "impact" => Ok(Font::Impact),
+            _ => Err(InvalidFont),
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct TextParameters {
+    pub text: String,
+    pub font: Font,
+    pub size: u32,
+}
+
+impl Default for TextParameters {
+    fn default() -> Self {
+        TextParameters {
+            text: "".to_owned(),
+            font: Font::Impact,
+            size: 32,
+        }
+    }
+}
+
+pub trait SomeIfValid {
+    fn some_if_valid(self) -> Self;
+}
+
+impl SomeIfValid for Option<TextParameters> {
+    fn some_if_valid(self) -> Option<TextParameters> {
+        if let Some(tp) = self {
+            if tp.text.is_empty() {
+                None
+            } else {
+                Some(tp)
+            }
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct RenderRequest {
     pub actor_slug: String,
     pub skins: Vec<String>,
@@ -43,7 +106,9 @@ pub struct RenderRequest {
     pub only_head: bool,
     pub petpet: bool,
     pub flip: Flip,
-    pub custom_size: CustomSize
+    pub custom_size: CustomSize,
+    pub top_text: Option<TextParameters>,
+    pub bottom_text: Option<TextParameters>,
 }
 
 impl RenderRequest {

@@ -53,8 +53,13 @@
   let singleFrame = false
   let petpet = false
   let flip = false
+  let top_text = ""
+  let top_text_size = 0
+  let bottom_text = ""
+  let bottom_text_size = 0
   let singleFrameTimestamp = 0.0
   let activeCategoryMenu = ""
+  let debounceTextTimer;
 
   let allSkeletons = [];
   let allAnimations = [];
@@ -79,6 +84,15 @@
     } else {
       return []
     }
+  }
+
+  function debounceText(event) {
+    console.log("debounceText")
+    clearTimeout(debounceTextTimer)
+    debounceTextTimer = setTimeout(() => {
+      top_text = document.getElementById("top_text").value
+      bottom_text = document.getElementById("bottom_text").value
+    }, 500)
   }
 
   function addSkin(skin) {
@@ -129,6 +143,20 @@
 
     if (flip) {
       params.push("flip=horizontal")
+    }
+
+    if (top_text) {
+      params.push(`top_text=${encodeURIComponent(top_text)}`)
+      if (top_text_size !== 0) {
+        params.push(`top_text_size=${top_text_size}`)
+      }
+    }
+
+    if (bottom_text) {
+      params.push(`bottom_text=${encodeURIComponent(bottom_text)}`)
+      if (bottom_text_size !== 0) {
+        params.push(`bottom_text_size=${bottom_text_size}`)
+      }
     }
 
     if (singleFrame) {
@@ -288,6 +316,11 @@
           <input type="checkbox" bind:checked={petpet}>
           Petpet (<a href="https://benisland.neocities.org/petpet/">original site</a>)
         </label>
+      </div>
+
+      <div class="control">
+        <textarea class="input" placeholder="Top text" id="top_text" rows="2" on:input={debounceText}></textarea>
+        <textarea class="input" placeholder="Bottom text" id="bottom_text" rows="2" on:input={debounceText}></textarea>
       </div>
     </div>
   </div>

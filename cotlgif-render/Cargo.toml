@@ -10,7 +10,7 @@ rusty_spine = { git = "https://github.com/pocams/rusty_spine", features = ["use_
 regex = "1.7.0"
 tracing = "0.1.37"
 sfml = "0.18.1"
-fast_image_resize = "1.0.0"
 once_cell = "1.16"
-thiserror = "=1.0.34"
+thiserror = "1.0.37"
 cotlgif-common = { path = "../cotlgif-common" }
+singlyton = "4.1.1"

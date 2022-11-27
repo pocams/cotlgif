@@ -28,7 +28,7 @@ pub enum HandleFrameError {
     PermanentError,
 }
 
-pub trait FrameHandler {
+pub trait FrameHandler: Send {
     fn set_metadata(&mut self, metadata: crate::RenderMetadata);
     fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError>;
 }
