@@ -14,6 +14,8 @@
     return s.toLowerCase()
   }
 
+  const fontSizes = [20, 36, 48, 64, 72, 96];
+
   function setSkeleton(target) {
     axios.get(`/v1/${target.slug}`)
             .then(resp => {
@@ -87,11 +89,12 @@
   }
 
   function debounceText(event) {
-    console.log("debounceText")
     clearTimeout(debounceTextTimer)
     debounceTextTimer = setTimeout(() => {
       top_text = document.getElementById("top_text").value
+      top_text_size = parseInt(document.getElementById("top_text_size").value)
       bottom_text = document.getElementById("bottom_text").value
+      bottom_text_size = parseInt(document.getElementById("bottom_text_size").value)
     }, 500)
   }
 
@@ -318,9 +321,38 @@
         </label>
       </div>
 
-      <div class="control">
-        <textarea class="input" placeholder="Top text" id="top_text" rows="2" on:input={debounceText}></textarea>
-        <textarea class="input" placeholder="Bottom text" id="bottom_text" rows="2" on:input={debounceText}></textarea>
+        <div class="columns">
+          <div class="column is-10">
+            <textarea class="input" placeholder="Top text" id="top_text" rows="2" on:input={debounceText}></textarea>
+          </div>
+          <div class="column is-2">
+            <select class="input" id="top_text_size" on:input={debounceText}>
+              {#each fontSizes as fontSize}
+                {#if fontSize === 36}
+                  <option selected value="36">36px</option>
+                {:else}
+                  <option value={fontSize}>{fontSize}px</option>
+                {/if}
+              {/each}
+            </select>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-10">
+            <textarea class="input" placeholder="Bottom text" id="bottom_text" rows="2" on:input={debounceText}></textarea>
+          </div>
+        <div class="column is-2">
+          <select class="input" id="bottom_text_size" on:input={debounceText}>
+            {#each fontSizes as fontSize}
+              {#if fontSize === 36}
+                <option selected value="36">36px</option>
+              {:else}
+                <option value={fontSize}>{fontSize}px</option>
+              {/if}
+            {/each}
+          </select>
+        </div>
       </div>
     </div>
   </div>
