@@ -322,7 +322,7 @@ pub fn render(
         }
         // y_pos is inverted because we're using an inverse transform to draw the text
         // Add a margin to offset it slightly from the bottom edge
-        let y_pos = -(bounds.height + (bounding_box.height * 0.05));
+        let y_pos = -(bounds.height + (bounding_box.height * 0.035 * (tp.size as f32 / 36.0)));
         text.set_position((x_pos, y_pos));
         text
     });
