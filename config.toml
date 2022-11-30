@@ -666,6 +666,15 @@ default_animation = "idle"
 category = "Enemies"
 
 [[actors]]
+name = "Tunnel Turret & Barbatos"
+slug = "tunnel-turret"
+atlas = "cotl/TunnelTurret.atlas"
+skeleton = "cotl/TunnelTurret.skel"
+default_skins = ["TurretSpiker"]
+default_animation = "idle"
+category = "Enemies"
+
+[[actors]]
 name = "Weapon card"
 slug = "weapon-card"
 atlas = "cotl/WeaponCard.atlas"
