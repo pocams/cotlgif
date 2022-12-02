@@ -100,6 +100,12 @@
 
   function addSkin(skin) {
     if (selectedSkins.filter(s => s.name === skin.name).length === 0) {
+      // Special case - if selecting "JustHead" for a Lamb skin, first remove
+      // any other selected skins.  Mitigates
+      // https://twitter.com/cultofthelamb/status/1598474349232918528
+      if (skin.name === "JustHead") {
+        selectedSkins.length = 0
+      }
       selectedSkins.push(skin)
       selectedSkins = selectedSkins
     }
