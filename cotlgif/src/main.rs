@@ -326,7 +326,7 @@ impl<FH> Drop for Recropper<FH> where FH: FrameHandler + Send + 'static {
             self.frame_handler.set_metadata(md);
 
             for mut frame in self.frames.drain(0..) {
-                let mut new_pixel_data = Vec::with_capacity(new_height * new_width * 4);
+                let mut new_pixel_data = Vec::with_capacity((new_height) * (new_width) * 4);
                 for row in self.top..self.bottom {
                     let row_start = old_width * row * 4;
                     for col in self.left..self.right {
@@ -334,6 +334,8 @@ impl<FH> Drop for Recropper<FH> where FH: FrameHandler + Send + 'static {
                         new_pixel_data.extend_from_slice(&frame.pixel_data[col_start..(col_start + 4)])
                     }
                 }
+                frame.width = new_width as u32;
+                frame.height = new_height as u32;
                 frame.pixel_data = new_pixel_data;
                 if self.frame_handler.handle_frame(frame).is_err() { break }
             }
