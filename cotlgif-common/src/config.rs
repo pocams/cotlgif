@@ -48,6 +48,8 @@ pub struct ActorConfig {
     pub is_spoiler: bool,
     pub default_skins: Vec<String>,
     pub default_animation: String,
+    #[serde(deserialize_with = "deserialize_regex", default)]
+    pub head_slots: Option<Regex>,
     #[serde(default = "default_scale")]
     pub default_scale: f32,
     #[serde(deserialize_with = "deserialize_regex", default)]
@@ -56,8 +58,6 @@ pub struct ActorConfig {
     pub spoiler_animations: Option<Regex>,
     #[serde(default)]
     pub has_slot_colours: bool,
-    #[serde(default)]
-    pub has_head_only: bool,
 }
 
 #[derive(Debug, Clone, Serialize)]

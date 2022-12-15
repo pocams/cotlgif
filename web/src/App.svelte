@@ -37,6 +37,7 @@
               selectedSkeleton = target
               selectedAnimation = allAnimations.find(a => target.default_animation === a.name)
               selectedSkins = allSkins.filter(s => target.default_skins.includes(s.name))
+              features = target.features;
               scale = target.default_scale
             });
   }
@@ -67,6 +68,7 @@
   let allAnimations = [];
   let allSkins = [];
   let allColours = {};
+  let features = [];
 
   $: allCategories = Array.from(new Set(allSkeletons.map(s => s.category).filter(s => s != "None")).values())
   $: filteredAnimations = allAnimations.filter(a => a.name.toLowerCase().includes(animation_filter.toLowerCase()))
@@ -141,9 +143,10 @@
           params.push(`${key}=${encodeURIComponent(value)}`)
         }
       }
-      if (onlyHead) {
-        params.push("only_head=true")
-      }
+    }
+
+    if (features.includes("only_head") && onlyHead) {
+      params.push("only_head=true")
     }
 
     if (petpet) {
@@ -299,7 +302,9 @@
       <p class="mt-4">
         <ColourPicker colours={filteredColours()} url={headUrl()} bind:value={colours}></ColourPicker>
       </p>
+    {/if}
 
+    {#if features.includes("only_head") }
       <p class="mt-4">
         <label class="checkbox">
           <input type="checkbox" bind:checked={onlyHead}>

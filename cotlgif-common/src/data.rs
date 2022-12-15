@@ -1,5 +1,4 @@
 use crate::CommonColour;
-use once_cell::sync::OnceCell;
 use regex::Regex;
 use std::collections::HashMap;
 use std::num::NonZeroU32;
@@ -103,7 +102,7 @@ pub struct RenderRequest {
     pub fps: NonZeroU32,
     pub background_colour: CommonColour,
     pub slot_colours: HashMap<String, CommonColour>,
-    pub only_head: bool,
+    pub slots_to_draw: Option<Regex>,
     pub petpet: bool,
     pub flip: Flip,
     pub custom_size: CustomSize,
@@ -125,12 +124,7 @@ impl RenderRequest {
     }
 
     pub fn should_draw_slot(&self, slot_name: &str) -> bool {
-        static ONLY_HEAD: OnceCell<Regex> = OnceCell::new();
-        let only_head = ONLY_HEAD.get_or_init(|| Regex::new(
-            r"^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d)$"
-        ).unwrap());
-
-        !self.only_head || only_head.is_match(slot_name)
+        self.slots_to_draw.as_ref().map(|s| s.is_match(slot_name)).unwrap_or(true)
     }
 
     pub fn get_scale(&self, rescale: f32) -> (f32, f32) {

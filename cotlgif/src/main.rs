@@ -152,10 +152,16 @@ fn main() -> color_eyre::Result<()> {
             },
         };
 
+        let frame_handler: Box<dyn FrameHandler> = if http_render_request.render_request.slots_to_draw.is_some() {
+            Box::new(Recropper::new(buf_renderer))
+        } else {
+            Box::new(buf_renderer)
+        };
+
         match cotlgif_render::render(
             spine_actor,
             http_render_request.render_request,
-            Box::new(buf_renderer),
+            frame_handler,
         ) {
             Ok(_) => info!("Render finished"),
             Err(e) => error!("Render error: {:?}", e),
@@ -220,5 +226,117 @@ impl RenderBufferer {
         });
 
         RenderBufferer { sender }
+    }
+}
+
+pub struct Recropper<FH: FrameHandler + Send + 'static> {
+    frames: Vec<Frame>,
+    metadata: Option<RenderMetadata>,
+    top: usize,
+    left: usize,
+    bottom: usize,
+    right: usize,
+    frame_handler: FH
+}
+
+impl<FH> Recropper<FH> where FH: FrameHandler + Send + 'static {
+    fn new(frame_handler: FH) -> Recropper<FH> {
+        Recropper {
+            frames: Vec::new(),
+            metadata: None,
+            top: usize::MAX,
+            left: usize::MAX,
+            bottom: 0,
+            right: 0,
+            frame_handler
+        }
+    }
+}
+
+impl<FH> FrameHandler for Recropper<FH> where FH: FrameHandler + Send + 'static {
+    fn set_metadata(&mut self, metadata: RenderMetadata) {
+        self.metadata = Some(metadata);
+    }
+
+    fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError> {
+        let frame_height = self.metadata.as_ref().unwrap().frame_height;
+        let frame_width = self.metadata.as_ref().unwrap().frame_width;
+
+        for row in 0..frame_height {
+            let row_start = frame_width * 4 * row;
+            let row_end = frame_width * 4 * (row + 1);
+
+            if row < self.top {
+                for pixel in (row_start..row_end).step_by(4) {
+                    if frame.pixel_data[pixel + 3] != 0 {
+                        self.top = row;
+                        break;
+                    }
+                }
+            }
+
+            if row > self.bottom {
+                for pixel in (row_start..row_end).step_by(4) {
+                    if frame.pixel_data[pixel + 3] != 0 {
+                        self.bottom = row;
+                        break;
+                    }
+                }
+            }
+        }
+
+        for col in 0..frame_width {
+            let col_start = col * 4;
+            let col_end = (frame_width * 4 * (frame_height - 1)) + col_start;
+
+            if col < self.left {
+                for pixel in (col_start..col_end).step_by(frame_width * 4) {
+                    if frame.pixel_data[pixel + 3] != 0 {
+                        // debug!("frame {} col {}, pix set {} {:?}", frame.frame_number, col, pixel, &frame.pixel_data[pixel..pixel+4]);
+                        self.left = col;
+                        break;
+                    }
+                }
+            }
+
+            if col > self.right {
+                for pixel in (col_start..col_end).step_by(frame_width * 4) {
+                    if frame.pixel_data[pixel + 3] != 0 {
+                        self.right = col;
+                        break;
+                    }
+                }
+            }
+        }
+
+        self.frames.push(frame);
+        Ok(())
+    }
+}
+
+impl<FH> Drop for Recropper<FH> where FH: FrameHandler + Send + 'static {
+    fn drop(&mut self) {
+        // debug!("recropper: top {} bot {} left {} right {}", self.top, self.bottom, self.left, self.right);
+        if let Some(mut md) = self.metadata.take() {
+            let old_width = md.frame_width;
+            let new_height = self.bottom - self.top;
+            let new_width = self.right - self.left;
+            md.frame_height = new_height;
+            md.frame_width = new_width;
+            self.frame_handler.set_metadata(md);
+
+            for mut frame in self.frames.drain(0..) {
+                let mut new_pixel_data = Vec::with_capacity(new_height * new_width * 4);
+                for row in self.top..self.bottom {
+                    let row_start = old_width * row * 4;
+                    for col in self.left..self.right {
+                        let col_start = row_start + (4 * col);
+                        new_pixel_data.extend_from_slice(&frame.pixel_data[col_start..(col_start + 4)])
+                    }
+                }
+                frame.pixel_data = new_pixel_data;
+                if self.frame_handler.handle_frame(frame).is_err() { break }
+            }
+        }
     }
 }

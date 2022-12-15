@@ -10,7 +10,7 @@ PATH = "/Users/mark/Library/Application Support/Steam/steamapps/common/Cult of t
 texture2d_locations = {}
 
 
-if 0:
+if 1:
     print("Extracting TextAssets")
     for root, dirs, files in os.walk(PATH):
         for filename in files:

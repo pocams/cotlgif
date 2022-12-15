@@ -29,7 +29,7 @@ pub enum HandleFrameError {
 }
 
 pub trait FrameHandler: Send {
-    fn set_metadata(&mut self, metadata: crate::RenderMetadata);
+    fn set_metadata(&mut self, metadata: RenderMetadata);
     fn handle_frame(&mut self, frame: Frame) -> Result<(), HandleFrameError>;
 }
 

@@ -17,8 +17,8 @@ default_skins = ["Fox"]
 default_animation = "idle"
 spoiler_skins = '^(Archer|Badger\d?|Boss Beholder 5|Elephant4|Lion\d?|Penguin\d?|Raccoon\d?|Rhino\d?|.*HorseTown.*|Clothes/(Hooded_Lvl[2345]|NoHouse.*|Robes_Lvl[245]|Warrior|Undertaker)|Hats/Chef|HorseKing|default|Coloured.*|Necklaces/Necklace_(Dark|Demonic|Gold_Skull|Light|Loyalty|Missionary))$'
 spoiler_animations = '^(Buildings/(enter-portal|exit-portal|portal-loop)|Emotions/emotion-insane|Insane/.*|OldStuff/.*|Possessed/.*|TESTING|astrologer|attack-.*|ball|barracks-training|bend-knee|bow-attack.*|bubble.*|convertBUBBLE|cook|devotion/devotion-refused?|grave-spawn|hurt-.*|scarify|spawn-in-base-old|studying|sword-.*|Undertaker.*|sacrifice-tentacles-secret)$'
+head_slots = '^(HEAD_SKIN_.*|MARKINGS|EXTRA_(TOP|BTM)|Face Colouring|MOUTH|HOOD|EYE_.*|HeadAccessory|HAT|MASK|Tear\d|Crown_Particle\d)$'
 has_slot_colours = true
-has_head_only = true
 
 [[actors]]
 name = "Forneus"
@@ -29,6 +29,7 @@ default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.3
 category = "NPCs"
+head_slots = '^(HEAD|Eyes|Mouth|HAT)$'
 
 [[actors]]
 name = "Cat seller sheep"
@@ -59,6 +60,7 @@ default_skins = ["default", "NoChains"]
 default_animation = "idle-crouched"
 default_scale = 0.5
 category = "Bosses"
+head_slots = 'CROWN|Crown|EYE|HEAD|Eye|Mouth|FACE|Face'
 
 [[actors]]
 name = "Death cat"
@@ -78,6 +80,7 @@ skeleton = "cotl/DecorationShopGuy.skel"
 default_skins = ["default"]
 default_animation = "idle"
 category = "NPCs"
+head_slots = '^(HAT|HEAD|PIPE|Bubble.*|MOUTH|EYE.*|Moustache)$'
 
 [[actors]]
 name = "Plimbo's fish"
@@ -97,6 +100,7 @@ skeleton = "cotl/Fisherman.skel"
 default_skins = ["default"]
 default_animation = "fishing"
 category = "NPCs"
+head_slots = 'Eye|Head|Mouth|Moustache|Nose'
 
 [[actors]]
 name = "Leshy"
@@ -107,6 +111,7 @@ default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
 category = "Bosses"
+head_slots = 'MASK|Antler|Symbol|HEAD|CROWN|Crown|Hair'
 
 [[actors]]
 name = "Fox"
@@ -116,6 +121,7 @@ skeleton = "cotl/Fox.skel"
 default_skins = ["default"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(MASK|Head|Face.*|Mouth.*)$'
 
 [[actors]]
 name = "Heket"
@@ -126,6 +132,7 @@ default_skins = ["default"]
 default_animation = "idle"
 default_scale = 0.5
 category = "Bosses"
+head_slots = '^(MASK|NeckThing|Crown.*|Pupil|Head|Eye.*|Mouth.*|Hankercheif|Symbol.*)$'
 
 [[actors]]
 name = "Haro"
@@ -137,6 +144,7 @@ default_animation = "idle"
 default_scale = 0.5
 spoiler_animations = '^(enter.*|exit.*|transform.*)$'
 category = "NPCs"
+head_slots = '^(MASK|Symbol.*|Neck|Scarf|Antlers.*|HEAD|CROWN|Crown.*|Face|Inner face|Beak.*|Nostrils.*)$'
 
 [[actors]]
 name = "Kallamar"
@@ -147,6 +155,7 @@ default_skins = ["default"]
 default_animation = "leader/idle"
 default_scale = 0.5
 category = "Bosses"
+head_slots = 'Crown|head|Cheek|Mouth|MOUTH|Stick|EYE|Eye|Ear|Head|Symbol'
 
 [[actors]]
 name = "Flinky"
@@ -156,6 +165,7 @@ skeleton = "cotl/KnucklebonesPlayer_0_Flinky.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '(Neck|Face|Hat|Scarf)'
 
 [[actors]]
 name = "Klunko and Bop"
@@ -165,6 +175,7 @@ skeleton = "cotl/KnucklebonesPlayer_1_KlunkoAndBop.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(Worm|Head|Face.*)$'
 
 [[actors]]
 name = "Shrumy"
@@ -174,6 +185,7 @@ skeleton = "cotl/KnucklebonesPlayer_2_Shrumy.skel"
 default_skins = ["Normal"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(Neck|Scarf|Face.*|Hat)$'
 
 [[actors]]
 name = "Lighthouse Follower"
@@ -192,6 +204,7 @@ skeleton = "cotl/LighthouseKeeper.skel"
 default_skins = ["Axolotl"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(HEAD|FACE.*|NOSE)$'
 
 [[actors]]
 name = "Sozo"
@@ -201,6 +214,7 @@ skeleton = "cotl/mushroomNPC.skel"
 default_skins = ["default"]
 default_animation = "animation2"
 category = "NPCs"
+head_slots = '^(HEAD|MUSHROOM|NECK|FACE|Mushroom.*|Mouth)$'
 
 [[actors]]
 name = "Ratau"
@@ -210,6 +224,7 @@ skeleton = "cotl/RatNPC.skel"
 default_skins = ["normal"]
 default_animation = "idle"
 category = "NPCs"
+head_slots = '^(mask|HEAD|HAT|FACE|MOUTH)$'
 
 [[actors]]
 name = "Ratoo"
@@ -219,16 +234,18 @@ skeleton = "cotl/Ratoo.skel"
 default_skins = ["normal"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(MASK|HEAD|FACE)$'
 
 [[actors]]
 name = "Shamura"
 slug = "shamura"
 atlas = "cotl/Spider.atlas"
 skeleton = "cotl/Spider.skel"
-default_skins = ["default"]
+default_skins = ["Mask"]
 default_animation = "idle"
 default_scale = 0.5
 category = "Bosses"
+head_slots = "MASK|Head|Symbols|Bandage|Eyes|MOUTH|Mouth|Crown|Legs"
 
 [[actors]]
 name = "Helob"
@@ -238,6 +255,7 @@ skeleton = "cotl/SpiderFollowerSeller.skel"
 default_skins = ["default"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(HEAD|Mouth|Eye.*)$'
 
 [[actors]]
 name = "Clauneck"
@@ -247,6 +265,7 @@ skeleton = "cotl/TarotSeller.skel"
 default_skins = ["red"]
 default_animation = "idle"
 category = "NPCs"
+#head_slots = '.*(Head|Face|Mouth|Eye).*$'
 
 [[actors]]
 name = "Midas"
@@ -256,6 +275,7 @@ skeleton = "cotl/MidasNPC.skel"
 default_skins = ["default"]
 default_animation = "animation"
 category = "NPCs"
+head_slots = '^(root|Head|Eyes|Smile|Nose|Crown)$'
 
 [[actors]]
 name = "Baal & Aym"
@@ -267,6 +287,7 @@ default_animation = "idle"
 # Hide the skins/animations that duplicate Death Cat
 spoiler_skins = '^default$'
 spoiler_animations = '^(animation|snarling-cat|oldbits.*|.*OLD|.*heart.*|sneakyboirunlol)$'
+head_slots = '^(Ear.*|Head|HEAD|Face.*|FACE.*|Mouth.*|EYES|Hair.*|SnarlSpit)$'
 category = "Minibosses"
 
 [[actors]]
@@ -278,6 +299,7 @@ default_skins = ["Executioner"]
 default_animation = "idle"
 default_scale = 0.5
 spoiler_animations = '^(attack-.*|dead.*|die.*|hurt-.*|quickattack.*|run|sleeping|summon|throw|wake-up)$'
+head_slots = '^(HEAD|HORN.*|MASK|Eyes|HOOD.*|EYE.*)$'
 category = "Enemies"
 
 [[actors]]
@@ -290,13 +312,14 @@ default_animation = "idle"
 category = "Enemies"
 
 [[actors]]
-name = "Moth"
+name = "Monch"
 slug = "moth"
 atlas = "cotl/FireCultMoth.atlas"
 skeleton = "cotl/FireCultMoth.skel"
 default_skins = ["default"]
 default_animation = "idle"
 category = "NPCs"
+head_slots = '^images/(Head|Eye.*|Ear.*|Mouth.*)$'
 
 [[actors]]
 name = "Witnesses"
@@ -382,6 +405,7 @@ default_skins = ["all"]
 default_animation = "animation"
 default_scale = 0.3
 category = "Bosses"
+head_slots = 'Head|Eye|Ear|EYE|Pupil|Face|Mouth|MOUTH'
 
 [[actors]]
 name = "TOWW - Eyeball"
@@ -401,6 +425,7 @@ default_skins = ["default"]
 default_animation = "animation"
 default_scale = 0.5
 category = "Bosses"
+head_slots = 'Crown|Head|Eyes|Mouth'
 
 [[actors]]
 name = "Demon"
@@ -448,6 +473,7 @@ default_animation = "idle"
 default_scale = 0.3
 category = "Bosses"
 spoiler_animations = '^(transform2)$'
+head_slots = 'Antler|Head|MOUTH|Mouth|Eye|Crown'
 
 [[actors]]
 name = "Heket (Boss)"
@@ -598,6 +624,7 @@ skeleton = "cotl/Scarecrow.skel"
 default_skins = ["default"]
 default_animation = "animation"
 category = "Objects"
+head_slots = 'Head'
 
 [[actors]]
 name = "Scorpions & Hauras"
@@ -637,6 +664,8 @@ default_skins = ["Cult"]
 default_animation = "idle"
 category = "Enemies"
 spoiler_skins = ".*OLD.*"
+head_slots = 'Horn|Hood|Eyes|Mask'
+
 
 [[actors]]
 name = "Spiders & Focalor"
@@ -646,6 +675,8 @@ skeleton = "cotl/Spiders.skel"
 default_skins = ["DashSpider_Big"]
 default_animation = "idle"
 category = "Enemies"
+head_slots = 'Mouth|Fang|Head|Eyes'
+
 
 [[actors]]
 name = "Squirrel"
@@ -664,6 +695,8 @@ skeleton = "cotl/Turret.skel"
 default_skins = ["Forest Turret"]
 default_animation = "idle"
 category = "Enemies"
+head_slots = '^(Head|Antler.*|Eye.*)$'
+
 
 [[actors]]
 name = "Tunnel Turret & Barbatos"

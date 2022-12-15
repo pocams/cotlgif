@@ -98,6 +98,17 @@ impl HttpActor {
         }
     }
 
+    pub fn features(&self) -> Vec<&'static str> {
+        let mut features = vec![];
+        if self.config.head_slots.is_some() {
+            features.push("only_head");
+        }
+        if self.config.has_slot_colours {
+            features.push("slot_colours");
+        }
+        features
+    }
+
     pub fn is_valid_skin(&self, skin_name: &str, include_spoilers: bool) -> bool {
         if include_spoilers {
             self.all_skins.iter().any(|s| s.name == skin_name)
@@ -126,7 +137,7 @@ impl HttpActor {
                 "slug": self.config.slug,
                 "category": self.config.category,
                 "skins": if include_spoilers { &self.all_skins } else { &self.nonspoiler_skins },
-                "animations": if include_spoilers { &self.all_animations } else { &self.nonspoiler_animations },
+                "animations": if include_spoilers { &self.all_animations } else { &self.nonspoiler_animations }
         }))
     }
 }
@@ -231,6 +242,7 @@ async fn get_v1(
                 "default_skins": actor.config.default_skins,
                 "default_animation": actor.config.default_animation,
                 "default_scale": actor.config.default_scale,
+                "features": actor.features(),
             })
         })
         .collect();

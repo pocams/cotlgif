@@ -96,7 +96,7 @@ impl SkinParameters {
             fps,
             background_colour: self.background_colour.unwrap_or_default(),
             slot_colours,
-            only_head: self.only_head.unwrap_or_default(),
+            slots_to_draw: if self.only_head.unwrap_or(false) { actor.config.head_slots.clone() } else { None },
             petpet: self.petpet.unwrap_or_default(),
             flip: self.flip,
             custom_size: self.custom_size,

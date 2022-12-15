@@ -205,9 +205,13 @@ pub fn render(
         let slot_data = slot.data();
         let slot_name = slot_data.name();
         if !request.should_draw_slot(slot_name) {
+            debug!("Hiding slot: {}", slot_name);
             slot.color_mut().set_a(0.0);
         } else if let Some(color) = request.slot_colours.get(slot_name) {
+            debug!("Tinting slot: {} {:?}", slot_name, color);
             *slot.color_mut() = common_to_spine(color);
+        } else {
+            debug!("Normal slot: {}", slot_name);
         }
     }
 
@@ -236,22 +240,18 @@ pub fn render(
     let mut x_offset = -bounding_box.left;
     let mut y_offset = -bounding_box.top;
 
-    let mut target_width;
     let target_height;
     match request.custom_size {
         CustomSize::DefaultSize => {
-            target_width = bounding_box.width.ceil() as u32;
             target_height = bounding_box.height.ceil() as u32;
         }
 
         CustomSize::Discord128x128 => {
             if bounding_box.width > bounding_box.height {
-                target_width = bounding_box.width.ceil() as u32;
-                target_height = target_width;
+                target_height = bounding_box.width.ceil() as u32;
                 y_offset += (bounding_box.width - bounding_box.height) / 2.0;
             } else {
                 target_height = bounding_box.height.ceil() as u32;
-                target_width = target_height;
                 x_offset += (bounding_box.height - bounding_box.width) / 2.0;
             }
         }
@@ -327,7 +327,7 @@ pub fn render(
         text
     });
 
-    target_width = total_width.ceil() as u32;
+    let target_width = total_width.ceil() as u32;
 
     // Move the skeleton into the center of the bounding box
     controller.skeleton.set_x(dbg!(x_offset));
