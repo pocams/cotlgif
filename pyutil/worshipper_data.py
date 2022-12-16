@@ -77,6 +77,36 @@ class WorshipperData:
         }
 
 
+if 1:
+    import UnityPy
+    PATH = "/Users/mark/Library/Application Support/Steam/steamapps/common/Cult of the Lamb/Cult Of The Lamb.app/Contents/Resources/Data"
+
+    print("Finding Worshipper Data")
+
+    class Done(Exception):
+        pass
+
+    try:
+        for root, dirs, files in os.walk(PATH):
+            for filename in files:
+                path = os.path.join(root, filename)
+                env = UnityPy.load(path)
+
+                for obj in env.objects:
+                    if obj.type.name == "GameObject":
+                        data = obj.read()
+                        if data.name == "Worshipper Data":
+                            for component in data.m_Components:
+                                if component.type == 114:   # <ClassIDType.MonoBehaviour: 114>
+                                    worshipper_data = component.get_raw_data()
+                                    raise Done
+
+    except Done:
+        print("Found Worshipper Data")
+        with open("/Users/mark/dev/cotlgif/cotl/Worshipper Data.dat", "wb") as f:
+            f.write(worshipper_data)
+
+
 w = WorshipperData("/Users/mark/dev/cotlgif/cotl/Worshipper Data.dat")
 
 unk = []
@@ -94,6 +124,8 @@ while True:
     if w.at_eof():
         break
     skins.append(w.read_skin())
+
+print("Writing worshipper_data.json")
 
 with open("worshipper_data.json", "w") as data:
     json.dump({
