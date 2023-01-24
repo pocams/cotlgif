@@ -5,288 +5,302 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 images/Antler_Top_Left
-  rotate: false
-  xy: 695, 177
+  rotate: true
+  xy: 2, 20
   size: 300, 511
   orig: 300, 511
   offset: 0, 0
   index: -1
 images/Antler_Top_Right
-  rotate: false
-  xy: 2641, 1356
+  rotate: true
+  xy: 898, 1035
   size: 273, 522
   orig: 273, 522
   offset: 0, 0
   index: -1
 images/Antlers_Left
-  rotate: false
-  xy: 1902, 253
+  rotate: true
+  xy: 1629, 1476
   size: 570, 887
   orig: 570, 887
   offset: 0, 0
   index: -1
 images/Antlers_Right
   rotate: true
-  xy: 2641, 748
+  xy: 1035, 475
   size: 558, 937
   orig: 558, 937
   offset: 0, 0
   index: -1
 images/Body_Bottom
-  rotate: false
-  xy: 2474, 108
+  rotate: true
+  xy: 2705, 481
   size: 737, 638
   orig: 737, 638
   offset: 0, 0
   index: -1
 images/Body_Mid
   rotate: false
-  xy: 997, 28
+  xy: 2754, 18
   size: 679, 461
   orig: 679, 461
   offset: 0, 0
   index: -1
 images/Crown
-  rotate: false
-  xy: 883, 2
+  rotate: true
+  xy: 1279, 374
   size: 99, 173
   orig: 99, 173
   offset: 0, 0
   index: -1
 images/CrownEye
   rotate: true
-  xy: 2916, 1824
+  xy: 776, 36
   size: 54, 48
   orig: 54, 48
   offset: 0, 0
   index: -1
 images/CrownEye_Closed
-  rotate: true
-  xy: 997, 636
+  rotate: false
+  xy: 776, 12
   size: 52, 22
   orig: 52, 22
   offset: 0, 0
   index: -1
-images/Eye_Big
+images/DigMound_1_Big
   rotate: false
-  xy: 1748, 911
+  xy: 1608, 131
+  size: 635, 212
+  orig: 635, 212
+  offset: 0, 0
+  index: -1
+images/DigMound_2_Big
+  rotate: false
+  xy: 1422, 1095
+  size: 651, 213
+  orig: 651, 213
+  offset: 0, 0
+  index: -1
+images/DigMound_3_Big
+  rotate: false
+  xy: 515, 92
+  size: 631, 228
+  orig: 631, 228
+  offset: 0, 0
+  index: -1
+images/Eye_Big
+  rotate: true
+  xy: 1817, 1333
   size: 141, 186
   orig: 141, 186
   offset: 0, 0
   index: -1
 images/Eye_Big_Shut
-  rotate: true
-  xy: 2, 17
+  rotate: false
+  xy: 1601, 345
   size: 98, 128
   orig: 98, 128
   offset: 0, 0
   index: -1
 images/Eye_Big_Summon
   rotate: true
-  xy: 695, 33
+  xy: 1629, 1332
   size: 142, 186
   orig: 142, 186
   offset: 0, 0
   index: -1
 images/Eye_Small
   rotate: true
-  xy: 332, 37
+  xy: 613, 12
   size: 78, 95
   orig: 78, 95
   offset: 0, 0
   index: -1
 images/Eye_Small_Shut
-  rotate: true
-  xy: 429, 51
+  rotate: false
+  xy: 710, 15
   size: 64, 75
   orig: 64, 75
   offset: 0, 0
   index: -1
 images/Eye_Small_Summon
   rotate: true
-  xy: 234, 35
+  xy: 515, 10
   size: 80, 96
   orig: 80, 96
   offset: 0, 0
   index: -1
-images/FloorHole
-  rotate: false
-  xy: 1910, 1880
-  size: 1065, 164
-  orig: 1065, 164
-  offset: 0, 0
-  index: -1
 images/Head
-  rotate: false
-  xy: 2, 1150
+  rotate: true
+  xy: 2, 1015
   size: 1031, 894
   orig: 1031, 894
   offset: 0, 0
   index: -1
 images/Head_Dead
-  rotate: true
-  xy: 2, 117
+  rotate: false
+  xy: 2, 322
   size: 1031, 691
   orig: 1031, 691
   offset: 0, 0
   index: -1
 images/MonsterHeart_glow
-  rotate: false
-  xy: 3213, 26
+  rotate: true
+  xy: 3535, 555
   size: 213, 186
   orig: 219, 194
   offset: 3, 4
   index: -1
 images/MouthSlime
-  rotate: true
-  xy: 695, 690
+  rotate: false
+  xy: 1148, 2
   size: 458, 332
   orig: 458, 332
   offset: 0, 0
   index: -1
 images/Mouth_Back
-  rotate: true
-  xy: 1035, 491
-  size: 761, 711
+  rotate: false
+  xy: 2518, 1504
+  size: 629, 542
   orig: 761, 711
-  offset: 0, 0
+  offset: 88, 37
   index: -1
 images/Mouth_Front
   rotate: true
-  xy: 2977, 1308
+  xy: 898, 1310
   size: 736, 729
   orig: 736, 729
   offset: 0, 0
   index: -1
 images/Mouth_Front_Btm
   rotate: true
-  xy: 1910, 1142
+  xy: 1974, 357
   size: 736, 729
   orig: 736, 729
   offset: 0, 0
   index: -1
 images/Mouth_Mid
   rotate: false
-  xy: 1035, 1254
-  size: 873, 790
+  xy: 3149, 1529
+  size: 613, 517
   orig: 873, 790
-  offset: 0, 0
+  offset: 135, 112
   index: -1
 images/blood_explosion0001
-  rotate: true
-  xy: 132, 22
+  rotate: false
+  xy: 1701, 373
   size: 93, 100
   orig: 323, 313
   offset: 93, 132
   index: -1
 images/blood_explosion0002
   rotate: false
-  xy: 1748, 1099
+  xy: 2005, 1321
   size: 152, 153
   orig: 323, 313
   offset: 70, 120
   index: -1
 images/blood_explosion0003
-  rotate: false
-  xy: 3468, 50
+  rotate: true
+  xy: 3580, 816
   size: 203, 195
   orig: 323, 313
   offset: 48, 106
   index: -1
 images/blood_explosion0004
   rotate: true
-  xy: 3789, 95
+  xy: 3435, 258
   size: 229, 218
   orig: 323, 313
   offset: 33, 95
   index: -1
 images/blood_explosion0005
   rotate: true
-  xy: 3789, 326
+  xy: 3345, 770
   size: 249, 233
   orig: 323, 313
   offset: 20, 73
   index: -1
 images/blood_explosion0006
   rotate: false
-  xy: 3580, 767
+  xy: 3345, 1021
   size: 258, 240
   orig: 323, 313
   offset: 15, 66
   index: -1
 images/blood_explosion0007
-  rotate: false
-  xy: 2196, 6
+  rotate: true
+  xy: 3151, 1263
   size: 264, 245
   orig: 323, 313
   offset: 9, 58
   index: -1
 images/blood_explosion0008
   rotate: true
-  xy: 3213, 214
+  xy: 2896, 1230
   size: 272, 253
   orig: 323, 313
   offset: 6, 47
   index: -1
 images/blood_explosion0009
-  rotate: false
-  xy: 3213, 488
+  rotate: true
+  xy: 2636, 1220
   size: 282, 258
   orig: 323, 313
   offset: 3, 39
   index: -1
 images/blood_explosion0010
-  rotate: false
-  xy: 1898, 4
+  rotate: true
+  xy: 2387, 1178
   size: 296, 247
   orig: 323, 313
   offset: 3, 38
   index: -1
 images/blood_explosion0011
   rotate: true
-  xy: 3580, 1009
+  xy: 2500, 58
   size: 297, 252
   orig: 323, 313
   offset: 4, 21
   index: -1
 images/blood_explosion0012
   rotate: true
-  xy: 3497, 442
+  xy: 2245, 51
   size: 304, 253
   orig: 323, 313
   offset: 2, 4
   index: -1
 images/blood_explosion0013
-  rotate: true
-  xy: 1678, 179
+  rotate: false
+  xy: 2075, 1101
   size: 310, 218
   orig: 323, 313
   offset: 1, 20
   index: -1
 images/blood_explosion0014
-  rotate: false
-  xy: 3752, 577
+  rotate: true
+  xy: 3345, 489
   size: 279, 188
   orig: 323, 313
   offset: 0, 30
   index: -1
 images/blood_explosion0015
   rotate: false
-  xy: 3468, 247
+  xy: 3398, 1334
   size: 319, 193
   orig: 323, 313
   offset: 0, 5
   index: -1
 images/blood_explosion0016
-  rotate: true
-  xy: 1748, 667
+  rotate: false
+  xy: 1035, 336
   size: 242, 137
   orig: 323, 313
   offset: 25, 34
   index: -1
 images/blood_explosion0017
-  rotate: true
-  xy: 1748, 520
+  rotate: false
+  xy: 1454, 366
   size: 145, 107
   orig: 323, 313
   offset: 28, 18

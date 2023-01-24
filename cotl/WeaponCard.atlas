@@ -6,336 +6,329 @@ filter: Linear,Linear
 repeat: none
 images/AmmoEfficient
   rotate: false
-  xy: 1568, 1512
+  xy: 1250, 8
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/BlackSoulAutoRecharge
   rotate: false
-  xy: 1256, 9
+  xy: 1561, 508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/BlackSoulOnDamage
   rotate: false
-  xy: 1568, 510
+  xy: 1562, 1009
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/BombOnDamaged
   rotate: false
-  xy: 1882, 1512
+  xy: 1563, 10
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/BombOnRoll
   rotate: false
-  xy: 1570, 11
+  xy: 1874, 511
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/CardBack_Trinket
   rotate: false
-  xy: 316, 1509
+  xy: 1, 501
   size: 311, 500
   orig: 311, 500
   offset: 0, 0
   index: -1
 images/CardBack_Weapon
   rotate: false
-  xy: 316, 1509
+  xy: 1, 501
   size: 311, 500
   orig: 311, 500
   offset: 0, 0
   index: -1
 images/CardBlast
   rotate: false
-  xy: 2, 1508
+  xy: 1, 1504
   size: 312, 501
   orig: 312, 501
   offset: 0, 0
   index: -1
 images/Card_Trinket_DeathsDoor
   rotate: false
-  xy: 1883, 1013
+  xy: 1877, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/Card_Trinket_DiseasedHeart
   rotate: false
-  xy: 2, 2
+  xy: 1, 1
   size: 312, 499
   orig: 312, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_EyeOfWeakness
   rotate: false
-  xy: 2196, 1512
+  xy: 1876, 13
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/Card_Trinket_GiftFromBelow
   rotate: false
-  xy: 1884, 15
+  xy: 2187, 512
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/Card_Trinket_HandsOfRage
   rotate: false
-  xy: 629, 1510
+  xy: 313, 504
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Heart
   rotate: false
-  xy: 629, 508
+  xy: 314, 4
+  size: 311, 499
+  orig: 311, 499
+  offset: 0, 0
+  index: -1
+images/Card_Trinket_HoldToHeal
+  rotate: false
+  xy: 1250, 1006
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Moon
   rotate: false
-  xy: 630, 1009
+  xy: 625, 504
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_NaturesGift
   rotate: false
-  xy: 942, 1510
+  xy: 626, 1006
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Potion
   rotate: false
-  xy: 630, 7
+  xy: 627, 1506
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Skull
   rotate: false
-  xy: 2, 503
+  xy: 1, 1002
   size: 311, 501
   orig: 311, 501
   offset: 0, 0
   index: -1
 images/Card_Trinket_Spider
   rotate: false
-  xy: 315, 505
+  xy: 313, 1004
   size: 312, 499
   orig: 312, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Sun
   rotate: false
-  xy: 316, 4
+  xy: 314, 1506
   size: 312, 499
   orig: 312, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_Telescope
   rotate: false
-  xy: 942, 508
+  xy: 626, 4
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheDeal
   rotate: false
-  xy: 2196, 514
+  xy: 2188, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheHearts1
   rotate: false
-  xy: 943, 1009
+  xy: 937, 506
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheHearts2
   rotate: false
-  xy: 1255, 1510
+  xy: 938, 1006
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheHearts3
   rotate: false
-  xy: 943, 7
+  xy: 939, 1506
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheLovers1
   rotate: false
-  xy: 1255, 508
+  xy: 938, 6
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
 images/Card_Trinket_TheLovers2
   rotate: false
-  xy: 1256, 1009
+  xy: 1249, 506
   size: 311, 499
   orig: 311, 499
   offset: 0, 0
   index: -1
-images/Card_Weapon_Sword
-  rotate: false
-  xy: 2, 1006
-  size: 312, 500
-  orig: 312, 500
-  offset: 0, 0
-  index: -1
 images/DamageOnRoll
   rotate: false
-  xy: 2197, 1013
+  xy: 2190, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/GoopOnDamaged
   rotate: false
-  xy: 2510, 1512
+  xy: 2189, 14
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/GoopOnRoll
   rotate: false
-  xy: 2198, 15
+  xy: 2500, 512
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/GoopOnRoomChange
   rotate: false
-  xy: 316, 1009
+  xy: 1251, 1507
   size: 312, 498
   orig: 312, 498
   offset: 0, 0
   index: -1
 images/HealChance
   rotate: false
-  xy: 2510, 514
+  xy: 2501, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/HealTwiceAmount
   rotate: false
-  xy: 2511, 1013
+  xy: 2503, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/ImmuneToTraps
   rotate: false
-  xy: 2824, 1512
+  xy: 2502, 14
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/IncreasedDamage
   rotate: false
-  xy: 2512, 15
+  xy: 2813, 512
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/IncreasedXP
   rotate: false
-  xy: 2824, 514
+  xy: 2814, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/InvincibilityPerRoom
   rotate: false
-  xy: 2825, 1013
-  size: 312, 497
-  orig: 312, 497
-  offset: 0, 0
-  index: -1
-images/InvincibleWhileHealing
-  rotate: false
-  xy: 2826, 15
+  xy: 2816, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/MoreRelics
   rotate: false
-  xy: 3138, 1512
+  xy: 2815, 14
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/MovementSpeed
   rotate: false
-  xy: 3138, 514
+  xy: 3126, 512
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/MovementSpeed copy
   rotate: false
-  xy: 3139, 1013
+  xy: 3127, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/NegateDamageChance
   rotate: false
-  xy: 3452, 1512
+  xy: 3129, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/NeptunesCurse
   rotate: false
-  xy: 1569, 1013
+  xy: 1564, 1508
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/PoisonImmune
   rotate: false
-  xy: 3140, 15
+  xy: 3128, 14
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
 images/RabbitsFoot
   rotate: false
-  xy: 1882, 514
+  xy: 1875, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
   index: -1
-images/ShineGradient
+images/TentacleOnDamaged
   rotate: false
-  xy: 3766, 1373
-  size: 167, 636
-  orig: 167, 636
+  xy: 3439, 512
+  size: 312, 497
+  orig: 312, 497
   offset: 0, 0
   index: -1
 images/WalkThroughBlocks
   rotate: false
-  xy: 3452, 514
+  xy: 3440, 1010
   size: 312, 497
   orig: 312, 497
   offset: 0, 0
