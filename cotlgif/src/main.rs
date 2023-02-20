@@ -68,6 +68,9 @@ fn main() -> color_eyre::Result<()> {
         .init();
 
     let args = Args::parse();
+
+    let skin_colours = SkinColours::load()?;
+
     let mut actors = Vec::with_capacity(config.actors.len());
 
     let mut http_actors = Vec::with_capacity(config.actors.len());
@@ -92,7 +95,7 @@ fn main() -> color_eyre::Result<()> {
         runtime.block_on(cotlgif_http::serve(
             args.get_http_options(),
             http_actors,
-            SkinColours::load(),
+            skin_colours,
             render_request_sender,
         ))
     });

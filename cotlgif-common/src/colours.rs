@@ -1,8 +1,30 @@
 use std::collections::HashMap;
+use std::fs::File;
+use std::io;
+use std::io::Error;
 
 use serde::{Deserialize, Serialize, Serializer};
+use thiserror::Error;
 
-const COLOUR_DATA: &str = include_str!("../../assets/worshipper_data.json");
+#[derive(Error, Debug)]
+pub enum WorshipperDataError {
+    #[error("failed to load worshipper_data.json: {0}")]
+    LoadError(String),
+    #[error("failed to parse worshipper_data.json: {0}")]
+    ParseError(String),
+}
+
+impl From<io::Error> for WorshipperDataError {
+    fn from(value: Error) -> Self {
+        WorshipperDataError::LoadError(value.to_string())
+    }
+}
+
+impl From<serde_json::Error> for WorshipperDataError {
+    fn from(value: serde_json::Error) -> Self {
+        WorshipperDataError::ParseError(value.to_string())
+    }
+}
 
 #[derive(Deserialize, Copy, Clone, Debug, Default)]
 pub struct CommonColour {
@@ -50,8 +72,8 @@ pub struct SkinColours {
 }
 
 impl SkinColours {
-    pub fn load() -> SkinColours {
-        serde_json::from_str(COLOUR_DATA).unwrap()
+    pub fn load() -> Result<SkinColours, WorshipperDataError> {
+        Ok(serde_json::from_reader(File::open("assets/worshipper_data.json")?)?)
     }
 
     pub fn colour_set_from_index(
