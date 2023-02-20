@@ -1,22 +1,22 @@
-use axum::body::StreamBody;
-use axum::extract::{Host, Path, Query};
-use axum::http::{header, StatusCode};
-use axum::response::{IntoResponse, Response};
-use axum::routing::{get, get_service};
-use axum::{Extension, Json, Router};
 use std::net::SocketAddr;
 use std::ops::Deref;
 use std::sync::Arc;
 
+use axum::body::StreamBody;
+use axum::extract::{Host, Path, Query, State, FromRef};
+use axum::http::{header, StatusCode};
+use axum::response::{IntoResponse, Response};
+use axum::routing::{get, get_service};
+use axum::{Json, Router};
 use serde_json::json;
 use tokio::sync::mpsc;
+use tower_http::services::ServeDir;
+use tower_http::trace::TraceLayer;
+use tracing::{debug, info};
 
 use crate::params::SkinParameters;
 use crate::util::{json_500, ChannelWriter, JsonError};
 use cotlgif_common::{slugify_string, ActorConfig, SkinColours, SpineAnimation, SpineSkin};
-use tower_http::services::ServeDir;
-use tower_http::trace::TraceLayer;
-use tracing::{debug, info};
 
 mod params;
 mod util;
@@ -142,6 +142,14 @@ impl HttpActor {
     }
 }
 
+#[derive(Clone, FromRef)]
+struct AppState {
+    options: Arc<HttpOptions>,
+    actors: Arc<Vec<HttpActor>>,
+    skin_colours: Arc<SkinColours>,
+    render_request_channel: mpsc::Sender<HttpRenderRequest>
+}
+
 pub async fn serve(
     options: HttpOptions,
     actors: Vec<HttpActor>,
@@ -157,18 +165,28 @@ pub async fn serve(
     });
 
     let listen_host = options.listen;
+
+    let state = AppState {
+        options: Arc::new(options),
+        actors: Arc::new(actors),
+        skin_colours: Arc::new(skin_colours),
+        render_request_channel
+    };
+
     let app = Router::new()
         .route("/", get(get_index))
         .route("/init.js", get(get_spoiler_js))
+        // Handle trailing slashes in v1 api since axum transparently fixed these up in 0.5, in api v2 this can be stricter
         .route("/v1", get(get_v1))
+        .route("/v1/", get(get_v1))
         .route("/v1/:actor", get(get_v1_actor))
+        .route("/v1/:actor/", get(get_v1_actor))
         .route("/v1/:actor/colours", get(get_v1_colours))
+        .route("/v1/:actor/colours/", get(get_v1_colours))
         .route("/v1/:actor/:skin", get(get_v1_skin))
-        .nest("/static", serve_dir_service)
-        .layer(Extension(Arc::new(options)))
-        .layer(Extension(Arc::new(actors)))
-        .layer(Extension(Arc::new(skin_colours)))
-        .layer(Extension(render_request_channel))
+        .route("/v1/:actor/:skin/", get(get_v1_skin))
+        .nest_service("/static",serve_dir_service)
+        .with_state(state)
         .layer(TraceLayer::new_for_http());
 
     info!("Starting server");
@@ -178,7 +196,7 @@ pub async fn serve(
         .unwrap();
 }
 
-async fn get_index(Extension(options): Extension<Arc<HttpOptions>>) -> impl IntoResponse {
+async fn get_index(State(options): State<Arc<HttpOptions>>) -> impl IntoResponse {
     let filename = if options.dev {
         "html/index.dev.html"
     } else {
@@ -207,7 +225,7 @@ async fn get_index(Extension(options): Extension<Arc<HttpOptions>>) -> impl Into
 
 async fn get_spoiler_js(
     Host(host): Host,
-    Extension(options): Extension<Arc<HttpOptions>>,
+    State(options): State<Arc<HttpOptions>>,
 ) -> impl IntoResponse {
     let body = if options.should_enable_spoilers(&host) {
         "window.spoilersEnabled = true;\n"
@@ -225,8 +243,8 @@ async fn get_spoiler_js(
 }
 
 async fn get_v1(
-    Extension(actors): Extension<Arc<Vec<HttpActor>>>,
-    Extension(options): Extension<Arc<HttpOptions>>,
+    State(actors): State<Arc<Vec<HttpActor>>>,
+    State(options): State<Arc<HttpOptions>>,
     Host(host): Host,
 ) -> impl IntoResponse {
     let show_spoilers = options.should_enable_spoilers(&host);
@@ -254,8 +272,8 @@ async fn get_v1(
 }
 
 async fn get_v1_actor(
-    Extension(actors): Extension<Arc<Vec<HttpActor>>>,
-    Extension(options): Extension<Arc<HttpOptions>>,
+    State(actors): State<Arc<Vec<HttpActor>>>,
+    State(options): State<Arc<HttpOptions>>,
     Path(actor_slug): Path<String>,
     Host(host): Host,
 ) -> impl IntoResponse {
@@ -279,7 +297,7 @@ async fn get_v1_actor(
 }
 
 async fn get_v1_colours(
-    Extension(skin_colours): Extension<Arc<SkinColours>>,
+    State(skin_colours): State<Arc<SkinColours>>,
     Path(actor_name): Path<String>,
     Host(_host): Host,
 ) -> impl IntoResponse {
@@ -294,10 +312,10 @@ async fn get_v1_colours(
 }
 
 async fn get_v1_skin(
-    Extension(actors): Extension<Arc<Vec<HttpActor>>>,
-    Extension(options): Extension<Arc<HttpOptions>>,
-    Extension(skin_colours): Extension<Arc<SkinColours>>,
-    Extension(render_request_channel): Extension<mpsc::Sender<HttpRenderRequest>>,
+    State(actors): State<Arc<Vec<HttpActor>>>,
+    State(options): State<Arc<HttpOptions>>,
+    State(skin_colours): State<Arc<SkinColours>>,
+    State(render_request_channel): State<mpsc::Sender<HttpRenderRequest>>,
     Path((actor_slug, skin_name)): Path<(String, String)>,
     Query(params): Query<Vec<(String, String)>>,
     Host(host): Host,
