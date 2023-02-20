@@ -54,10 +54,14 @@ fn main() -> color_eyre::Result<()> {
         std::env::set_var("RUST_LOG", "info,cotlgif=debug")
     }
 
-    let config: Config = toml::from_slice(
-        &std::fs::read("config.toml").map_err(|e| eyre!("Reading config.toml: {:?}", e))?,
-    )
-    .map_err(|e| eyre!("Parsing config.toml: {}", e))?;
+    let toml_bytes = std::fs::read("config.toml")
+            .map_err(|e| eyre!("Reading config.toml: {:?}", e))?;
+
+    let toml_str: String = String::from_utf8(toml_bytes)
+        .map_err(|e| eyre!("Invalid utf-8 in config.toml: {:?}", e))?;
+
+    let config: Config = toml::from_str(&toml_str)
+        .map_err(|e| eyre!("Parsing config.toml: {}", e))?;
 
     tracing_subscriber::fmt::fmt()
         .with_env_filter(EnvFilter::from_default_env())
