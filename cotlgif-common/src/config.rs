@@ -10,7 +10,7 @@ where
     // so seldom it's not a huge deal
     let s = String::deserialize(deserializer)?;
     Ok(Some(
-        Regex::new(&s).map_err(|e| D::Error::custom(format!("{:?}", e)))?,
+        Regex::new(&s).map_err(|e| Error::custom(format!("{:?}", e)))?,
     ))
 }
 

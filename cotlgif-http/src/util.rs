@@ -85,12 +85,12 @@ impl FromStr for OutputType {
 }
 
 pub struct ChannelWriter {
-    sender: Option<futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, tokio::io::Error>>>,
+    sender: Option<futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, io::Error>>>,
 }
 
 impl ChannelWriter {
     pub fn new(
-        sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, tokio::io::Error>>,
+        sender: futures_channel::mpsc::UnboundedSender<Result<Vec<u8>, io::Error>>,
     ) -> ChannelWriter {
         ChannelWriter {
             sender: Some(sender),

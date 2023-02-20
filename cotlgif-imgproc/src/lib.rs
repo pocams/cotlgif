@@ -74,20 +74,18 @@ impl Drop for GifRenderer {
     }
 }
 
-pub struct ApngRenderer<'a, W>
+pub struct ApngRenderer<W>
 where
     W: io::Write + Send + 'static,
 {
-    encoder: Option<png::Encoder<'a, W>>,
     writer: Option<png::Writer<W>>,
     last_timestamp: f64,
     output: Option<W>,
 }
 
-impl<'a, W: io::Write + Send + 'static> ApngRenderer<'a, W> {
-    pub fn new(output: W) -> ApngRenderer<'a, W> {
+impl<W: io::Write + Send + 'static> ApngRenderer<W> {
+    pub fn new(output: W) -> ApngRenderer<W> {
         ApngRenderer {
-            encoder: None,
             writer: None,
             last_timestamp: 0.0,
             output: Some(output),
@@ -95,7 +93,7 @@ impl<'a, W: io::Write + Send + 'static> ApngRenderer<'a, W> {
     }
 }
 
-impl<W: io::Write + Send + 'static> FrameHandler for ApngRenderer<'_, W> {
+impl<W: io::Write + Send + 'static> FrameHandler for ApngRenderer<W> {
     fn set_metadata(&mut self, metadata: RenderMetadata) {
         debug!("ApngRenderer metadata {:?}", metadata);
         let mut encoder = png::Encoder::new(
@@ -156,32 +154,30 @@ impl<W: io::Write + Send + 'static> FrameHandler for ApngRenderer<'_, W> {
     }
 }
 
-impl<W: io::Write + Send + 'static> Drop for ApngRenderer<'_, W> {
+impl<W: io::Write + Send + 'static> Drop for ApngRenderer<W> {
     fn drop(&mut self) {
         debug!("ApngRenderer finished");
     }
 }
 
-pub struct PngRenderer<'a, W>
+pub struct PngRenderer<W>
 where
     W: io::Write + Send + 'static,
 {
-    encoder: Option<png::Encoder<'a, W>>,
     writer: Option<png::Writer<W>>,
     output: Option<W>,
 }
 
-impl<'a, W: io::Write + Send + 'static> PngRenderer<'a, W> {
-    pub fn new(output: W) -> PngRenderer<'a, W> {
+impl<W: io::Write + Send + 'static> PngRenderer<W> {
+    pub fn new(output: W) -> PngRenderer<W> {
         PngRenderer {
-            encoder: None,
             writer: None,
             output: Some(output),
         }
     }
 }
 
-impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<'_, W> {
+impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<W> {
     fn set_metadata(&mut self, metadata: RenderMetadata) {
         debug!("PngRenderer metadata {:?}", metadata);
         let mut encoder = png::Encoder::new(
@@ -216,7 +212,7 @@ impl<W: io::Write + Send + 'static> FrameHandler for PngRenderer<'_, W> {
     }
 }
 
-impl<W: io::Write + Send + 'static> Drop for PngRenderer<'_, W> {
+impl<W: io::Write + Send + 'static> Drop for PngRenderer<W> {
     fn drop(&mut self) {
         debug!("PngRenderer finished");
     }

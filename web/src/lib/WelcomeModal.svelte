@@ -15,7 +15,7 @@
                 <p>This tool includes spoilers for unreleased Cult of the Lamb content. Some
                     of the animations will be broken and not render properly.</p>
                 <p class="mt-3">If you are not working on a Cult of the Lamb mod, you should:</p>
-                <a class="is-size-3" href="http://cotl.xl0.org">Use the proper version</a>
+                <a class="is-size-3" href="https://cotl.xl0.org">Use the proper version</a>
                 <p class="mt-3">If you continue anyway, Ratau will be disappointed in you.</p>
                 <img class="image mx-auto" src="/v1/ratau/normal?animation=knucklebones/lose-game-loop&scale=0.6">
             {:else}

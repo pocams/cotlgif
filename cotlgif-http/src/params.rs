@@ -40,7 +40,7 @@ impl SkinParameters {
         enable_spoilers: bool,
         skin_colours: &SkinColours,
     ) -> Result<RenderRequest, JsonError> {
-        let mut skins = vec![skin_name.to_owned()];
+        let mut skins = vec![skin_name.to_string()];
         skins.extend(self.add_skin.iter().cloned());
         let antialiasing = self
             .antialiasing
@@ -55,11 +55,11 @@ impl SkinParameters {
             .iter()
             .any(|s| !actor.is_valid_skin(s, enable_spoilers))
         {
-            return Err(json_400("invalid skin for actor".to_owned()));
+            return Err(json_400("invalid skin for actor".to_string()));
         }
 
         let Some(animation) = &self.animation else {
-            return Err(json_400("animation parameter is required".to_owned()));
+            return Err(json_400("animation parameter is required".to_string()));
         };
 
         if !actor.is_valid_animation(animation, enable_spoilers) {
@@ -78,9 +78,9 @@ impl SkinParameters {
         }
 
         Ok(RenderRequest {
-            actor_slug: actor.config.slug.to_owned(),
+            actor_slug: actor.config.slug.to_string(),
             skins,
-            animation: animation.to_owned(),
+            animation: animation.to_string(),
             scale: self.scale.unwrap_or(1.0),
             antialiasing,
             start_time: self.start_time.unwrap_or(0.0),
@@ -277,7 +277,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "horizontal" => Flip::Horizontal,
                         "none" => Flip::NoFlip,
                         _ => {
-                            return Err(json_400(format!("flip: expected 'horizontal' or 'none'")))
+                            return Err(json_400("flip: expected 'horizontal' or 'none'".to_string()))
                         }
                     }
                 }
@@ -286,9 +286,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "discord128x128" => CustomSize::Discord128x128,
                         "none" => CustomSize::DefaultSize,
                         _ => {
-                            return Err(json_400(format!(
-                                "custom_size: expected 'discord128x128' or 'none'"
-                            )))
+                            return Err(json_400("custom_size: expected 'discord128x128' or 'none'".to_string()))
                         }
                     }
                 }
@@ -299,7 +297,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "top_text_font" => {
                             t.font = value
                                 .parse()
-                                .map_err(|_| json_400(format!("top_text_font: unknown font")))?
+                                .map_err(|_| json_400("top_text_font: unknown font".to_string()))?
                         }
                         "top_text_size" => {
                             t.size = value
@@ -316,7 +314,7 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "bottom_text_font" => {
                             t.font = value
                                 .parse()
-                                .map_err(|_| json_400(format!("bottom_text_font: unknown font")))?
+                                .map_err(|_| json_400("bottom_text_font: unknown font".to_string()))?
                         }
                         "bottom_text_size" => {
                             t.size = value

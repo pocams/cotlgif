@@ -34,7 +34,7 @@ struct Args {
 impl Args {
     fn get_http_options(&self) -> HttpOptions {
         HttpOptions {
-            listen: self.listen.clone(),
+            listen: self.listen,
             spoilers_host: self.spoilers_host.clone(),
             public: self.public,
             dev: self.dev,
@@ -186,7 +186,7 @@ pub struct RenderBufferer {
 
 impl FrameHandler for RenderBufferer {
     fn set_metadata(&mut self, metadata: RenderMetadata) {
-        if let Err(_) = self.sender.send(BufferMessage::Metadata(metadata)) {
+        if self.sender.send(BufferMessage::Metadata(metadata)).is_err() {
             error!("RenderBufferer send metadata failed");
         }
     }

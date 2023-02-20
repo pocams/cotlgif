@@ -96,12 +96,12 @@ impl SpineActor {
         let skeleton_data = Arc::new(if skeleton_path.ends_with(".json") {
             let skeleton_json = SkeletonJson::new(atlas.clone());
             skeleton_json
-                .read_skeleton_data_file(&skeleton_path)
+                .read_skeleton_data_file(skeleton_path)
                 .map_err(|e| LoadError::SkeletonLoadError(e.to_string()))?
         } else {
             let skeleton_binary = SkeletonBinary::new(atlas.clone());
             skeleton_binary
-                .read_skeleton_data_file(&skeleton_path)
+                .read_skeleton_data_file(skeleton_path)
                 .map_err(|e| LoadError::SkeletonLoadError(e.to_string()))?
         });
 
@@ -276,7 +276,7 @@ pub fn render(
 
     let mut top_text = request.top_text.as_ref().map(|tp| {
         let sfml_font = get_font(&tp.font);
-        let mut text = sfml::graphics::Text::new(&tp.text, &sfml_font, tp.size);
+        let mut text = sfml::graphics::Text::new(&tp.text, sfml_font, tp.size);
         text.set_fill_color(sfml::graphics::Color::WHITE);
         text.set_outline_color(sfml::graphics::Color::BLACK);
         text.set_outline_thickness(2.0);
@@ -298,7 +298,7 @@ pub fn render(
 
     let bottom_text = request.bottom_text.as_ref().map(|tp| {
         let sfml_font = get_font(&tp.font);
-        let mut text = sfml::graphics::Text::new(&tp.text, &sfml_font, tp.size);
+        let mut text = sfml::graphics::Text::new(&tp.text, sfml_font, tp.size);
         text.set_fill_color(sfml::graphics::Color::WHITE);
         text.set_outline_color(sfml::graphics::Color::BLACK);
         text.set_outline_thickness(2.0);
@@ -335,7 +335,7 @@ pub fn render(
     controller.update(request.start_time);
 
     let mut target = RenderTexture::new(target_width, target_height)
-        .ok_or_else(|| RenderError::TextureFailed)?;
+        .ok_or(RenderError::TextureFailed)?;
 
     let mut render_states = RenderStates::new(BLEND_NORMAL, Transform::IDENTITY, None, None);
     // This transform is used to render text - otherwise it ends up inverted on the Y axis for some reason
@@ -376,54 +376,52 @@ pub fn render(
             );
         }
 
-        for render_controller in [Some(&mut controller), petpet_controller.as_mut()] {
-            if let Some(rc) = render_controller {
-                let renderables = rc.renderables();
-                for renderable in renderables.iter() {
-                    if renderable.color.a < 0.001 {
-                        continue;
-                    };
+        for rc in [Some(&mut controller), petpet_controller.as_mut()].into_iter().flatten() {
+            let renderables = rc.renderables();
+            for renderable in renderables.iter() {
+                if renderable.color.a < 0.001 {
+                    continue;
+                };
 
-                    let color = spine_to_sfml(&renderable.color);
+                let color = spine_to_sfml(&renderable.color);
 
-                    let texture = unsafe {
-                        &*(renderable.attachment_renderer_object.unwrap() as *const SfBox<Texture>)
-                    };
-                    let texture_size = texture.size();
-                    render_states.set_texture(Some(texture));
+                let texture = unsafe {
+                    &*(renderable.attachment_renderer_object.unwrap() as *const SfBox<Texture>)
+                };
+                let texture_size = texture.size();
+                render_states.set_texture(Some(texture));
 
-                    render_states.blend_mode = match renderable.blend_mode {
-                        SpineBlendMode::Normal => BLEND_NORMAL,
-                        SpineBlendMode::Additive => BLEND_ADDITIVE,
-                        SpineBlendMode::Multiply => BLEND_MULTIPLY,
-                        SpineBlendMode::Screen => BLEND_SCREEN,
-                    };
+                render_states.blend_mode = match renderable.blend_mode {
+                    SpineBlendMode::Normal => BLEND_NORMAL,
+                    SpineBlendMode::Additive => BLEND_ADDITIVE,
+                    SpineBlendMode::Multiply => BLEND_MULTIPLY,
+                    SpineBlendMode::Screen => BLEND_SCREEN,
+                };
 
-                    vertex_buffer.clear();
+                vertex_buffer.clear();
 
-                    for i in &renderable.indices {
-                        let vertex = renderable.vertices[*i as usize];
-                        let uv_raw = renderable.uvs[*i as usize];
-                        let uv = [
-                            uv_raw[0] * texture_size.x as f32,
-                            uv_raw[1] * texture_size.y as f32,
-                        ];
-                        vertex_buffer.push(Vertex::new(
-                            Vector2f::new(vertex[0], vertex[1]),
-                            color,
-                            Vector2f::new(uv[0], uv[1]),
-                        ));
-                    }
-
-                    target.draw_primitives(
-                        vertex_buffer.as_slice(),
-                        PrimitiveType::TRIANGLES,
-                        &render_states,
-                    );
+                for i in &renderable.indices {
+                    let vertex = renderable.vertices[*i as usize];
+                    let uv_raw = renderable.uvs[*i as usize];
+                    let uv = [
+                        uv_raw[0] * texture_size.x as f32,
+                        uv_raw[1] * texture_size.y as f32,
+                    ];
+                    vertex_buffer.push(Vertex::new(
+                        Vector2f::new(vertex[0], vertex[1]),
+                        color,
+                        Vector2f::new(uv[0], uv[1]),
+                    ));
                 }
 
-                rc.update(request.frame_delay());
+                target.draw_primitives(
+                    vertex_buffer.as_slice(),
+                    PrimitiveType::TRIANGLES,
+                    &render_states,
+                );
             }
+
+            rc.update(request.frame_delay());
         }
 
         if let Some(tt) = top_text.as_ref() {

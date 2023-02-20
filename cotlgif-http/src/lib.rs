@@ -337,7 +337,7 @@ async fn get_v1_skin(
 
     let output_type = params.output_type.unwrap_or_default();
     let render_request =
-        params.render_request(&actor, &skin_name, enable_spoilers, &skin_colours)?;
+        params.render_request(actor, &skin_name, enable_spoilers, &skin_colours)?;
 
     let mut builder = Response::builder().header("Content-Type", output_type.mime_type());
 
