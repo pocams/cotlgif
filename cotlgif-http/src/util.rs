@@ -7,8 +7,8 @@ use std::io;
 use std::str::FromStr;
 
 pub struct JsonError {
-    message: String,
-    status: StatusCode,
+    pub message: String,
+    pub status: StatusCode,
 }
 
 pub fn json_400(s: impl Into<String>) -> JsonError {

@@ -7,6 +7,7 @@
   import WelcomeModal from "./lib/WelcomeModal.svelte";
   import ColourPicker from "./lib/ColourPicker.svelte";
   import SingleFrame from "./lib/SingleFrame.svelte";
+  import LoginModal from "./lib/LoginModal.svelte"
 
   function slugify(s) {
     s = s.replace(/[^A-Za-z0-9]/g, "-")
@@ -15,6 +16,18 @@
   }
 
   const fontSizes = [20, 36, 48, 64, 72, 96];
+
+  function handleLoadError(err) {
+    if (err.response.status === 401) {
+      // Our login session must have expired, show the login modal again
+      showLoginModal = true
+    } else {
+      // Well, that wasn't supposed to happen
+      console.error("load error: %o", err);
+      // Maybe this will help?
+      document.location.reload();
+    }
+  }
 
   function setSkeleton(target) {
     axios.get(`/v1/${target.slug}`)
@@ -39,14 +52,23 @@
               selectedSkins = allSkins.filter(s => target.default_skins.includes(s.name))
               features = target.features;
               scale = target.default_scale
-            });
+            })
+      .catch(handleLoadError);
+  }
+
+  function loginSuccessful() {
+    showLoginModal = false
+    initialLoad()
   }
 
   let selectedSkeleton = {}
   let selectedAnimation = ""
   let selectedSkins = []
-  let showWelcomeModal = true
   let spoilersEnabled = window.spoilersEnabled
+  let authenticationRequired = window.authenticationRequired
+
+  let showWelcomeModal = !authenticationRequired
+  let showLoginModal = authenticationRequired
 
   let animation_filter = ""
   let skin_filter = ""
@@ -100,6 +122,11 @@
     }, 500)
   }
 
+  function doLogout(ev) {
+    ev.preventDefault()
+    axios.post("/logout").then(resp => document.location.reload())
+  }
+
   function addSkin(skin) {
     if (selectedSkins.filter(s => s.name === skin.name).length === 0) {
       // Special case - if selecting "JustHead" for a Lamb skin, first remove
@@ -118,6 +145,17 @@
     if (newSelected.length > 0) {
       selectedSkins = newSelected
     }
+  }
+
+  async function initialLoad() {
+    axios.get("/v1/").then(resp => {
+      allSkeletons = resp.data.actors
+      allSkeletons.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+      setSkeleton(allSkeletons.find(s => s.slug === "follower"))
+      // If we're showing the login modal, we can hide it - we must have a working session
+      if (showLoginModal) { showLoginModal = false }
+    }).catch(handleLoadError)
+    axios.get("/v1/follower/colours").then(resp => allColours = resp.data).catch(handleLoadError)
   }
 
   $: animationUrl = () => {
@@ -192,14 +230,7 @@
     return baseUrl + "?" + params.join("&")
   }
 
-  onMount(async () => {
-    axios.get("/v1/").then(resp => {
-      allSkeletons = resp.data.actors
-      allSkeletons.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-      setSkeleton(allSkeletons.find(s => s.slug === "follower"))
-    })
-    axios.get("/v1/follower/colours").then(resp => allColours = resp.data)
-  })
+  onMount(initialLoad)
 </script>
 
 <nav class="navbar py-2 px-2">
@@ -250,6 +281,9 @@
       <a class="navbar-item button is-info mx-1" class:is-hidden={!singleFrame} href={animationUrl() + "&format=png&download=true"}>
         Download PNG
       </a>
+      <form method="POST" action="/logout" on:submit={doLogout}>
+        <button type="submit" class="navbar-item button is-danger mx-1 ml-3" class:is-hidden={!authenticationRequired}>Logout</button>
+      </form>
     </div>
   </div>
 </nav>
@@ -370,3 +404,4 @@
 </section>
 
 <WelcomeModal bind:visible={showWelcomeModal} bind:spoilersEnabled={spoilersEnabled}></WelcomeModal>
+<LoginModal bind:visible={showLoginModal} on:login={loginSuccessful}></LoginModal>

@@ -334,8 +334,8 @@ pub fn render(
     controller.skeleton.set_y(y_offset);
     controller.update(request.start_time);
 
-    let mut target = RenderTexture::new(target_width, target_height)
-        .ok_or(RenderError::TextureFailed)?;
+    let mut target =
+        RenderTexture::new(target_width, target_height).ok_or(RenderError::TextureFailed)?;
 
     let mut render_states = RenderStates::new(BLEND_NORMAL, Transform::IDENTITY, None, None);
     // This transform is used to render text - otherwise it ends up inverted on the Y axis for some reason
@@ -376,7 +376,10 @@ pub fn render(
             );
         }
 
-        for rc in [Some(&mut controller), petpet_controller.as_mut()].into_iter().flatten() {
+        for rc in [Some(&mut controller), petpet_controller.as_mut()]
+            .into_iter()
+            .flatten()
+        {
             let renderables = rc.renderables();
             for renderable in renderables.iter() {
                 if renderable.color.a < 0.001 {

@@ -4,3 +4,6 @@ pillow
 
 # For extracting Unity bundles (extract.py)
 UnityPy
+
+# For generating password hashes
+argon2-cffi

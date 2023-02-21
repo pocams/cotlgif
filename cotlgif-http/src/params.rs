@@ -96,7 +96,11 @@ impl SkinParameters {
             fps,
             background_colour: self.background_colour.unwrap_or_default(),
             slot_colours,
-            slots_to_draw: if self.only_head.unwrap_or(false) { actor.config.head_slots.clone() } else { None },
+            slots_to_draw: if self.only_head.unwrap_or(false) {
+                actor.config.head_slots.clone()
+            } else {
+                None
+            },
             petpet: self.petpet.unwrap_or_default(),
             flip: self.flip,
             custom_size: self.custom_size,
@@ -277,7 +281,9 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "horizontal" => Flip::Horizontal,
                         "none" => Flip::NoFlip,
                         _ => {
-                            return Err(json_400("flip: expected 'horizontal' or 'none'".to_string()))
+                            return Err(json_400(
+                                "flip: expected 'horizontal' or 'none'".to_string(),
+                            ))
                         }
                     }
                 }
@@ -286,7 +292,9 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                         "discord128x128" => CustomSize::Discord128x128,
                         "none" => CustomSize::DefaultSize,
                         _ => {
-                            return Err(json_400("custom_size: expected 'discord128x128' or 'none'".to_string()))
+                            return Err(json_400(
+                                "custom_size: expected 'discord128x128' or 'none'".to_string(),
+                            ))
                         }
                     }
                 }
@@ -312,9 +320,9 @@ impl TryFrom<Vec<(String, String)>> for SkinParameters {
                     match key.as_str() {
                         "bottom_text" => t.text = value,
                         "bottom_text_font" => {
-                            t.font = value
-                                .parse()
-                                .map_err(|_| json_400("bottom_text_font: unknown font".to_string()))?
+                            t.font = value.parse().map_err(|_| {
+                                json_400("bottom_text_font: unknown font".to_string())
+                            })?
                         }
                         "bottom_text_size" => {
                             t.size = value

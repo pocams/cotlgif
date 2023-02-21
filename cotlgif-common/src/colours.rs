@@ -73,7 +73,9 @@ pub struct SkinColours {
 
 impl SkinColours {
     pub fn load() -> Result<SkinColours, WorshipperDataError> {
-        Ok(serde_json::from_reader(File::open("assets/worshipper_data.json")?)?)
+        Ok(serde_json::from_reader(File::open(
+            "assets/worshipper_data.json",
+        )?)?)
     }
 
     pub fn colour_set_from_index(

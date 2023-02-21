@@ -1,12 +1,13 @@
 use clap::Parser;
 use color_eyre::eyre::eyre;
-use cotlgif_http::{HttpActor, HttpOptions, OutputType};
+use cotlgif_http::{AuthenticationOptions, HttpActor, HttpOptions, OutputType};
 use cotlgif_render::{Frame, FrameHandler, HandleFrameError, RenderMetadata, SpineActor};
+use rand::{distributions, Rng};
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::thread;
-use tracing::{debug, error, info};
+use tracing::{debug, error, info, warn};
 use tracing_subscriber::EnvFilter;
 
 use cotlgif_common::{ActorConfig, CustomSize, SkinColours};
@@ -29,15 +30,47 @@ struct Args {
     /// Use index.dev.html so we refer to JS served by `npm run dev`
     #[arg(long)]
     dev: bool,
+
+    /// Require a password for access to the API
+    #[arg(long)]
+    password_hash: Option<String>,
+
+    /// Use a fixed JWT key so users aren't logged out on restart
+    #[arg(long)]
+    jwt_secret: Option<String>,
+}
+
+fn generate_jwt_secret() -> String {
+    let rng = rand::rngs::OsRng::default();
+    rng.sample_iter(distributions::Alphanumeric)
+        .take(32)
+        .map(char::from)
+        .collect()
 }
 
 impl Args {
     fn get_http_options(&self) -> HttpOptions {
+        let authentication_options = self.password_hash.as_ref().map(|password_hash| {
+            AuthenticationOptions::new(
+                password_hash.to_string(),
+                self.jwt_secret
+                    .as_ref()
+                    .map(|s| s.to_string())
+                    .unwrap_or_else(generate_jwt_secret),
+            )
+            .expect("Unparseable password hash")
+        });
+
+        if authentication_options.is_none() && self.jwt_secret.is_some() {
+            warn!("--jwt-secret specified but will not be used since --password-hash is not set")
+        }
+
         HttpOptions {
             listen: self.listen,
             spoilers_host: self.spoilers_host.clone(),
             public: self.public,
             dev: self.dev,
+            authentication_options,
         }
     }
 }
@@ -54,20 +87,21 @@ fn main() -> color_eyre::Result<()> {
         std::env::set_var("RUST_LOG", "info,cotlgif=debug")
     }
 
-    let toml_bytes = std::fs::read("config.toml")
-            .map_err(|e| eyre!("Reading config.toml: {:?}", e))?;
+    let toml_bytes =
+        std::fs::read("config.toml").map_err(|e| eyre!("Reading config.toml: {:?}", e))?;
 
     let toml_str: String = String::from_utf8(toml_bytes)
         .map_err(|e| eyre!("Invalid utf-8 in config.toml: {:?}", e))?;
 
-    let config: Config = toml::from_str(&toml_str)
-        .map_err(|e| eyre!("Parsing config.toml: {}", e))?;
+    let config: Config =
+        toml::from_str(&toml_str).map_err(|e| eyre!("Parsing config.toml: {}", e))?;
 
     tracing_subscriber::fmt::fmt()
         .with_env_filter(EnvFilter::from_default_env())
         .init();
 
     let args = Args::parse();
+    let http_options = args.get_http_options();
 
     let skin_colours = SkinColours::load()?;
 
@@ -93,7 +127,7 @@ fn main() -> color_eyre::Result<()> {
     let runtime = Arc::new(tokio::runtime::Runtime::new()?);
     thread::spawn(move || {
         runtime.block_on(cotlgif_http::serve(
-            args.get_http_options(),
+            http_options,
             http_actors,
             skin_colours,
             render_request_sender,
@@ -159,11 +193,12 @@ fn main() -> color_eyre::Result<()> {
             },
         };
 
-        let frame_handler: Box<dyn FrameHandler> = if http_render_request.render_request.slots_to_draw.is_some() {
-            Box::new(Recropper::new(buf_renderer))
-        } else {
-            Box::new(buf_renderer)
-        };
+        let frame_handler: Box<dyn FrameHandler> =
+            if http_render_request.render_request.slots_to_draw.is_some() {
+                Box::new(Recropper::new(buf_renderer))
+            } else {
+                Box::new(buf_renderer)
+            };
 
         match cotlgif_render::render(
             spine_actor,
@@ -243,10 +278,13 @@ pub struct Recropper<FH: FrameHandler + Send + 'static> {
     left: usize,
     bottom: usize,
     right: usize,
-    frame_handler: FH
+    frame_handler: FH,
 }
 
-impl<FH> Recropper<FH> where FH: FrameHandler + Send + 'static {
+impl<FH> Recropper<FH>
+where
+    FH: FrameHandler + Send + 'static,
+{
     fn new(frame_handler: FH) -> Recropper<FH> {
         Recropper {
             frames: Vec::new(),
@@ -255,12 +293,15 @@ impl<FH> Recropper<FH> where FH: FrameHandler + Send + 'static {
             left: usize::MAX,
             bottom: 0,
             right: 0,
-            frame_handler
+            frame_handler,
         }
     }
 }
 
-impl<FH> FrameHandler for Recropper<FH> where FH: FrameHandler + Send + 'static {
+impl<FH> FrameHandler for Recropper<FH>
+where
+    FH: FrameHandler + Send + 'static,
+{
     fn set_metadata(&mut self, metadata: RenderMetadata) {
         self.metadata = Some(metadata);
     }
@@ -321,7 +362,10 @@ impl<FH> FrameHandler for Recropper<FH> where FH: FrameHandler + Send + 'static 
     }
 }
 
-impl<FH> Drop for Recropper<FH> where FH: FrameHandler + Send + 'static {
+impl<FH> Drop for Recropper<FH>
+where
+    FH: FrameHandler + Send + 'static,
+{
     fn drop(&mut self) {
         // debug!("recropper: top {} bot {} left {} right {}", self.top, self.bottom, self.left, self.right);
         if let Some(mut md) = self.metadata.take() {
@@ -338,13 +382,16 @@ impl<FH> Drop for Recropper<FH> where FH: FrameHandler + Send + 'static {
                     let row_start = old_width * row * 4;
                     for col in self.left..self.right {
                         let col_start = row_start + (4 * col);
-                        new_pixel_data.extend_from_slice(&frame.pixel_data[col_start..(col_start + 4)])
+                        new_pixel_data
+                            .extend_from_slice(&frame.pixel_data[col_start..(col_start + 4)])
                     }
                 }
                 frame.width = new_width as u32;
                 frame.height = new_height as u32;
                 frame.pixel_data = new_pixel_data;
-                if self.frame_handler.handle_frame(frame).is_err() { break }
+                if self.frame_handler.handle_frame(frame).is_err() {
+                    break;
+                }
             }
         }
     }

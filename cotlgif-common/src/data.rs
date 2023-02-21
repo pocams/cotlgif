@@ -124,7 +124,10 @@ impl RenderRequest {
     }
 
     pub fn should_draw_slot(&self, slot_name: &str) -> bool {
-        self.slots_to_draw.as_ref().map(|s| s.is_match(slot_name)).unwrap_or(true)
+        self.slots_to_draw
+            .as_ref()
+            .map(|s| s.is_match(slot_name))
+            .unwrap_or(true)
     }
 
     pub fn get_scale(&self, rescale: f32) -> (f32, f32) {
