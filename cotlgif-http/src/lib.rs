@@ -431,7 +431,7 @@ async fn handle_login(
             cookie.set_expires(claims.cookie_expiry());
             cookie.set_http_only(true);
             // Set the cookie to secure unless we're in dev (running on localhost)
-            cookie.set_secure(options.dev);
+            cookie.set_secure(!options.dev);
             // Allow the cookie to be sent with 3rd party embedded image requests
             cookie.set_same_site(SameSite::None);
             cookies.add(cookie);
