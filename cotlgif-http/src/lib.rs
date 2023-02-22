@@ -13,7 +13,7 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, get_service, post};
 use axum::{Json, Router, TypedHeader};
 use cookie::time::OffsetDateTime;
-use cookie::Expiration;
+use cookie::{Expiration, SameSite};
 use governor::clock::DefaultClock;
 use governor::state::keyed::DefaultKeyedStateStore;
 use governor::{Quota, RateLimiter};
@@ -430,7 +430,10 @@ async fn handle_login(
             let mut cookie = Cookie::new(JWT_COOKIE, jwt);
             cookie.set_expires(claims.cookie_expiry());
             cookie.set_http_only(true);
-            cookie.set_secure(true);
+            // Set the cookie to secure unless we're in dev (running on localhost)
+            cookie.set_secure(options.dev);
+            // Allow the cookie to be sent with 3rd party embedded image requests
+            cookie.set_same_site(SameSite::None);
             cookies.add(cookie);
 
             (StatusCode::OK, Json(json!({"result": "login successful"}))).into_response()
