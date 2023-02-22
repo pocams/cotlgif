@@ -43,7 +43,7 @@ files_to_read = set()
 for atlas in glob.glob("extracted/*.atlas"):
     for line in open(atlas, "rt"):
         line = line.strip()
-        if line:
+        if line.endswith(".png"):
             texture_name = line.replace(".png", "")
             print(texture_name)
             wanted_textures.add(texture_name)
@@ -51,7 +51,6 @@ for atlas in glob.glob("extracted/*.atlas"):
                 files_to_read.add(texture2d_locations[texture_name])
             except KeyError:
                 print(f"!!! No texture found for {texture_name}!")
-            break
 
 
 print(f"Extracting Texture2Ds from {len(files_to_read)} files")

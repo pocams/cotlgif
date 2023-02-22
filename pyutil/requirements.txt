@@ -7,3 +7,6 @@ UnityPy
 
 # For generating password hashes
 argon2-cffi
+
+# For modifying config.toml
+tomlkit

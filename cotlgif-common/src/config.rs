@@ -28,6 +28,7 @@ pub enum ActorCategory {
     Others,
     Objects,
     Unused,
+    Uncategorized,
 }
 
 impl Default for ActorCategory {
@@ -46,7 +47,9 @@ pub struct ActorConfig {
     pub category: ActorCategory,
     #[serde(default)]
     pub is_spoiler: bool,
+    #[serde(default)]
     pub default_skins: Vec<String>,
+    #[serde(default)]
     pub default_animation: String,
     #[serde(deserialize_with = "deserialize_regex", default)]
     pub head_slots: Option<Regex>,
