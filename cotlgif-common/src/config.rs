@@ -22,10 +22,13 @@ fn default_scale() -> f32 {
 pub enum ActorCategory {
     None,
     NPCs,
+    Critters,
     Bosses,
     Minibosses,
     Enemies,
     Others,
+    Crusade,
+    Cult,
     Objects,
     Unused,
     Uncategorized,
