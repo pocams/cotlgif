@@ -5,10 +5,10 @@ use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 
 use argon2::Argon2;
-use axum::body::{Body, BoxBody, HttpBody, StreamBody};
+use axum::body::StreamBody;
 use axum::extract::{ConnectInfo, FromRef, Host, Path, Query, State};
 use axum::http::{header, Request, StatusCode};
-use axum::middleware::{from_fn_with_state, from_fn, Next};
+use axum::middleware::{from_fn_with_state, Next};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, get_service, post};
 use axum::{Json, Router, TypedHeader};
@@ -46,12 +46,6 @@ const JWT_ISSUER: &str = "The One Who Validates";
 const JWT_COOKIE: &str = "login";
 const AUTHENTICATION_RATE_LIMIT: Quota =
     Quota::per_minute(nonzero!(15u32)).allow_burst(nonzero!(2u32));
-
-// wtf discord, not cool
-const DISCORD_USER_AGENTS: &[&str] = &[
-    "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.6; rv:92.0) Gecko/20100101 Firefox/92.0",
-];
 
 pub struct AuthenticationOptions {
     /// Require a password for API interactions
@@ -283,7 +277,6 @@ pub async fn serve(
         .route("/:actor/:skin", get(get_v1_skin))
         .route("/:actor/:skin/", get(get_v1_skin))
         .with_state(state.clone())
-        .layer(from_fn(add_content_length_for_discord))
         .layer(from_fn_with_state(state.clone(), authentication));
 
     let app = Router::new()
@@ -348,38 +341,6 @@ async fn authentication<B>(
 
     // Pass the request down the middleware stack and return its response
     next.run(request).await
-}
-
-async fn add_content_length_for_discord<B>(
-    request: Request<B>,
-    next: Next<B>,
-) -> Response {
-    if let Some(user_agent) = request.headers().get("user-agent") {
-        if DISCORD_USER_AGENTS.iter().any(|ua| ua == user_agent) {
-            debug!("Detected Discord user agent {:?}", user_agent);
-
-            // Pass the request down the middleware stack and get its response
-            let mut resp = next.run(request).await;
-
-            // Collect the whole response into a buffer
-            let mut buf = vec![];
-            while let Some(d) = resp.data().await {
-                if let Ok(data) = d {
-                    buf.extend(data)
-                }
-            }
-
-            // Replace the old streaming body with our new buffered body; this will
-            // also cause Axum to return a Content-Length header
-            *resp.body_mut() = BoxBody::new(Body::from(buf).map_err(axum::Error::new));
-
-            resp
-        } else {
-            next.run(request).await
-        }
-    } else {
-        next.run(request).await
-    }
 }
 
 async fn get_index(State(options): State<Arc<HttpOptions>>) -> impl IntoResponse {
