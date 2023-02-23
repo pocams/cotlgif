@@ -12,6 +12,8 @@ use axum::middleware::{from_fn_with_state, Next};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, get_service, post};
 use axum::{Json, Router, TypedHeader};
+use base64::Engine;
+use base64::prelude::BASE64_URL_SAFE_NO_PAD;
 use cookie::time::OffsetDateTime;
 use cookie::{Expiration, SameSite};
 use governor::clock::DefaultClock;
@@ -276,6 +278,7 @@ pub async fn serve(
         .route("/:actor/colours/", get(get_v1_colours))
         .route("/:actor/:skin", get(get_v1_skin))
         .route("/:actor/:skin/", get(get_v1_skin))
+        .route("/:actor/:skin/:embed", get(get_v1_embed))
         .with_state(state.clone())
         .layer(from_fn_with_state(state.clone(), authentication));
 
@@ -603,4 +606,30 @@ async fn get_v1_skin(
         .map_err(|e| json_500(format!("Internal server error: {}", e)))?;
 
     Ok(builder.body(StreamBody::from(rx)).unwrap())
+}
+
+async fn get_v1_embed(
+    State(actors): State<Arc<Vec<HttpActor>>>,
+    State(options): State<Arc<HttpOptions>>,
+    State(skin_colours): State<Arc<SkinColours>>,
+    State(render_request_channel): State<mpsc::Sender<HttpRenderRequest>>,
+    Path((actor_slug, skin_name, embed)): Path<(String, String, String)>,
+    Host(host): Host,
+) -> Result<impl IntoResponse, JsonError> {
+    // Strip a .gif or .png (or .anything, really) extension
+    let embed = &embed[0..embed.chars().position(|c| c == '.').unwrap_or(embed.len())];
+
+    let query_string = BASE64_URL_SAFE_NO_PAD.decode(embed).map_err(|_| json_400("invalid base64".to_string()))?;
+    let query = serde_urlencoded::from_bytes(&query_string).map_err(|_| json_400("invalid query string".to_string()))?;
+    debug!("embedded query string: {:?}", query);
+
+    get_v1_skin(
+        State(actors),
+        State(options),
+        State(skin_colours),
+        State(render_request_channel),
+        Path((actor_slug, skin_name)),
+        Query(query),
+        Host(host)
+    ).await
 }

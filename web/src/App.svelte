@@ -216,6 +216,25 @@
     return baseUrl + "?" + params.join("&")
   }
 
+  function generateEmbedPath() {
+    let [base, params] = animationUrl().split("?")
+    if (!base.endsWith("/")) { base += "/" }
+
+    let encoded = btoa(params + "&format=gif")
+      // The server isn't expecting ==== base64 padding
+      .replace(/=+/, "")
+      // Convert to url-safe base64
+      .replace(/\//g, "_").replace(/\+/g, "-")
+
+    return base + encoded + ".gif"
+  }
+
+  function copyEmbedUrl() {
+    const path = generateEmbedPath()
+    const url = new URL(path, document.baseURI)
+    navigator.clipboard.writeText(url.toString()).then(() => {})
+  }
+
   $: headUrl = () => {
     if (selectedSkins.length === 0) { return "" }
     if (!selectedSkeleton.slug) { return "" }
@@ -272,6 +291,9 @@
     </div>
 
     <div class="navbar-end">
+      <a class="navbar-item button is-info mx-1" on:click={copyEmbedUrl}>
+        Copy embed URL
+      </a>
       <a class="navbar-item button is-info mx-1" class:is-hidden={singleFrame} href={animationUrl() + "&format=gif&download=true"}>
         Download GIF
       </a>
